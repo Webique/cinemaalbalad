@@ -130,15 +130,18 @@ export default function Movies() {
                         onClick={() =>
                           setBooking((prev) => {
                             const current = prev[movie.id]?.time;
+                            const newTime = current === time ? null : time;
+                        
                             return {
                               ...prev,
                               [movie.id]: {
-                                ...prev[movie.id],
-                                time: current === time ? null : time
-                              }
+                                time: newTime,
+                                count: prev[movie.id]?.count || 1, // <-- this line ensures count is always at least 1
+                              },
                             };
                           })
                         }
+                        
                         className={`px-4 py-2 rounded-full text-sm border ${
                           booking[movie.id]?.time === time
                             ? "bg-primary text-white"
