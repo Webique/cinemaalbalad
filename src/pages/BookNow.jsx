@@ -53,6 +53,45 @@ export default function BookNow() {
     setForm((prev) => ({ ...prev, tickets: selectedSeats.length }));
   }, [selectedSeats]);
 
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    if (!form.name || !form.email || !form.date || !form.time || selectedSeats.length === 0) {
+      alert("Please fill all fields and select seats.");
+      return;
+    }
+  
+    const payload = {
+      name: form.name,
+      email: form.email,
+      movie: selectedMovie.title,
+      time: form.time,
+      date: form.date,
+      seats: selectedSeats,
+    };
+  
+    try {
+      const res = await fetch("http://localhost:5000/api/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      const data = await res.json();
+      alert(data.message); // ✅ Show success message
+      navigate("/"); // redirect to homepage (or change if needed)
+    } catch (err) {
+      console.error(err);
+      alert("❌ Failed to submit booking");
+    }
+  };
+  
+
+
   return (
     <>
       <Navbar />
@@ -170,7 +209,7 @@ export default function BookNow() {
                 <div className="col-span-2 text-center">
                   <button
                     type="submit"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={handleSubmit}
                     className="mt-8 bg-primary hover:bg-opacity-80 px-8 py-4 rounded-full text-white text-lg shadow-md hover:scale-105 transition transform duration-300"
                   >
                     🎟 Reserve Now
