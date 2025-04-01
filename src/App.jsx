@@ -5,6 +5,13 @@ import MovieDetail from "./pages/MovieDetail";
 import BookNow from "./pages/BookNow";
 import Events from "./pages/Events";
 import Contact from "./pages/Contact";
+import About from "./pages/About";
+import Login from "./pages/Login";       
+import Signup from "./pages/SignUp";    
+import ThankYou from "./pages/ThankYou";
+import AdminPanel from "./pages/AdminPanel"; 
+
+
 
 
 export default function App() {
@@ -14,8 +21,15 @@ export default function App() {
       <Route path="/movies" element={<Movies />} />
       <Route path="/movies/:id" element={<MovieDetail />} />
       <Route path="/book" element={<BookNow />} />
+      <Route path="/about" element={<About />} />
       <Route path="/events" element={<Events />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/thankyou" element={<ThankYou />} />
+      <Route path="/admin" element={<AdminPanel />} />
+
+
     </Routes>
   );
 }
