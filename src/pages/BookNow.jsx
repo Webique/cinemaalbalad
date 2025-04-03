@@ -58,15 +58,22 @@ export default function BookNow() {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    if (!form.name || !form.email || !form.date || !form.time || selectedSeats.length === 0) {
-      alert("Please fill all fields and select seats.");
+    if (
+      !form.name ||
+      !form.email ||
+      !form.date ||
+      !form.time ||
+      selectedSeats.length === 0 ||
+      !selectedMovie
+    ) {
+      alert("Please fill all fields, select seats, and choose a movie.");
       return;
     }
   
     const payload = {
       name: form.name,
       email: form.email,
-      movie: selectedMovie.title,
+      movie: selectedMovie?.title || "Unknown Movie",
       time: form.time,
       date: form.date,
       seats: selectedSeats,
@@ -82,14 +89,16 @@ export default function BookNow() {
       });
   
       const data = await res.json();
-      alert(data.message); // ✅ Show success message
-      navigate("/"); // redirect to homepage (or change if needed)
+      console.log("✅ Booking submitted:", data);
+      navigate("/thankyou"); // ✅ go to ThankYou.jsx
     } catch (err) {
-      console.error(err);
+      console.error("❌ Failed to submit booking:", err);
       alert("❌ Failed to submit booking");
     }
   };
   
+  
+
 
 
   return (

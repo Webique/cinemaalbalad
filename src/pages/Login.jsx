@@ -7,6 +7,28 @@ import Footer from "../components/Footer";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      alert(data.message);
+    } catch (err) {
+      alert(err.message || "Login failed.");
+    }
+  };
 
   return (
     <>
@@ -19,7 +41,7 @@ export default function Login() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-4xl font-bold mb-8 text-center">Welcome Back</h1>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleLogin}>
             {/* Email */}
             <div>
               <label className="flex items-center gap-2 text-sm mb-1">
@@ -28,6 +50,8 @@ export default function Login() {
               <input
                 type="email"
                 placeholder="you@example.com"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="w-full px-4 py-3 rounded bg-white/10 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
@@ -41,6 +65,8 @@ export default function Login() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
                   className="w-full px-4 py-3 pr-12 rounded bg-white/10 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <button

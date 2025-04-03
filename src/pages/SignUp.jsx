@@ -7,6 +7,29 @@ import Footer from "../components/Footer";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:5000/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      alert(data.message);
+    } catch (err) {
+      alert(err.message || "Signup failed.");
+    }
+  };
 
   return (
     <>
@@ -19,7 +42,7 @@ export default function Signup() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-4xl font-bold mb-8 text-center">Create an Account</h1>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSignup}>
             {/* Name */}
             <div>
               <label className="flex items-center gap-2 text-sm mb-1">
@@ -28,6 +51,8 @@ export default function Signup() {
               <input
                 type="text"
                 placeholder="Your Name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="w-full px-4 py-3 rounded bg-white/10 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
@@ -40,6 +65,8 @@ export default function Signup() {
               <input
                 type="email"
                 placeholder="you@example.com"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="w-full px-4 py-3 rounded bg-white/10 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
@@ -53,6 +80,8 @@ export default function Signup() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
                   className="w-full px-4 py-3 pr-12 rounded bg-white/10 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <button
