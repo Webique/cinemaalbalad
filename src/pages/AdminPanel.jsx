@@ -1,8 +1,26 @@
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 
 export default function AdminPanel() {
+  const [stats, setStats] = useState({ totalBookings: 0, totalUsers: 0, totalRevenue: 0 });
+  const [bookings, setBookings] = useState([]);
+
+  useEffect(() => {
+    // Fetch stats
+    fetch("http://localhost:5000/api/admin/stats")
+      .then((res) => res.json())
+      .then((data) => setStats(data))
+      .catch((err) => console.error("Stats error:", err));
+
+    // Fetch all bookings
+    fetch("http://localhost:5000/api/admin/bookings")
+      .then((res) => res.json())
+      .then((data) => setBookings(data))
+      .catch((err) => console.error("Bookings error:", err));
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -19,9 +37,9 @@ export default function AdminPanel() {
         {/* Dashboard Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {[
-            { label: "Total Bookings", value: "1,245" },
-            { label: "Total Movies", value: "37" },
-            { label: "Revenue", value: "SAR 43,200" },
+            { label: "Total Bookings", value: stats.totalBookings },
+            { label: "Total Users", value: stats.totalUsers },
+            { label: "Revenue", value: `SAR ${stats.totalRevenue}` },
           ].map((card, idx) => (
             <motion.div
               key={idx}
@@ -47,47 +65,22 @@ export default function AdminPanel() {
                   <th className="p-4">Name</th>
                   <th className="p-4">Movie</th>
                   <th className="p-4">Time</th>
-                  <th className="p-4">Tickets</th>
+                  <th className="p-4">Date</th>
+                  <th className="p-4">Seats</th>
                 </tr>
               </thead>
               <tbody>
-                {[
-                  { name: "Sara Alghamdi", movie: "Hajjan", time: "6:00 PM", tickets: 2 },
-                  { name: "Faisal B.", movie: "Scales", time: "9:00 PM", tickets: 1 },
-                  { name: "Noura K.", movie: "Theeb", time: "6:00 PM", tickets: 3 },
-                ].map((row, idx) => (
+                {bookings.map((row, idx) => (
                   <tr key={idx} className="border-t border-white/10 hover:bg-white/10 transition">
                     <td className="p-4">{row.name}</td>
                     <td className="p-4">{row.movie}</td>
                     <td className="p-4">{row.time}</td>
-                    <td className="p-4">{row.tickets}</td>
+                    <td className="p-4">{row.date}</td>
+                    <td className="p-4">{row.seats.join(", ")}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
-
-        {/* Movie Management */}
-        <div>
-          <h2 className="text-2xl font-semibold mb-6">Movie Management</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              "Hajjan",
-              "Scales",
-              "Born a King",
-              "Wadjda",
-              "Champions",
-              "Theeb",
-            ].map((movie, idx) => (
-              <div
-                key={idx}
-                className="bg-white/5 border border-white/10 p-4 rounded-xl text-white hover:shadow-xl transition"
-              >
-                <p className="text-lg">{movie}</p>
-                <button className="mt-2 text-sm text-primary hover:underline">Edit</button>
-              </div>
-            ))}
           </div>
         </div>
       </main>

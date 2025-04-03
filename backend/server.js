@@ -81,3 +81,57 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({ error: "Login failed." });
   }
 });
+
+// GET total stats
+app.get("/api/admin/stats", async (req, res) => {
+  try {
+    const bookings = await Booking.find();
+    const users = await User.find();
+    const revenue = bookings.reduce((sum, b) => sum + (b.seats?.length || 0) * 35, 0);
+    res.json({
+      totalBookings: bookings.length,
+      totalUsers: users.length,
+      totalRevenue: revenue,
+    });
+  } catch (err) {
+    console.error("Stats error:", err);
+    res.status(500).json({ error: "Failed to fetch stats" });
+  }
+});
+
+// GET all bookings
+app.get("/api/admin/bookings", async (req, res) => {
+  try {
+    const allBookings = await Booking.find().sort({ createdAt: -1 });
+    res.json(allBookings);
+  } catch (err) {
+    console.error("Bookings fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch bookings" });
+  }
+});
+
+// Admin stats route
+app.get("/api/admin/stats", async (req, res) => {
+  try {
+    const totalBookings = await Booking.countDocuments();
+    const totalUsers = await User.countDocuments();
+    const allBookings = await Booking.find();
+    const totalRevenue = allBookings.reduce((sum, b) => sum + b.seats.length * 35, 0); // Assuming 35 SAR per ticket
+
+    res.json({ totalBookings, totalUsers, totalRevenue });
+  } catch (err) {
+    console.error("Admin stats error:", err);
+    res.status(500).json({ error: "Failed to fetch stats" });
+  }
+});
+
+// Admin bookings route
+app.get("/api/admin/bookings", async (req, res) => {
+  try {
+    const bookings = await Booking.find().sort({ createdAt: -1 });
+    res.json(bookings);
+  } catch (err) {
+    console.error("Admin bookings error:", err);
+    res.status(500).json({ error: "Failed to fetch bookings" });
+  }
+});
