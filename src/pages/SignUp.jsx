@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, User } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     name: "",
@@ -25,7 +26,9 @@ export default function Signup() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      alert(data.message);
+
+      // ✅ Redirect to homepage after successful signup
+      navigate("/");
     } catch (err) {
       alert(err.message || "Signup failed.");
     }

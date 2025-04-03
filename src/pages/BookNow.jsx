@@ -96,10 +96,6 @@ export default function BookNow() {
       alert("❌ Failed to submit booking");
     }
   };
-  
-  
-
-
 
   return (
     <>

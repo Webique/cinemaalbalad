@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -14,21 +15,24 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
       const res = await fetch("http://localhost:5000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-
+  
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      alert(data.message);
+  
+      // ✅ No alert, just redirect
+      navigate("/");
     } catch (err) {
       alert(err.message || "Login failed.");
     }
   };
+  
 
   return (
     <>
