@@ -3,6 +3,8 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import Booking from "./models/Booking.js";
+import Movie from "./models/Movie.js";
+
 
 import bcrypt from "bcrypt";
 import User from "./models/User.js";
@@ -17,6 +19,20 @@ app.use(express.json());
 mongoose.connect("mongodb+srv://startwithwebique:Cinema123%21@cinemaalbalad.gv3a8rw.mongodb.net/cinemaalbalad?retryWrites=true&w=majority&appName=CinemaAlbalad")
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch((err) => console.error("❌ MongoDB error:", err));
+
+
+
+  // ✅ GET all movies from the database
+app.get("/api/movies", async (req, res) => {
+  try {
+    const movies = await Movie.find();
+    res.json(movies);
+  } catch (err) {
+    console.error("❌ Error fetching movies:", err);
+    res.status(500).json({ error: "Failed to fetch movies" });
+  }
+});
+
 
 // Routes
 app.get("/", (req, res) => {
@@ -38,6 +54,43 @@ app.post("/api/bookings", async (req, res) => {
     res.status(500).json({ error: "Failed to save booking." });
   }
 });
+
+
+
+
+// ✅ Seed 23 formatted movies for frontend
+app.post("/api/admin/seed-movies-formatted", async (req, res) => {
+  try {
+    const movies = [];
+
+    for (let i = 1; i <= 23; i++) {
+      movies.push({
+        title: `Movie ${i}`,
+        runtime: "120 min",
+        rating: "PG-13",
+        synopsis: `This is a placeholder synopsis for Movie ${i}.`,
+        poster: `/posters/movie${i}.jpg`,
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        ticketPrice: 35,
+        showtimes: [
+          { time: "6:00 PM", date: "2025-05-01", seats: [] },
+          { time: "9:00 PM", date: "2025-05-01", seats: [] },
+        ],
+      });
+    }
+
+    await Movie.deleteMany({});
+    await Movie.insertMany(movies);
+
+    res.status(201).json({ message: "✅ Formatted movies seeded successfully!" });
+  } catch (err) {
+    console.error("Seeding formatted movies error:", err);
+    res.status(500).json({ error: "Failed to seed formatted movies." });
+  }
+});
+
+
+
 
 
 // Start server LAST
@@ -82,33 +135,7 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-// GET total stats
-app.get("/api/admin/stats", async (req, res) => {
-  try {
-    const bookings = await Booking.find();
-    const users = await User.find();
-    const revenue = bookings.reduce((sum, b) => sum + (b.seats?.length || 0) * 35, 0);
-    res.json({
-      totalBookings: bookings.length,
-      totalUsers: users.length,
-      totalRevenue: revenue,
-    });
-  } catch (err) {
-    console.error("Stats error:", err);
-    res.status(500).json({ error: "Failed to fetch stats" });
-  }
-});
 
-// GET all bookings
-app.get("/api/admin/bookings", async (req, res) => {
-  try {
-    const allBookings = await Booking.find().sort({ createdAt: -1 });
-    res.json(allBookings);
-  } catch (err) {
-    console.error("Bookings fetch error:", err);
-    res.status(500).json({ error: "Failed to fetch bookings" });
-  }
-});
 
 // Admin stats route
 app.get("/api/admin/stats", async (req, res) => {
@@ -135,3 +162,6 @@ app.get("/api/admin/bookings", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch bookings" });
   }
 });
+
+
+
