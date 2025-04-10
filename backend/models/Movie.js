@@ -1,22 +1,36 @@
 import mongoose from "mongoose";
 
-const showtimeSchema = new mongoose.Schema({
-  time: String,
-  date: String,
-  seats: [Number], // Array of reserved seat numbers
-});
+showtimes: [
+  {
+    time: String,
+    date: String,
+    seats: [Number],          // optional
+    reservedSeats: [Number]   // required!
+  }
+]
 
 const movieSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  runtime: { type: String, default: "120 min" },
-  rating: { type: String, default: "PG" },
-  synopsis: { type: String, default: "A captivating story that unfolds with emotion and drama." },
-  poster: { type: String, default: "/posters/default.jpg" },
-  trailer: { type: String, default: "" },
-  ticketPrice: { type: Number, default: 35 },
-  showtimes: [showtimeSchema],
+  title: String,
+  poster: String,
+  trailer: String,
+  runtime: String,
+  rating: String,
+  synopsis: String,
+  ticketPrice: Number,
+  showtimes: [
+    {
+      time: String,
+      date: String,
+      seats: [Number],
+      reservedSeats: {
+        type: [Number],
+        default: [], // ✅ Important
+      },
+    },
+  ],
 });
 
-const Movie = mongoose.model("Movie", movieSchema);
 
+
+const Movie = mongoose.model("Movie", movieSchema);
 export default Movie;

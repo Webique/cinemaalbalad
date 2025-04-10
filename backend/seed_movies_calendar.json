@@ -1,0 +1,875 @@
+[
+  {
+    "title": "Movie 1",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 1.",
+    "poster": "/posters/movie1.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-04-25",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-04-25",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-18",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-18",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-10",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-10",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 2",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 2.",
+    "poster": "/posters/movie2.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-04-26",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-04-26",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-19",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-19",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-11",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-11",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 3",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 3.",
+    "poster": "/posters/movie3.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-04-27",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-04-27",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-20",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-20",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-12",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-12",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 4",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 4.",
+    "poster": "/posters/movie4.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-04-28",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-04-28",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-21",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-21",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-13",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-13",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 5",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 5.",
+    "poster": "/posters/movie5.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-04-29",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-04-29",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-22",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-22",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-14",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-14",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 6",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 6.",
+    "poster": "/posters/movie6.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-04-30",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-04-30",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-23",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-23",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-15",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-15",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 7",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 7.",
+    "poster": "/posters/movie7.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-01",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-01",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-24",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-24",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-16",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-16",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 8",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 8.",
+    "poster": "/posters/movie8.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-02",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-02",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-25",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-25",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-17",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-17",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 9",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 9.",
+    "poster": "/posters/movie9.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-03",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-03",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-26",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-26",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-18",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-18",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 10",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 10.",
+    "poster": "/posters/movie10.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-04",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-04",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-27",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-27",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-19",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-19",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 11",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 11.",
+    "poster": "/posters/movie11.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-05",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-05",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-28",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-28",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-20",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-20",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 12",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 12.",
+    "poster": "/posters/movie12.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-06",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-06",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-29",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-29",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-21",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-21",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 13",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 13.",
+    "poster": "/posters/movie13.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-07",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-07",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-30",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-30",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-22",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-22",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 14",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 14.",
+    "poster": "/posters/movie14.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-08",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-08",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-31",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-31",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-23",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-23",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 15",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 15.",
+    "poster": "/posters/movie15.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-09",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-09",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-01",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-01",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-24",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-24",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 16",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 16.",
+    "poster": "/posters/movie16.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-10",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-10",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-02",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-02",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-25",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-25",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 17",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 17.",
+    "poster": "/posters/movie17.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-11",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-11",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-03",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-03",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 18",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 18.",
+    "poster": "/posters/movie18.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-12",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-12",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-04",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-04",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 19",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 19.",
+    "poster": "/posters/movie19.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-13",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-13",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-05",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-05",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 20",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 20.",
+    "poster": "/posters/movie20.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-14",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-14",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-06",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-06",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 21",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 21.",
+    "poster": "/posters/movie21.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-15",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-15",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-07",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-07",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 22",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 22.",
+    "poster": "/posters/movie22.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-16",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-16",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-08",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-08",
+        "reservedSeats": []
+      }
+    ]
+  },
+  {
+    "title": "Movie 23",
+    "runtime": "120 min",
+    "rating": "PG-13",
+    "synopsis": "This is a placeholder synopsis for Movie 23.",
+    "poster": "/posters/movie23.jpg",
+    "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "ticketPrice": 35,
+    "showtimes": [
+      {
+        "time": "6:00 PM",
+        "date": "2025-05-17",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-05-17",
+        "reservedSeats": []
+      },
+      {
+        "time": "6:00 PM",
+        "date": "2025-06-09",
+        "reservedSeats": []
+      },
+      {
+        "time": "9:00 PM",
+        "date": "2025-06-09",
+        "reservedSeats": []
+      }
+    ]
+  }
+]
