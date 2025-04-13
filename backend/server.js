@@ -251,38 +251,43 @@ app.delete("/api/admin/delete-all-movies", async (req, res) => {
 
 
 
-
-app.post("/api/payment", async (req, res) => {
+app.post("/api/payments", async (req, res) => {
   try {
-    const { amount, currency, description } = req.body;
+    const { amount, movieId, time, count } = req.body;
+
+    console.log("📤 Sending payment with:", { amount, movieId, time, count });
 
     const response = await axios.post(
       "https://api.moyasar.com/v1/payments",
       {
-        amount, // in halalas (e.g. 100 SAR = 10000)
-        currency,
-        description,
+        amount: amount * 100,
+        currency: "SAR",
+        description: `Booking for movie ${movieId}, ${time}, ${count} tickets`,
+        callback_url: "http://localhost:5173/thankyou", // Frontend route
         source: {
           type: "creditcard",
-          number: "4111111111111111", // for test mode
-          name: "Moony Bamoukrah",
+          name: "Test User",
+          number: "4111111111111111", // Visa test card
           month: "12",
-          year: "2025",
-          cvc: "123",
-        },
+          year: "25",
+          cvc: "123"
+        }
       },
       {
         auth: {
-          username: "sk_test_oQ87yapoFzbp1wAEoxZkjQrTZJVvbaw5uBBXkYdy", // your Moyasar secret key
-          password: "",
+          username: "sk_test_oQ87yapoFzbp1wAEoxZkjQrTZJVvbaw5uBBXkYdy", // Replace with your Moyasar secret key
         },
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
     );
 
-    res.json({ success: true, data: response.data });
-  } catch (err) {
-    console.error("💥 Payment error:", err.response?.data || err.message);
-    res.status(500).json({ success: false, message: "Payment failed." });
+    console.log("✅ Redirect to:", response.data.source.transaction_url);
+    res.json({ url: response.data.source.transaction_url });
+
+  } catch (error) {
+    console.error("❌ Moyasar payment error:", error.response?.data || error.message);
+    res.status(500).json({ error: "Payment failed." });
   }
 });
-

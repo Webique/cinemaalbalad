@@ -119,7 +119,11 @@ export default function BookNow() {
 
       const data = await res.json();
       console.log("✅ Booking submitted:", data);
-      navigate("/payment", { state: payload });
+      navigate(
+        `/payment?movieId=${movieId}&time=${form.time}&count=${selectedSeats.length}`
+      );
+      
+
 
     } catch (err) {
       console.error("❌ Failed to submit booking:", err);
