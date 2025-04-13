@@ -1,19 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { UserCircleIcon } from "@heroicons/react/24/outline";
 import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
-
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
-
   const location = useLocation();
+
   const handleClose = () => setIsOpen(false);
 
   const navLinks = [
@@ -23,13 +16,6 @@ export default function Navbar() {
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
   ];
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-    setShowProfile(false);
-    window.location.reload();
-  };
 
   return (
     <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-lg shadow-lg">
@@ -59,51 +45,6 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
-
-          {/* Profile Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => setShowProfile(!showProfile)}
-              className="text-white hover:text-primary transition duration-300"
-            >
-              <UserCircleIcon className="w-8 h-8" />
-            </button>
-
-            {showProfile && (
-              <div className="absolute right-0 mt-3 w-44 bg-white rounded-md shadow-lg z-50 text-sm text-black font-medium">
-                {user ? (
-                  <>
-                    <div className="px-4 py-2 border-b text-gray-700">
-                      👋 {user.name}
-                    </div>
-                    <button
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                    >
-                      Logout
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      to="/login"
-                      onClick={() => setShowProfile(false)}
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      Log In
-                    </Link>
-                    <Link
-                      to="/signup"
-                      onClick={() => setShowProfile(false)}
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      Sign Up
-                    </Link>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
         </nav>
 
         {/* Hamburger for Mobile */}
@@ -154,61 +95,6 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
-
-            {/* Mobile Profile Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setShowProfile((prev) => !prev)}
-                className="flex items-center gap-2 text-white hover:text-primary transition duration-300"
-              >
-                <UserCircleIcon className="w-7 h-7" />
-                <span>Profile</span>
-              </button>
-
-              {showProfile && (
-                <div className="mt-4 ml-1 bg-white rounded-md shadow-lg text-black font-medium text-base">
-                  {user ? (
-                    <>
-                      <div className="px-4 py-2 border-b text-gray-700">
-                        👋 {user.name}
-                      </div>
-                      <button
-                        onClick={() => {
-                          handleLogout();
-                          handleClose();
-                        }}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                      >
-                        Logout
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        to="/login"
-                        onClick={() => {
-                          setShowProfile(false);
-                          handleClose();
-                        }}
-                        className="block px-4 py-2 hover:bg-gray-100"
-                      >
-                        Log In
-                      </Link>
-                      <Link
-                        to="/signup"
-                        onClick={() => {
-                          setShowProfile(false);
-                          handleClose();
-                        }}
-                        className="block px-4 py-2 hover:bg-gray-100"
-                      >
-                        Sign Up
-                      </Link>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
           </motion.nav>
         )}
       </AnimatePresence>
