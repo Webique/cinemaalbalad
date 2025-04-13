@@ -20,7 +20,6 @@ export default function Navbar() {
     { name: "Home", path: "/" },
     { name: "Movies", path: "/movies" },
     { name: "Events", path: "/events" },
-    { name: "Book", path: "/book" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
   ];
@@ -35,7 +34,7 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-lg shadow-lg">
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 h-32 flex items-center justify-between gap-6">
-        {/* Logo & Title */}
+        {/* Logo Only */}
         <div className="flex items-center gap-6 overflow-hidden">
           <Link to="/">
             <img
@@ -45,9 +44,6 @@ export default function Navbar() {
               style={{ maxHeight: "112px" }}
             />
           </Link>
-          <span className="text-white text-3xl font-cinema tracking-wide hidden sm:block">
-            Cinema Al Balad
-          </span>
         </div>
 
         {/* Desktop Nav */}
