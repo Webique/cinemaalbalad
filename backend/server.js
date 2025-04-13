@@ -8,6 +8,7 @@ import Movie from "./models/Movie.js";
 
 import bcrypt from "bcrypt";
 import User from "./models/User.js";
+import axios from "axios";
 
 
 // App config
@@ -248,4 +249,40 @@ app.delete("/api/admin/delete-all-movies", async (req, res) => {
   }
 });
 
+
+
+
+app.post("/api/payment", async (req, res) => {
+  try {
+    const { amount, currency, description } = req.body;
+
+    const response = await axios.post(
+      "https://api.moyasar.com/v1/payments",
+      {
+        amount, // in halalas (e.g. 100 SAR = 10000)
+        currency,
+        description,
+        source: {
+          type: "creditcard",
+          number: "4111111111111111", // for test mode
+          name: "Moony Bamoukrah",
+          month: "12",
+          year: "2025",
+          cvc: "123",
+        },
+      },
+      {
+        auth: {
+          username: "sk_test_oQ87yapoFzbp1wAEoxZkjQrTZJVvbaw5uBBXkYdy", // your Moyasar secret key
+          password: "",
+        },
+      }
+    );
+
+    res.json({ success: true, data: response.data });
+  } catch (err) {
+    console.error("💥 Payment error:", err.response?.data || err.message);
+    res.status(500).json({ success: false, message: "Payment failed." });
+  }
+});
 

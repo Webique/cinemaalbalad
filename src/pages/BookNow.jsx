@@ -119,7 +119,8 @@ export default function BookNow() {
 
       const data = await res.json();
       console.log("✅ Booking submitted:", data);
-      navigate("/thankyou");
+      navigate("/payment", { state: payload });
+
     } catch (err) {
       console.error("❌ Failed to submit booking:", err);
       alert("❌ Failed to submit booking");

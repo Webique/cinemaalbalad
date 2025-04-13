@@ -10,6 +10,9 @@ import Login from "./pages/Login";
 import Signup from "./pages/SignUp";    
 import ThankYou from "./pages/ThankYou";
 import AdminPanel from "./pages/AdminPanel"; 
+import Payment from "./pages/Payment";
+
+
 
 
 
@@ -28,6 +31,8 @@ export default function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/thankyou" element={<ThankYou />} />
       <Route path="/admin" element={<AdminPanel />} />
+      <Route path="/payment" element={<Payment />} />
+
 
 
     </Routes>
