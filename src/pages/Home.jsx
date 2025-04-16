@@ -31,6 +31,45 @@ export default function Home() {
           <HeroVideo />
 
 
+          {/* Browse Movies CTA */}
+          <section className="py-24 px-6 sm:px-10 lg:px-20">
+            <motion.div
+              className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9 }}
+            >
+              <div className="text-center md:text-left space-y-6 max-w-xl">
+                <h2 className="text-4xl sm:text-5xl font-cinema leading-tight drop-shadow-lg">
+                  Discover the Full Lineup
+                </h2>
+                <p className="text-gray-300 text-lg">
+                  Explore the full range of films showing at Cinema Al Balad — from timeless classics to new Saudi voices.
+                </p>
+                <motion.div whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.96 }}>
+                  <Link
+                    to="/movies"
+                    className="inline-block mt-4 bg-primary text-white font-cinema text-lg px-8 py-4 rounded-full shadow-md hover:shadow-xl transition duration-300"
+                  >
+                    🎥 Browse Movies
+                  </Link>
+                </motion.div>
+              </div>
+
+              <motion.div
+                className="text-primary"
+                initial={{ scale: 0.8, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1 }}
+              >
+                <Film size={140} className="mx-auto animate-pulse-slow" />
+              </motion.div>
+            </motion.div>
+          </section>
+
+
           {/* Showtime Info */}
           <section className="py-24 px-6 sm:px-10 lg:px-20 text-white text-center">
             <motion.h2
@@ -77,43 +116,7 @@ export default function Home() {
             </motion.div>
           </section>
 
-          {/* Browse Movies CTA */}
-          <section className="py-24 px-6 sm:px-10 lg:px-20">
-            <motion.div
-              className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9 }}
-            >
-              <div className="text-center md:text-left space-y-6 max-w-xl">
-                <h2 className="text-4xl sm:text-5xl font-cinema leading-tight drop-shadow-lg">
-                  Discover the Full Lineup
-                </h2>
-                <p className="text-gray-300 text-lg">
-                  Explore the full range of films showing at Cinema Al Balad — from timeless classics to new Saudi voices.
-                </p>
-                <motion.div whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.96 }}>
-                  <Link
-                    to="/movies"
-                    className="inline-block mt-4 bg-primary text-white font-cinema text-lg px-8 py-4 rounded-full shadow-md hover:shadow-xl transition duration-300"
-                  >
-                    🎥 Browse Movies
-                  </Link>
-                </motion.div>
-              </div>
-
-              <motion.div
-                className="text-primary"
-                initial={{ scale: 0.8, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1 }}
-              >
-                <Film size={140} className="mx-auto animate-pulse-slow" />
-              </motion.div>
-            </motion.div>
-          </section>
+          
 
           {/* Footer */}
           <Footer />
