@@ -9,7 +9,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-black/80 backdrop-blur-xl text-white pt-16 px-6 sm:px-10 lg:px-20 border-t border-white/10">
+    <footer className="bg-white text-black pt-16 px-6 sm:px-10 lg:px-20 border-t border-black/10">
       {/* Footer Content */}
       <motion.div
         className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12"
@@ -21,26 +21,26 @@ export default function Footer() {
         {/* Logo & Vision */}
         <div className="space-y-4">
           <h3 className="text-2xl font-cinema tracking-wide">Cinema Al Balad</h3>
-          <p className="text-sm text-gray-400 leading-relaxed">
+          <p className="text-sm text-gray-700 leading-relaxed">
             Reviving the soul of Jeddah's Historic City through unforgettable film experiences, community screenings, and cultural dialogue.
           </p>
         </div>
 
         {/* Contact Info */}
         <div className="space-y-3 text-sm">
-          <h4 className="uppercase tracking-wider text-gray-300 text-xs mb-2">Contact</h4>
-          <p className="flex items-center gap-2 text-gray-400">
+          <h4 className="uppercase tracking-wider text-gray-600 text-xs mb-2">Contact</h4>
+          <p className="flex items-center gap-2 text-gray-700">
             <Mail size={16} /> Sa7rti@cinemalbalad.com
           </p>
-          <p className="flex items-center gap-2 text-gray-400">
+          <p className="flex items-center gap-2 text-gray-700">
             <Phone size={16} /> +966 544 155 153
           </p>
         </div>
 
         {/* Social Links */}
         <div className="space-y-3 text-sm">
-          <h4 className="uppercase tracking-wider text-gray-300 text-xs mb-2">Social</h4>
-          <div className="flex gap-4 text-gray-300 text-lg">
+          <h4 className="uppercase tracking-wider text-gray-600 text-xs mb-2">Social</h4>
+          <div className="flex gap-4 text-gray-700 text-lg">
             <a
               href="https://instagram.com/cinemaalbalad"
               target="_blank"

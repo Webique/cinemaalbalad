@@ -32,15 +32,12 @@ export default function Movies() {
     navigate(`/booknow?movieId=${movieId}&time=${selected.time}&count=${selected.count}`);
   };
 
-  // Filter movies by selected date
   const filteredMovies = movies.filter((movie) =>
     movie.showtimes?.some((s) => s.date === selectedDate)
   );
 
-  // Helper functions
   const formatDate = (date) => date.toISOString().split("T")[0];
   const today = new Date();
-
   const setToToday = () => setSelectedDate(formatDate(new Date()));
   const setToThisWeek = () => setSelectedDate(formatDate(new Date(today.setDate(today.getDate() + 1))));
   const setToNextWeek = () => setSelectedDate(formatDate(new Date(today.setDate(today.getDate() + 7))));
@@ -49,165 +46,165 @@ export default function Movies() {
     <>
       <Navbar />
 
-      <main className="bg-gradient-to-b from-secondary via-black to-secondary text-white font-cinema pt-28">
-        {/* Page Title + Filter Section */}
-        <section className="text-center px-6 sm:px-10 lg:px-20 py-16 space-y-6">
-          <motion.h1
-            className="text-4xl sm:text-5xl font-cinema"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            Movies Showing
-          </motion.h1>
+      <main
+        className="text-white font-cinema pt-28 min-h-screen"
+        style={{
+          backgroundImage: "url('/back3.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="backdrop-blur-sm bg-black/60 min-h-screen">
+          <section className="text-center px-6 sm:px-10 lg:px-20 py-20 space-y-6">
+            <motion.h1
+              className="text-4xl sm:text-5xl font-cinema drop-shadow-lg"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              Movies Showing
+            </motion.h1>
 
-          {/* Filters */}
-          <div className="flex flex-wrap gap-4 justify-center items-center">
-            <button
-              onClick={setToToday}
-              className="px-5 py-2 rounded-full border border-white/20 bg-white/10 hover:bg-primary/60 transition text-white text-sm"
-            >
-              📅 Today
-            </button>
-            <button
-              onClick={setToThisWeek}
-              className="px-5 py-2 rounded-full border border-white/20 bg-white/10 hover:bg-primary/60 transition text-white text-sm"
-            >
-              🗓 This Week
-            </button>
-            <button
-              onClick={setToNextWeek}
-              className="px-5 py-2 rounded-full border border-white/20 bg-white/10 hover:bg-primary/60 transition text-white text-sm"
-            >
-              📆 Next Week
-            </button>
-            <label className="text-white text-sm">
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="ml-3 px-3 py-2 rounded bg-white/10 text-white border border-white/20"
-              />
-            </label>
-          </div>
-        </section>
-
-        {/* Movie Cards */}
-        <section className="space-y-24 px-6 sm:px-10 lg:px-20 pb-32">
-          {filteredMovies.length === 0 ? (
-            <div className="text-center text-gray-400 text-lg">No movies on this date.</div>
-          ) : (
-            filteredMovies.map((movie, index) => (
-              <motion.div
-                key={movie._id}
-                className={`flex flex-col ${
-                  index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                } items-center gap-10`}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
+            <div className="flex flex-wrap gap-4 justify-center items-center">
+              <button
+                onClick={setToToday}
+                className="px-5 py-2 rounded-full border border-white/20 bg-white/10 hover:bg-white hover:text-black transition text-white text-sm"
               >
-                <Link to={`/movies/${movie._id}`} className="w-full md:w-[55%]">
-                  <img
-                    src={movie.poster || "/default-poster.jpg"}
-                    alt={movie.title}
-                    className="w-full h-[400px] sm:h-[500px] md:h-[520px] object-cover rounded-2xl shadow-2xl cursor-pointer hover:scale-105 transition duration-500"
-                  />
-                </Link>
+                📅 Today
+              </button>
+              <button
+                onClick={setToThisWeek}
+                className="px-5 py-2 rounded-full border border-white/20 bg-white/10 hover:bg-white hover:text-black transition text-white text-sm"
+              >
+                🗓 This Week
+              </button>
+              <button
+                onClick={setToNextWeek}
+                className="px-5 py-2 rounded-full border border-white/20 bg-white/10 hover:bg-white hover:text-black transition text-white text-sm"
+              >
+                📆 Next Week
+              </button>
+              <label className="text-white text-sm">
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="ml-3 px-3 py-2 rounded bg-white/10 text-white border border-white/20"
+                />
+              </label>
+            </div>
+          </section>
 
-                <div className="w-full md:w-1/2 text-center md:text-left space-y-4">
-                  <h2 className="text-3xl sm:text-4xl">{movie.title}</h2>
-                  <p className="text-sm text-gray-400">
-                    {movie.runtime || "90 mins"} • {movie.rating || "PG"}
-                  </p>
-                  <p className="text-gray-300 text-lg">
-                    {movie.synopsis || "A wonderful movie experience awaits."}
-                  </p>
+          <section className="space-y-24 px-6 sm:px-10 lg:px-20 pb-40">
+            {filteredMovies.length === 0 ? (
+              <div className="text-center text-gray-300 text-lg">No movies on this date.</div>
+            ) : (
+              filteredMovies.map((movie, index) => (
+                <motion.div
+                  key={movie._id}
+                  className={`flex flex-col ${
+                    index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                  } items-center gap-10`}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                >
+                  <Link to={`/movies/${movie._id}`} className="w-full md:w-[55%]">
+                    <img
+                      src={movie.poster || "/default-poster.jpg"}
+                      alt={movie.title}
+                      className="w-full h-[400px] sm:h-[500px] md:h-[520px] object-cover rounded-2xl shadow-2xl cursor-pointer hover:scale-105 transition duration-500"
+                    />
+                  </Link>
 
-                  {movie.trailer && (
-                    <button
-                      onClick={() => setSelectedTrailer(movie.trailer)}
-                      className="mt-2 text-primary hover:underline"
-                    >
-                      ▶ Watch Trailer
-                    </button>
-                  )}
+                  <div className="w-full md:w-1/2 text-center md:text-left space-y-4">
+                    <h2 className="text-3xl sm:text-4xl font-bold drop-shadow-md">{movie.title}</h2>
+                    <p className="text-sm text-gray-300">
+                      {movie.runtime || "90 mins"} • {movie.rating || "PG"}
+                    </p>
+                    <p className="text-gray-200 text-lg">
+                      {movie.synopsis || "A wonderful movie experience awaits."}
+                    </p>
 
-                  {/* Booking */}
-                  <div className="pt-6 border-t border-white/10 space-y-4">
-                    <p className="text-primary text-lg font-semibold">Book Tickets</p>
-                    <div className="flex gap-4 flex-wrap">
-                      {movie.showtimes
-                        .filter((s) => s.date === selectedDate)
-                        .map((s) => (
-                          <button
-                            key={s.time}
-                            onClick={() =>
-                              setBooking((prev) => ({
-                                ...prev,
-                                [movie._id]: {
-                                  time: s.time,
-                                  count: prev[movie._id]?.count || 1,
-                                },
-                              }))
-                            }
-                            className={`px-4 py-2 rounded-full text-sm border ${
-                              booking[movie._id]?.time === s.time
-                                ? "bg-primary text-white"
-                                : "bg-white/10 text-white hover:bg-primary/80"
-                            } transition duration-300`}
-                          >
-                            {s.time}
-                          </button>
-                        ))}
+                    {movie.trailer && (
+                      <button
+                        onClick={() => setSelectedTrailer(movie.trailer)}
+                        className="mt-2 text-primary hover:underline"
+                      >
+                        ▶ Watch Trailer
+                      </button>
+                    )}
+
+                    <div className="pt-6 border-t border-white/10 space-y-4">
+                      <p className="text-primary text-lg font-semibold">Book Tickets</p>
+                      <div className="flex gap-4 flex-wrap">
+                        {movie.showtimes
+                          .filter((s) => s.date === selectedDate)
+                          .map((s) => (
+                            <button
+                              key={s.time}
+                              onClick={() =>
+                                setBooking((prev) => ({
+                                  ...prev,
+                                  [movie._id]: {
+                                    time: s.time,
+                                    count: prev[movie._id]?.count || 1,
+                                  },
+                                }))
+                              }
+                              className={`px-4 py-2 rounded-full text-sm border ${
+                                booking[movie._id]?.time === s.time
+                                  ? "bg-primary text-white"
+                                  : "bg-white/10 text-white hover:bg-primary/80"
+                              } transition duration-300`}
+                            >
+                              {s.time}
+                            </button>
+                          ))}
+                      </div>
+
+                      <div className="flex items-center gap-4">
+                        <label className="text-sm text-gray-300">Tickets:</label>
+                        <input
+                          type="number"
+                          min="1"
+                          max="10"
+                          value={booking[movie._id]?.count || 1}
+                          onChange={(e) =>
+                            setBooking((prev) => ({
+                              ...prev,
+                              [movie._id]: {
+                                ...prev[movie._id],
+                                count: parseInt(e.target.value),
+                              },
+                            }))
+                          }
+                          className="w-20 px-3 py-2 bg-white/10 border border-white/10 rounded text-white text-sm backdrop-blur-md"
+                        />
+                      </div>
+
+                      <div className="text-sm text-gray-300">
+                        Total:{" "}
+                        <span className="text-white font-bold">
+                          {(booking[movie._id]?.count || 1) * (movie.ticketPrice || 35)} SAR
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={() => handleBooking(movie._id)}
+                        className="mt-2 bg-primary text-white px-6 py-2 rounded-full hover:scale-105 transition duration-300 font-cinema"
+                      >
+                        🎟 Confirm Booking
+                      </button>
                     </div>
-
-                    <div className="flex items-center gap-4">
-                      <label className="text-sm text-gray-300">Tickets:</label>
-                      <input
-                        type="number"
-                        min="1"
-                        max="10"
-                        value={booking[movie._id]?.count || 1}
-                        onChange={(e) =>
-                          setBooking((prev) => ({
-                            ...prev,
-                            [movie._id]: {
-                              ...prev[movie._id],
-                              count: parseInt(e.target.value),
-                            },
-                          }))
-                        }
-                        className="w-20 px-3 py-2 bg-white/10 border border-white/10 rounded text-white text-sm backdrop-blur-md"
-                      />
-                    </div>
-
-                    <div className="text-sm text-gray-300">
-                      Total:{" "}
-                      <span className="text-white font-bold">
-                        {(booking[movie._id]?.count || 1) * (movie.ticketPrice || 35)} SAR
-                      </span>
-                    </div>
-
-                    <button
-                      onClick={() => handleBooking(movie._id)}
-                      className="mt-2 bg-primary text-white px-6 py-2 rounded-full hover:scale-105 transition duration-300 font-cinema"
-                    >
-                      🎟 Confirm Booking
-                    </button>
                   </div>
-                </div>
-              </motion.div>
-            ))
-          )}
-        </section>
-
-        {/* Trailer Modal */}
-        {selectedTrailer && (
-          <TrailerModal trailerUrl={selectedTrailer} onClose={() => setSelectedTrailer(null)} />
-        )}
+                </motion.div>
+              ))
+            )}
+          </section>
+        </div>
       </main>
 
       <Footer />

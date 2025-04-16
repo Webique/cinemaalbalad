@@ -6,10 +6,22 @@ export default function About() {
   return (
     <>
       <Navbar />
-      <main className="bg-gradient-to-b from-secondary via-black to-secondary text-white font-cinema pt-40 px-6 sm:px-10 lg:px-28 pb-32 min-h-screen">
-        <div className="max-w-5xl mx-auto space-y-16">
+      <main
+        className="relative min-h-screen font-cinema pt-40 pb-32 px-6 sm:px-10 lg:px-28"
+        style={{
+          backgroundImage: "url('/back1.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+        }}
+      >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm z-0" />
+
+        {/* Content */}
+        <div className="relative z-10 max-w-5xl mx-auto space-y-16 text-white">
           <motion.h1
-            className="text-4xl sm:text-5xl font-cinema text-center tracking-wide"
+            className="text-4xl sm:text-5xl text-center tracking-wide drop-shadow-md"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -27,7 +39,7 @@ export default function About() {
           ].map((text, index) => (
             <motion.p
               key={index}
-              className="text-lg sm:text-xl leading-relaxed text-gray-300"
+              className="text-lg sm:text-xl leading-relaxed text-gray-200 drop-shadow"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
