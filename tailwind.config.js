@@ -8,7 +8,7 @@ module.exports = {
     extend: {
       colors: {
         primary: "rgba(154,32,31,1)",    // red
-        secondary: "rgba(57,35,63,1)",   // purple
+        secondary: "rgba(#fffff)",   // purple
       },
       fontFamily: {
         cinema: ['"Cinzel"', 'Bebas Neue', 'serif'],  // cinema-style fonts
