@@ -9,12 +9,23 @@ export default function Movies() {
   const [selectedTrailer, setSelectedTrailer] = useState(null);
   const [booking, setBooking] = useState({});
   const [movies, setMovies] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(() => {
-    const today = new Date();
-    return today.toISOString().split("T")[0];
-  });
-
+  const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().split("T")[0]);
+  const [startIndex, setStartIndex] = useState(0);
   const navigate = useNavigate();
+
+  const generateAllDates = () => {
+    const dates = [];
+    const today = new Date();
+    const end = new Date("2025-06-15");
+    while (today <= end) {
+      dates.push(new Date(today).toISOString().split("T")[0]);
+      today.setDate(today.getDate() + 1);
+    }
+    return dates;
+  };
+
+  const allDates = generateAllDates();
+  const visibleDates = allDates.slice(startIndex, startIndex + 3);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/movies")
@@ -22,6 +33,10 @@ export default function Movies() {
       .then((data) => setMovies(data))
       .catch((err) => console.error("Failed to fetch movies:", err));
   }, []);
+
+  const filteredMovies = movies.filter((movie) =>
+    movie.showtimes?.some((s) => s.date === selectedDate)
+  );
 
   const handleBooking = (movieId) => {
     const selected = booking[movieId];
@@ -32,20 +47,9 @@ export default function Movies() {
     navigate(`/booknow?movieId=${movieId}&time=${selected.time}&count=${selected.count}`);
   };
 
-  const filteredMovies = movies.filter((movie) =>
-    movie.showtimes?.some((s) => s.date === selectedDate)
-  );
-
-  const formatDate = (date) => date.toISOString().split("T")[0];
-  const today = new Date();
-  const setToToday = () => setSelectedDate(formatDate(new Date()));
-  const setToThisWeek = () => setSelectedDate(formatDate(new Date(today.setDate(today.getDate() + 1))));
-  const setToNextWeek = () => setSelectedDate(formatDate(new Date(today.setDate(today.getDate() + 7))));
-
   return (
     <>
       <Navbar />
-
       <main
         className="text-white font-cinema pt-28 min-h-screen"
         style={{
@@ -66,33 +70,42 @@ export default function Movies() {
               Movies Showing
             </motion.h1>
 
-            <div className="flex flex-wrap gap-4 justify-center items-center">
+            <div className="flex gap-4 justify-center items-center flex-wrap">
               <button
-                onClick={setToToday}
-                className="px-5 py-2 rounded-full border border-white/20 bg-white/10 hover:bg-white hover:text-black transition text-white text-sm"
+                onClick={() => setStartIndex(Math.max(startIndex - 1, 0))}
+                className="px-4 py-2 text-white border border-white/20 bg-white/10 rounded-full text-sm hover:bg-white hover:text-black transition"
               >
-                📅 Today
+                ←
               </button>
+
+              {visibleDates.map((date) => (
+                <button
+                  key={date}
+                  onClick={() => setSelectedDate(date)}
+                  className={`px-5 py-2 rounded-full border ${
+                    selectedDate === date
+                      ? "bg-primary text-white"
+                      : "bg-white/10 text-white border-white/20 hover:bg-white hover:text-black"
+                  } transition text-sm`}
+                >
+                  {new Date(date).toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "short",
+                  })}
+                </button>
+              ))}
+
               <button
-                onClick={setToThisWeek}
-                className="px-5 py-2 rounded-full border border-white/20 bg-white/10 hover:bg-white hover:text-black transition text-white text-sm"
+                onClick={() =>
+                  setStartIndex((prev) =>
+                    prev + 3 < allDates.length ? prev + 1 : prev
+                  )
+                }
+                className="px-4 py-2 text-white border border-white/20 bg-white/10 rounded-full text-sm hover:bg-white hover:text-black transition"
               >
-                🗓 This Week
+                →
               </button>
-              <button
-                onClick={setToNextWeek}
-                className="px-5 py-2 rounded-full border border-white/20 bg-white/10 hover:bg-white hover:text-black transition text-white text-sm"
-              >
-                📆 Next Week
-              </button>
-              <label className="text-white text-sm">
-                <input
-                  type="date"
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  className="ml-3 px-3 py-2 rounded bg-white/10 text-white border border-white/20"
-                />
-              </label>
             </div>
           </section>
 
@@ -166,24 +179,50 @@ export default function Movies() {
                       </div>
 
                       <div className="flex items-center gap-4">
-                        <label className="text-sm text-gray-300">Tickets:</label>
-                        <input
-                          type="number"
-                          min="1"
-                          max="10"
-                          value={booking[movie._id]?.count || 1}
-                          onChange={(e) =>
-                            setBooking((prev) => ({
-                              ...prev,
-                              [movie._id]: {
-                                ...prev[movie._id],
-                                count: parseInt(e.target.value),
-                              },
-                            }))
-                          }
-                          className="w-20 px-3 py-2 bg-white/10 border border-white/10 rounded text-white text-sm backdrop-blur-md"
-                        />
-                      </div>
+  <label className="text-sm text-gray-300">Tickets:</label>
+  <div className="flex items-center bg-white/10 border border-white/10 rounded overflow-hidden">
+    <button
+      type="button"
+      className="px-3 py-2 text-white hover:bg-white/20 transition"
+      onClick={() =>
+        setBooking((prev) => {
+          const current = prev[movie._id]?.count || 1;
+          return {
+            ...prev,
+            [movie._id]: {
+              ...prev[movie._id],
+              count: Math.max(1, current - 1),
+            },
+          };
+        })
+      }
+    >
+      -
+    </button>
+    <span className="px-4 py-2 text-sm text-white bg-white/5 min-w-[2.5rem] text-center">
+      {booking[movie._id]?.count || 1}
+    </span>
+    <button
+      type="button"
+      className="px-3 py-2 text-white hover:bg-white/20 transition"
+      onClick={() =>
+        setBooking((prev) => {
+          const current = prev[movie._id]?.count || 1;
+          return {
+            ...prev,
+            [movie._id]: {
+              ...prev[movie._id],
+              count: Math.min(10, current + 1),
+            },
+          };
+        })
+      }
+    >
+      +
+    </button>
+  </div>
+</div>
+
 
                       <div className="text-sm text-gray-300">
                         Total:{" "}
@@ -207,6 +246,9 @@ export default function Movies() {
         </div>
       </main>
 
+      {selectedTrailer && (
+        <TrailerModal trailerUrl={selectedTrailer} onClose={() => setSelectedTrailer(null)} />
+      )}
       <Footer />
     </>
   );
