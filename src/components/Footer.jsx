@@ -6,6 +6,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -35,6 +36,14 @@ export default function Footer() {
           <p className="flex items-center gap-2 text-gray-700">
             <Phone size={16} /> +966 544 155 153
           </p>
+
+          {/* Terms & Conditions Link */}
+          <Link
+            to="/terms"
+            className="inline-block mt-3 text-primary underline text-sm hover:text-black transition"
+          >
+            📄 Terms & Conditions
+          </Link>
         </div>
 
         {/* Social Links */}

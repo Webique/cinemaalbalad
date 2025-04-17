@@ -10,6 +10,7 @@ import ThankYou from "./pages/ThankYou";
 import AdminPanel from "./pages/AdminPanel"; 
 import Payment from "./pages/Payment";
 import ScrollToTop from "./components/ScrollToTop"; // ✅ Import it
+import Terms from "./pages/Terms"; // ✅ Import it
 
 export default function App() {
   return (
@@ -26,6 +27,8 @@ export default function App() {
         <Route path="/thankyou" element={<ThankYou />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/terms" element={<Terms />} />
+
       </Routes>
     </>
   );
