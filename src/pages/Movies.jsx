@@ -53,7 +53,7 @@ export default function Movies() {
       <main
         className="text-white font-cinema pt-28 min-h-screen"
         style={{
-          backgroundImage: "url('/back3.png')",
+          backgroundImage: "url('/main.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

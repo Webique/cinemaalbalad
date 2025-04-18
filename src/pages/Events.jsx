@@ -40,7 +40,7 @@ export default function Events() {
       <main
         className="relative text-white font-cinema pt-36 pb-40 min-h-screen"
         style={{
-          backgroundImage: "url('/back4.png')",
+          backgroundImage: "url('/main.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

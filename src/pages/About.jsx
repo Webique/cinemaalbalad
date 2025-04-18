@@ -9,7 +9,7 @@ export default function About() {
       <main
         className="relative min-h-screen font-cinema pt-40 pb-32 px-6 sm:px-10 lg:px-28"
         style={{
-          backgroundImage: "url('/back1.png')",
+          backgroundImage: "url('/main.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
