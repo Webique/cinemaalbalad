@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import HeroVideo from "../components/HeroVideo";
-import movies from "../data/movies";
-import MovieCard from "../components/MovieCard";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 import { Film } from "lucide-react";
@@ -12,27 +10,23 @@ export default function Home() {
     <>
       <Navbar />
       <main className="relative min-h-screen text-white font-cinema overflow-hidden">
-        {/* Blurred Background */}
         {/* Blurred Background Layer */}
-<div className="absolute inset-0 z-0 pointer-events-none">
-  <div
-    className="w-full h-full bg-cover bg-center bg-fixed"
-    style={{
-      backgroundImage: "url('/main.png')"
-    }}
-  >
-    <div className="w-full h-full bg-black/50 backdrop-blur-[1px]" />
-
-  </div>
-</div>
-
+        <div className="fixed top-0 left-0 w-full h-full -z-10">
+          <div
+            className="w-full h-full bg-cover bg-center"
+            style={{
+              backgroundImage: "url('/main.png')"
+            }}
+          >
+            <div className="w-full h-full bg-black/50 backdrop-blur-sm" />
+          </div>
+        </div>
 
         {/* Page Content */}
         <div className="relative z-10">
           <HeroVideo />
 
-
-          {/* Browse Movies CTA */}
+          {/* Example content below */}
           <section className="py-24 px-6 sm:px-10 lg:px-20">
             <motion.div
               className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12"
