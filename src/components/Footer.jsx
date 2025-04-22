@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import pattern from "../assets/pattern.png"; // adjust path based on file location
+
 import {
   Instagram,
   Youtube,
@@ -26,10 +28,12 @@ export default function Footer() {
             Reviving the soul of Jeddah's Historic City through unforgettable film experiences, community screenings, and cultural dialogue.
           </p>
         </div>
-          {/* Pattern Divider */}
-          <section className="w-full">
+
+
+        
+        <section className="w-full">
   <img
-    src="/src/assets/pattern.png"
+    src={pattern}
     alt="Divider"
     className="w-full h-auto object-cover"
   />
