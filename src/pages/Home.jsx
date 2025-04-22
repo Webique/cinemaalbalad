@@ -21,7 +21,8 @@ export default function Home() {
       backgroundImage: "url('/main.png')"
     }}
   >
-    <div className="w-full h-full bg-black/60 backdrop-blur-sm" />
+    <div className="w-full h-full bg-black/50 backdrop-blur-[1px]" />
+
   </div>
 </div>
 

@@ -26,7 +26,14 @@ export default function Footer() {
             Reviving the soul of Jeddah's Historic City through unforgettable film experiences, community screenings, and cultural dialogue.
           </p>
         </div>
-
+          {/* Pattern Divider */}
+          <section className="w-full">
+  <img
+    src="/src/assets/pattern.png"
+    alt="Divider"
+    className="w-full h-auto object-cover"
+  />
+</section>
         {/* Contact Info */}
         <div className="space-y-3 text-sm">
           <h4 className="uppercase tracking-wider text-gray-600 text-xs mb-2">Contact</h4>
