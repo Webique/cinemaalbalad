@@ -83,7 +83,7 @@ export default function BookNow() {
     fetchTakenSeats();
   }, [selectedMovie, form.date, form.time]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (
@@ -98,31 +98,18 @@ export default function BookNow() {
       return;
     }
 
-    const payload = {
+    const bookingDetails = {
       name: form.name,
       email: form.email,
       movie: selectedMovie.title,
       time: form.time,
       date: form.date,
       seats: selectedSeats,
+      price: selectedSeats.length * ticketPrice,
     };
 
-    try {
-      const res = await fetch("http://localhost:5000/api/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      console.log("✅ Booking submitted:", data);
-      navigate(
-        `/payment?movieId=${movieId}&time=${form.time}&count=${selectedSeats.length}`
-      );
-    } catch (err) {
-      console.error("❌ Failed to submit booking:", err);
-      alert("❌ Failed to submit booking");
-    }
+    const queryString = encodeURIComponent(JSON.stringify(bookingDetails));
+    navigate(`/payment?details=${queryString}`);
   };
 
   if (!selectedMovie) {

@@ -250,10 +250,9 @@ app.delete("/api/admin/delete-all-movies", async (req, res) => {
 });
 
 
-
 app.post("/api/payments", async (req, res) => {
   try {
-    const { amount, movieId, time, count, method } = req.body;
+    const { amount, movieId, time, count, method, redirectUrl } = req.body;
 
     console.log("📤 Sending payment request:", { amount, movieId, time, count, method });
 
@@ -270,7 +269,7 @@ app.post("/api/payments", async (req, res) => {
     } else if (method === "applepay") {
       source = {
         type: "applepay",
-        token: "tok_test_applepay", // ⚠️ Use a real token in production
+        token: "tok_test_applepay",
       };
     } else {
       return res.status(400).json({ error: "Invalid payment method." });
@@ -282,12 +281,12 @@ app.post("/api/payments", async (req, res) => {
         amount: amount * 100,
         currency: "SAR",
         description: `Booking for movie ${movieId}, ${time}, ${count} tickets`,
-        callback_url: "http://localhost:5173/thankyou",
+        callback_url: redirectUrl, // ✅ Use the one passed from frontend
         source,
       },
       {
         auth: {
-          username: "sk_test_oQ87yapoFzbp1wAEoxZkjQrTZJVvbaw5uBBXkYdy", // your test key
+          username: "sk_test_oQ87yapoFzbp1wAEoxZkjQrTZJVvbaw5uBBXkYdy",
         },
         headers: {
           "Content-Type": "application/json",

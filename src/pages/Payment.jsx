@@ -1,30 +1,86 @@
-import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 export default function Payment() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [processing, setProcessing] = useState(false);
+  const [bookingData, setBookingData] = useState(null);
 
-  const movieId = searchParams.get("movieId");
-  const time = searchParams.get("time");
-  const count = Number(searchParams.get("count"));
-  const amount = count * 35;
+  // Get query params
+  const success = searchParams.get("success");
+  const details = searchParams.get("details");
 
+  // Parse bookingData from URL param
+  useEffect(() => {
+    if (details) {
+      try {
+        const parsed = JSON.parse(decodeURIComponent(details));
+        console.log("🧾 Parsed booking data from URL:", parsed);
+        setBookingData(parsed);
+      } catch (err) {
+        console.error("❌ Failed to parse booking details:", err);
+      }
+    }
+  }, [details]);
+
+  // On return from payment, confirm booking to backend
+  useEffect(() => {
+    const confirmBooking = async () => {
+      if (success === "true" && bookingData) {
+        console.log("🚀 Sending booking to backend:", bookingData);
+        try {
+          const res = await fetch("http://localhost:5000/api/bookings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bookingData),
+          });
+
+          const data = await res.json();
+          console.log("✅ Booking saved to MongoDB:", data);
+          navigate("/thankyou");
+        } catch (err) {
+          console.error("❌ Booking save failed:", err);
+          alert("Something went wrong saving your booking.");
+        }
+      }
+    };
+
+    confirmBooking();
+  }, [success, bookingData]);
+
+  // Handle pay button click
   const handlePayment = async (method) => {
+    if (!bookingData) {
+      alert("Booking details missing.");
+      return;
+    }
+
     setProcessing(true);
+
     try {
       const res = await fetch("http://localhost:5000/api/payments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, movieId, time, count, method }),
+        body: JSON.stringify({
+          amount: bookingData.price,
+          movieId: bookingData.movie,
+          time: bookingData.time,
+          count: bookingData.seats.length,
+          method,
+          redirectUrl: `${window.location.origin}/payment?success=true&details=${encodeURIComponent(
+            JSON.stringify(bookingData)
+          )}`,
+        }),
       });
 
       const data = await res.json();
 
       if (data?.url) {
+        console.log("🔁 Redirecting to payment page:", data.url);
         window.location.href = data.url;
       } else {
-        alert("Payment failed. No URL.");
+        alert("Payment failed. No redirect URL.");
         setProcessing(false);
       }
     } catch (err) {
