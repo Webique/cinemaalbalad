@@ -16,7 +16,7 @@ export default function Movies() {
   const generateAllDates = () => {
     const dates = [];
     const today = new Date();
-    const end = new Date("2025-06-15");
+    const end = new Date("2025-06-16");
     while (today <= end) {
       dates.push(new Date(today).toISOString().split("T")[0]);
       today.setDate(today.getDate() + 1);
