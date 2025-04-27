@@ -28,7 +28,8 @@ export default function Movies() {
   const visibleDates = allDates.slice(startIndex, startIndex + 3);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/movies")
+    fetch("https://cinemaalbalad.onrender.com/api/movies")
+
       .then((res) => res.json())
       .then((data) => setMovies(data))
       .catch((err) => console.error("Failed to fetch movies:", err));
