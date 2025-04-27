@@ -41,7 +41,7 @@ export default function Payment() {
         } catch (err) {
           console.error("❌ Booking save failed:", err);
           alert("Something went wrong saving your booking. Please contact support.");
-          navigate("/"); // Optional: send them home if booking fails
+          navigate("/");
         }
       }
     };
@@ -94,6 +94,14 @@ export default function Payment() {
     return (
       <div className="text-white text-center pt-40">
         <h1 className="text-3xl font-bold">Loading booking details...</h1>
+      </div>
+    );
+  }
+
+  if (success === "true") {
+    return (
+      <div className="text-white text-center pt-40">
+        <h1 className="text-3xl font-bold">Processing your booking...</h1>
       </div>
     );
   }
