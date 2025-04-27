@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next"; // ✅ NEW
 
 export default function Payment() {
+  const { t } = useTranslation(); // ✅ NEW
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [processing, setProcessing] = useState(false);
@@ -38,18 +40,18 @@ export default function Payment() {
           navigate("/thankyou");
         } catch (err) {
           console.error("❌ Booking save failed:", err);
-          alert("Something went wrong saving your booking. Please contact support.");
+          alert(t('payment.bookingError'));
           navigate("/");
         }
       }
     };
 
     confirmBooking();
-  }, [success, bookingData, navigate]);
+  }, [success, bookingData, navigate, t]);
 
   const handlePayment = async (method) => {
     if (!bookingData) {
-      alert("Booking details missing.");
+      alert(t('payment.missingDetails'));
       return;
     }
 
@@ -77,12 +79,12 @@ export default function Payment() {
         console.log("🔁 Redirecting to payment page:", data.url);
         window.location.href = data.url;
       } else {
-        alert("Payment failed. No redirect URL.");
+        alert(t('payment.paymentFailed'));
         setProcessing(false);
       }
     } catch (err) {
       console.error("❌ Payment error:", err);
-      alert("Payment failed. Please try again.");
+      alert(t('payment.paymentError'));
       setProcessing(false);
     }
   };
@@ -101,7 +103,7 @@ export default function Payment() {
         </div>
 
         <div className="relative z-10 text-center space-y-6">
-          <h1 className="text-4xl font-bold">Loading booking details...</h1>
+          <h1 className="text-4xl font-bold">{t('payment.loadingDetails')}</h1>
         </div>
       </main>
     );
@@ -121,7 +123,7 @@ export default function Payment() {
         </div>
 
         <div className="relative z-10 text-center space-y-6">
-          <h1 className="text-4xl font-bold animate-pulse">Processing your booking...</h1>
+          <h1 className="text-4xl font-bold animate-pulse">{t('payment.processingBooking')}</h1>
         </div>
       </main>
     );
@@ -140,25 +142,25 @@ export default function Payment() {
       </div>
 
       <div className="relative z-10 bg-black/30 backdrop-blur-md p-10 rounded-xl shadow-lg max-w-md w-full text-center space-y-8">
-        <h1 className="text-4xl font-bold">Choose a Payment Method</h1>
+        <h1 className="text-4xl font-bold">{t('payment.chooseMethod')}</h1>
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <button
             onClick={() => handlePayment("creditcard")}
             className="bg-green-500 hover:bg-green-600 hover:scale-105 transition-all px-8 py-4 rounded-full text-lg font-semibold shadow-md"
           >
-            💳 Pay with Card / Mada
+            💳 {t('payment.payCard')}
           </button>
           <button
             onClick={() => handlePayment("applepay")}
             className="bg-black hover:bg-gray-900 hover:scale-105 transition-all px-8 py-4 rounded-full text-lg font-semibold shadow-md"
           >
-             Apple Pay
+             {t('payment.payApple')}
           </button>
         </div>
 
         {processing && (
-          <p className="text-gray-300 pt-4 animate-pulse">🔄 Processing Payment...</p>
+          <p className="text-gray-300 pt-4 animate-pulse">🔄 {t('payment.processingPayment')}</p>
         )}
       </div>
     </main>

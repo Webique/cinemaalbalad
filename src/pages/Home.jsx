@@ -4,8 +4,11 @@ import HeroVideo from "../components/HeroVideo";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 import { Film } from "lucide-react";
+import { useTranslation } from "react-i18next"; // ✅ NEW
 
 export default function Home() {
+  const { t } = useTranslation(); // ✅ NEW
+
   return (
     <>
       <Navbar />
@@ -26,7 +29,7 @@ export default function Home() {
         <div className="relative z-10">
           <HeroVideo />
 
-          {/* Example content below */}
+          {/* Main Section */}
           <section className="py-24 px-6 sm:px-10 lg:px-20">
             <motion.div
               className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12"
@@ -37,17 +40,17 @@ export default function Home() {
             >
               <div className="text-center md:text-left space-y-6 max-w-xl">
                 <h2 className="text-4xl sm:text-5xl font-cinema leading-tight drop-shadow-lg">
-                  Discover the Full Lineup
+                  {t('home.discover')}
                 </h2>
                 <p className="text-gray-300 text-lg">
-                  Explore the full range of films showing at Cinema Al Balad — from timeless classics to new Saudi voices.
+                  {t('home.explore')}
                 </p>
                 <motion.div whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.96 }}>
                   <Link
                     to="/movies"
                     className="inline-block mt-4 bg-primary text-white font-cinema text-lg px-8 py-4 rounded-full shadow-md hover:shadow-xl transition duration-300"
                   >
-                    🎥 Browse Movies
+                    🎥 {t('home.browseMovies')}
                   </Link>
                 </motion.div>
               </div>
@@ -64,7 +67,6 @@ export default function Home() {
             </motion.div>
           </section>
 
-
           {/* Showtime Info */}
           <section className="py-24 px-6 sm:px-10 lg:px-20 text-white text-center">
             <motion.h2
@@ -74,7 +76,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              Showtime Info
+              {t('home.showtimeTitle')}
             </motion.h2>
 
             <motion.div
@@ -86,17 +88,17 @@ export default function Home() {
             >
               <div>
                 <p className="uppercase text-sm tracking-widest text-gray-300 mb-2">
-                  Ticket Price
+                  {t('home.ticketPrice')}
                 </p>
                 <h3 className="text-4xl sm:text-5xl font-bold text-white drop-shadow">
                   35 SAR
                 </h3>
-                <p className="text-gray-400 text-sm mt-2">Per person • VAT included</p>
+                <p className="text-gray-400 text-sm mt-2">{t('home.perPerson')}</p>
               </div>
 
               <div>
                 <p className="uppercase text-sm tracking-widest text-gray-300 mb-4">
-                  Daily Showtimes
+                  {t('home.dailyShowtimes')}
                 </p>
                 <div className="flex justify-center gap-6 flex-wrap">
                   <span className="text-xl sm:text-2xl font-cinema text-primary glow-sm">
@@ -106,12 +108,10 @@ export default function Home() {
                     🌙 9:00 PM
                   </span>
                 </div>
-                <p className="text-gray-400 text-sm mt-3">Open daily from 6:00 PM to 12:00 AM</p>
+                <p className="text-gray-400 text-sm mt-3">{t('home.openingHours')}</p>
               </div>
             </motion.div>
           </section>
-
-          
 
           {/* Footer */}
           <Footer />

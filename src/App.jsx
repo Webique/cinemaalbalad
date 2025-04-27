@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { useTranslation } from "react-i18next"; // ✅ NEW import
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
 import MovieDetail from "./pages/MovieDetail";
@@ -11,10 +12,14 @@ import AdminPanel from "./pages/AdminPanel";
 import Payment from "./pages/Payment";
 import ScrollToTop from "./components/ScrollToTop"; // ✅ Import it
 import Terms from "./pages/Terms"; // ✅ Import it
+import "./i18n"; // 👈 Import i18n so it initializes
+
 
 export default function App() {
+  const { i18n } = useTranslation(); // ✅ NEW hook for dynamic font
+
   return (
-    <>
+    <div className={i18n.language === "ar" ? "font-arabic" : "font-cinema"}> {/* ✅ Dynamic font switch */}
       <ScrollToTop /> {/* ✅ Instantly resets scroll on every page change */}
       <Routes>
         <Route path="/" element={<Home />} />
@@ -28,8 +33,7 @@ export default function App() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/terms" element={<Terms />} />
-
       </Routes>
-    </>
+    </div> 
   );
 }

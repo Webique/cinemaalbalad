@@ -3,8 +3,11 @@ import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next"; // ✅ NEW
 
 export default function BookNow() {
+  const { t } = useTranslation(); // ✅ NEW
+
   const [form, setForm] = useState({ name: "", email: "", date: "", time: "", tickets: 0 });
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -92,7 +95,7 @@ export default function BookNow() {
     e.preventDefault();
 
     if (!form.name || !form.email || !form.date || !form.time || selectedSeats.length === 0 || !selectedMovie) {
-      alert("Please fill all fields and choose a movie.");
+      alert(t('booknow.fillFields'));
       return;
     }
 
@@ -124,7 +127,7 @@ export default function BookNow() {
               <div className="w-full h-full bg-black/50 backdrop-blur-sm" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold">Loading Movie...</h1>
+          <h1 className="text-4xl font-bold">{t('booknow.loading')}</h1>
         </main>
         <Footer />
       </>
@@ -147,9 +150,9 @@ export default function BookNow() {
 
         {/* Content */}
         <motion.section className="max-w-4xl mx-auto text-center relative z-10">
-          <h1 className="text-4xl sm:text-5xl mb-6 font-bold">Book Your Seat</h1>
+          <h1 className="text-4xl sm:text-5xl mb-6 font-bold">{t('booknow.title')}</h1>
           <p className="text-gray-300 text-lg mb-12">
-            Movie: <strong className="text-primary">{selectedMovie.title}</strong>
+            {t('booknow.movie')}: <strong className="text-primary">{selectedMovie.title}</strong>
           </p>
 
           <form
@@ -162,7 +165,7 @@ export default function BookNow() {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                placeholder="Your Name"
+                placeholder={t('booknow.name')}
                 className="px-4 py-3 rounded bg-white/90 text-black border border-gray-300"
               />
               <input
@@ -170,15 +173,15 @@ export default function BookNow() {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                placeholder="Email"
+                placeholder={t('booknow.email')}
                 className="px-4 py-3 rounded bg-white/90 text-black border border-gray-300"
               />
             </div>
 
             <div className="mt-8">
-              <h3 className="text-lg mb-4 font-semibold">Select Seats (Max 10)</h3>
+              <h3 className="text-lg mb-4 font-semibold">{t('booknow.selectSeats')}</h3>
               <div className="bg-black/20 rounded-lg py-4 px-2 mb-6">
-                <div className="text-center text-gray-400 font-medium mb-4">SCREEN</div>
+                <div className="text-center text-gray-400 font-medium mb-4">{t('booknow.screen')}</div>
                 <div className="grid grid-cols-6 gap-4 justify-center">
                   {seats.map((seat) => (
                     <button
@@ -206,9 +209,9 @@ export default function BookNow() {
             </div>
 
             <div className="mt-6 text-left sm:text-center text-white">
-              <p className="text-sm">Selected: {selectedSeats.map(seatLabel).join(", ") || "None"}</p>
-              <p className="text-sm">Total Tickets: {selectedSeats.length}</p>
-              <p className="text-sm">Total Price: {selectedSeats.length * ticketPrice} SAR</p>
+              <p className="text-sm">{t('booknow.selected')}: {selectedSeats.map(seatLabel).join(", ") || t('booknow.none')}</p>
+              <p className="text-sm">{t('booknow.totalTickets')}: {selectedSeats.length}</p>
+              <p className="text-sm">{t('booknow.totalPrice')}: {selectedSeats.length * ticketPrice} SAR</p>
             </div>
 
             <div className="mt-8 text-center">
@@ -216,7 +219,7 @@ export default function BookNow() {
                 type="submit"
                 className="bg-primary hover:bg-primary/80 px-8 py-3 rounded-full text-white text-lg transition duration-300"
               >
-                🎟 Reserve Now
+                🎟 {t('booknow.reserve')}
               </button>
             </div>
           </form>

@@ -3,8 +3,11 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { useTranslation } from "react-i18next"; // ✅ NEW
 
 export default function ThankYou() {
+  const { t } = useTranslation(); // ✅ NEW
+
   return (
     <>
       <Navbar />
@@ -36,7 +39,7 @@ export default function ThankYou() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
           >
-            Thank You for Booking!
+            {t('thankyou.title')}
           </motion.h1>
 
           <motion.p
@@ -45,7 +48,7 @@ export default function ThankYou() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
           >
-            Your reservation is confirmed. We can’t wait to welcome you to Cinema Al Balad. Get ready for an unforgettable experience!
+            {t('thankyou.subtitle')}
           </motion.p>
 
           <motion.div
@@ -58,13 +61,13 @@ export default function ThankYou() {
               to="/"
               className="bg-primary hover:bg-primary/80 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all shadow-md hover:scale-105"
             >
-              ⬅ Back to Home
+              ⬅ {t('thankyou.backHome')}
             </Link>
             <Link
               to="/movies"
               className="bg-white hover:bg-gray-200 text-black px-8 py-4 rounded-full text-lg font-semibold transition-all shadow-md hover:scale-105"
             >
-              🎬 Browse More Movies
+              🎬 {t('thankyou.browseMovies')}
             </Link>
           </motion.div>
         </section>

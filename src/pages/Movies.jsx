@@ -4,8 +4,11 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import TrailerModal from "../components/TrailerModal";
+import { useTranslation } from "react-i18next"; // ✅ NEW
 
 export default function Movies() {
+  const { t } = useTranslation(); // ✅ NEW
+
   const [selectedTrailer, setSelectedTrailer] = useState(null);
   const [booking, setBooking] = useState({});
   const [movies, setMovies] = useState([]);
@@ -29,7 +32,6 @@ export default function Movies() {
 
   useEffect(() => {
     fetch("https://cinemaalbalad.onrender.com/api/movies")
-
       .then((res) => res.json())
       .then((data) => setMovies(data))
       .catch((err) => console.error("Failed to fetch movies:", err));
@@ -42,7 +44,7 @@ export default function Movies() {
   const handleBooking = (movieId) => {
     const selected = booking[movieId];
     if (!selected || !selected.time || !selected.count) {
-      alert("Please select a showtime and number of tickets.");
+      alert(t('movies.selectShowtime'));
       return;
     }
     navigate(`/booknow?movieId=${movieId}&time=${selected.time}&count=${selected.count}`);
@@ -68,7 +70,7 @@ export default function Movies() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              Movies Showing
+              {t('movies.title')}
             </motion.h1>
 
             <div className="flex gap-4 justify-center items-center flex-wrap">
@@ -112,7 +114,7 @@ export default function Movies() {
 
           <section className="space-y-24 px-6 sm:px-10 lg:px-20 pb-40">
             {filteredMovies.length === 0 ? (
-              <div className="text-center text-gray-300 text-lg">No movies on this date.</div>
+              <div className="text-center text-gray-300 text-lg">{t('movies.noMovies')}</div>
             ) : (
               filteredMovies.map((movie, index) => (
                 <motion.div
@@ -136,10 +138,10 @@ export default function Movies() {
                   <div className="w-full md:w-1/2 text-center md:text-left space-y-4">
                     <h2 className="text-3xl sm:text-4xl font-bold drop-shadow-md">{movie.title}</h2>
                     <p className="text-sm text-gray-300">
-                      {movie.runtime || "90 mins"} • {movie.rating || "PG"}
+                      {movie.runtime || t('movies.defaultRuntime')} • {movie.rating || t('movies.defaultRating')}
                     </p>
                     <p className="text-gray-200 text-lg">
-                      {movie.synopsis || "A wonderful movie experience awaits."}
+                      {movie.synopsis || t('movies.defaultSynopsis')}
                     </p>
 
                     {movie.trailer && (
@@ -147,12 +149,12 @@ export default function Movies() {
                         onClick={() => setSelectedTrailer(movie.trailer)}
                         className="mt-2 text-primary hover:underline"
                       >
-                        ▶ Watch Trailer
+                        ▶ {t('movies.watchTrailer')}
                       </button>
                     )}
 
                     <div className="pt-6 border-t border-white/10 space-y-4">
-                      <p className="text-primary text-lg font-semibold">Book Tickets</p>
+                      <p className="text-primary text-lg font-semibold">{t('movies.bookTickets')}</p>
                       <div className="flex gap-4 flex-wrap">
                         {movie.showtimes
                           .filter((s) => s.date === selectedDate)
@@ -180,53 +182,52 @@ export default function Movies() {
                       </div>
 
                       <div className="flex items-center gap-4">
-  <label className="text-sm text-gray-300">Tickets:</label>
-  <div className="flex items-center bg-white/10 border border-white/10 rounded overflow-hidden">
-    <button
-      type="button"
-      className="px-3 py-2 text-white hover:bg-white/20 transition"
-      onClick={() =>
-        setBooking((prev) => {
-          const current = prev[movie._id]?.count || 1;
-          return {
-            ...prev,
-            [movie._id]: {
-              ...prev[movie._id],
-              count: Math.max(1, current - 1),
-            },
-          };
-        })
-      }
-    >
-      -
-    </button>
-    <span className="px-4 py-2 text-sm text-white bg-white/5 min-w-[2.5rem] text-center">
-      {booking[movie._id]?.count || 1}
-    </span>
-    <button
-      type="button"
-      className="px-3 py-2 text-white hover:bg-white/20 transition"
-      onClick={() =>
-        setBooking((prev) => {
-          const current = prev[movie._id]?.count || 1;
-          return {
-            ...prev,
-            [movie._id]: {
-              ...prev[movie._id],
-              count: Math.min(10, current + 1),
-            },
-          };
-        })
-      }
-    >
-      +
-    </button>
-  </div>
-</div>
-
+                        <label className="text-sm text-gray-300">{t('movies.tickets')}:</label>
+                        <div className="flex items-center bg-white/10 border border-white/10 rounded overflow-hidden">
+                          <button
+                            type="button"
+                            className="px-3 py-2 text-white hover:bg-white/20 transition"
+                            onClick={() =>
+                              setBooking((prev) => {
+                                const current = prev[movie._id]?.count || 1;
+                                return {
+                                  ...prev,
+                                  [movie._id]: {
+                                    ...prev[movie._id],
+                                    count: Math.max(1, current - 1),
+                                  },
+                                };
+                              })
+                            }
+                          >
+                            -
+                          </button>
+                          <span className="px-4 py-2 text-sm text-white bg-white/5 min-w-[2.5rem] text-center">
+                            {booking[movie._id]?.count || 1}
+                          </span>
+                          <button
+                            type="button"
+                            className="px-3 py-2 text-white hover:bg-white/20 transition"
+                            onClick={() =>
+                              setBooking((prev) => {
+                                const current = prev[movie._id]?.count || 1;
+                                return {
+                                  ...prev,
+                                  [movie._id]: {
+                                    ...prev[movie._id],
+                                    count: Math.min(10, current + 1),
+                                  },
+                                };
+                              })
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
 
                       <div className="text-sm text-gray-300">
-                        Total:{" "}
+                        {t('movies.total')}:{" "}
                         <span className="text-white font-bold">
                           {(booking[movie._id]?.count || 1) * (movie.ticketPrice || 35)} SAR
                         </span>
@@ -236,7 +237,7 @@ export default function Movies() {
                         onClick={() => handleBooking(movie._id)}
                         className="mt-2 bg-primary text-white px-6 py-2 rounded-full hover:scale-105 transition duration-300 font-cinema"
                       >
-                        🎟 Confirm Booking
+                        🎟 {t('movies.confirm')}
                       </button>
                     </div>
                   </div>

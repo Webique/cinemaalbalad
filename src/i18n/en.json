@@ -1,0 +1,142 @@
+{
+    "navbar": {
+      "home": "Home",
+      "movies": "Movies",
+      "events": "Events",
+      "about": "About",
+      "contact": "Contact",
+      "logoAlt": "Cinema Al Balad"
+    },
+    "footer": {
+      "title": "Cinema Al Balad",
+      "description": "Reviving the soul of Jeddah's Historic City through unforgettable film experiences, community screenings, and cultural dialogue.",
+      "dividerAlt": "Divider",
+      "contactTitle": "Contact",
+      "terms": "Terms & Conditions",
+      "socialTitle": "Social",
+      "mapTitle": "Cinema Al Balad Location",
+      "rights": "All rights reserved."
+    },
+    "about": {
+      "title": "About Cinema Al Balad",
+      "paragraph1": "Cinema Al Balad is inspired by Al-Jumjum Cinema, the first open-air cinema in Saudi Arabia. This pioneering space laid the foundation for outdoor film screenings across the historic neighborhoods of Jeddah, where tickets were just 10 SAR and showtimes began at 7:00 PM and 9:00 PM.",
+      "paragraph2": "Under the name Fouad Jumjum Studios, Jumjum produced and distributed over 30 cinematic titles, hosting some of the most iconic stars of Egyptian cinema — including Adel Imam, Mahmoud Yassin, Hussein Fahmy, and Farid Shawqi — and frequently invited them to Jeddah for local screenings and cultural exchanges.",
+      "paragraph3": "Cinema Al Balad continues that legacy, showcasing a rich mix of Saudi films, classic cinema, and global masterpieces. We aim to highlight local talent by curating a calendar filled with short films, features, and documentaries from both emerging and established Saudi filmmakers.",
+      "paragraph4": "We're building partnerships with major regional film festivals, such as the Saudi Film Festival, as a first step toward hosting Arab and international premieres. These screenings will invite directors, actors, and producers to engage directly with audiences and foster deeper cultural dialogue.",
+      "paragraph5": "Beyond screenings, Cinema Al Balad will offer a series of cinema workshops and creative panels, featuring acclaimed directors, actors, cinematographers, screenwriters, composers, editors, and more — drawn from both local and global industries.",
+      "paragraph6": "Our vision is for Cinema Al Balad to be more than just a venue — it’s a vibrant gathering space where artists and film lovers can share their work, exchange ideas, and bring powerful stories to life."
+    },
+    "home": {
+      "discover": "Discover the Full Lineup",
+      "explore": "Explore the full range of films showing at Cinema Al Balad — from timeless classics to new Saudi voices.",
+      "browseMovies": "Browse Movies",
+      "showtimeTitle": "Showtime Info",
+      "ticketPrice": "Ticket Price",
+      "perPerson": "Per person • VAT included",
+      "dailyShowtimes": "Daily Showtimes",
+      "openingHours": "Open daily from 6:00 PM to 12:00 AM"
+    },
+    "booknow": {
+      "loading": "Loading Movie...",
+      "title": "Book Your Seat",
+      "movie": "Movie",
+      "name": "Your Name",
+      "email": "Email",
+      "selectSeats": "Select Seats (Max 10)",
+      "screen": "SCREEN",
+      "selected": "Selected",
+      "none": "None",
+      "totalTickets": "Total Tickets",
+      "totalPrice": "Total Price",
+      "reserve": "Reserve Now",
+      "fillFields": "Please fill all fields and choose a movie."
+    },
+    "contact": {
+      "title": "Get in Touch",
+      "subtitle": "Have questions, suggestions, or feedback? We’d love to hear from you.",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "namePlaceholder": "Your name",
+      "emailPlaceholder": "you@example.com",
+      "messagePlaceholder": "Write your message here...",
+      "sendButton": "Send Message",
+      "success": "Message sent successfully! ✅"
+    },
+    "events": {
+      "title": "Upcoming Events",
+      "subtitle": "Step into unforgettable nights of cinema, culture, and connection in Jeddah’s Historic District.",
+      "event1": {
+        "title": "✨ Saudi Film Night",
+        "date": "April 12, 2025",
+        "time": "8:30 PM",
+        "description": "A celebration of short films by emerging Saudi filmmakers, followed by live discussions with directors."
+      },
+      "event2": {
+        "title": "🎬 Classic Egyptian Cinema",
+        "date": "April 19, 2025",
+        "time": "9:00 PM",
+        "description": "Relive iconic moments in Egyptian cinema with legends like Adel Imam. Plus, a retro red carpet photo moment."
+      },
+      "event3": {
+        "title": "🎥 Documentary Weekend",
+        "date": "April 26–27, 2025",
+        "time": "6:00 PM",
+        "description": "Two nights. Two worlds. Dive into award-winning documentaries tackling identity, art, and change."
+      }
+    },
+    "moviedetail": {
+      "notFound": "Movie not found 😢",
+      "back": "Back to Movies",
+      "watchTrailer": "Watch Trailer",
+      "bookNow": "Book Now"
+    },
+    "movies": {
+      "title": "Movies Showing",
+      "selectShowtime": "Please select a showtime and number of tickets.",
+      "noMovies": "No movies on this date.",
+      "defaultRuntime": "90 mins",
+      "defaultRating": "PG",
+      "defaultSynopsis": "A wonderful movie experience awaits.",
+      "watchTrailer": "Watch Trailer",
+      "bookTickets": "Book Tickets",
+      "tickets": "Tickets",
+      "total": "Total",
+      "confirm": "Confirm Booking"
+    },
+    "payment": {
+      "loadingDetails": "Loading booking details...",
+      "processingBooking": "Processing your booking...",
+      "chooseMethod": "Choose a Payment Method",
+      "payCard": "Pay with Card / Mada",
+      "payApple": "Apple Pay",
+      "processingPayment": "Processing Payment...",
+      "missingDetails": "Booking details missing.",
+      "paymentFailed": "Payment failed. No redirect URL.",
+      "paymentError": "Payment failed. Please try again.",
+      "bookingError": "Something went wrong saving your booking. Please contact support."
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "intro": "Welcome to Cinema Al Balad. By booking tickets through our website, you agree to the following terms and policies in accordance with the regulations of the Ministry of Commerce in the Kingdom of Saudi Arabia.",
+      "generalTitle": "General",
+      "general1": "Tickets are valid only for the specific movie, date, and time selected.",
+      "general2": "Please arrive 15 minutes prior to your showtime.",
+      "general3": "Food and drinks purchased outside are not permitted inside the cinema.",
+      "general4": "Management reserves the right to deny entry without refund for rule violations.",
+      "refundTitle": "Refund Policy",
+      "refundText": "All ticket sales are final. No refunds or cancellations will be accepted under any circumstances. Please double-check all details before confirming your purchase.",
+      "privacyTitle": "Privacy Policy",
+      "privacyText": "We are committed to protecting your personal data. Your contact information and booking details are stored securely and will not be shared with third parties, except as required by law or payment processors like Moyasar.",
+      "complianceTitle": "E-Commerce Compliance",
+      "complianceText": "This website operates in full compliance with Saudi Arabia’s ",
+      "complianceLink": "e-commerce regulations"
+    },
+    "thankyou": {
+      "title": "Thank You for Booking!",
+      "subtitle": "Your reservation is confirmed. We can’t wait to welcome you to Cinema Al Balad. Get ready for an unforgettable experience!",
+      "backHome": "Back to Home",
+      "browseMovies": "Browse More Movies"
+    }
+  }
+  

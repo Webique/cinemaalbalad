@@ -2,38 +2,38 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { CalendarDays, Clock } from "lucide-react";
-
-const events = [
-  {
-    id: 1,
-    title: "✨ Saudi Film Night",
-    date: "April 12, 2025",
-    time: "8:30 PM",
-    description:
-      "A celebration of short films by emerging Saudi filmmakers, followed by live discussions with directors.",
-    image: "/events/saudi-film-night.jpg",
-  },
-  {
-    id: 2,
-    title: "🎬 Classic Egyptian Cinema",
-    date: "April 19, 2025",
-    time: "9:00 PM",
-    description:
-      "Relive iconic moments in Egyptian cinema with legends like Adel Imam. Plus, a retro red carpet photo moment.",
-    image: "/events/egyptian-classics.jpg",
-  },
-  {
-    id: 3,
-    title: "🎥 Documentary Weekend",
-    date: "April 26–27, 2025",
-    time: "6:00 PM",
-    description:
-      "Two nights. Two worlds. Dive into award-winning documentaries tackling identity, art, and change.",
-    image: "/events/documentary-weekend.jpg",
-  },
-];
+import { useTranslation } from "react-i18next"; // ✅ NEW
 
 export default function Events() {
+  const { t } = useTranslation(); // ✅ NEW
+
+  const events = [
+    {
+      id: 1,
+      title: t('events.event1.title'),
+      date: t('events.event1.date'),
+      time: t('events.event1.time'),
+      description: t('events.event1.description'),
+      image: "/events/saudi-film-night.jpg",
+    },
+    {
+      id: 2,
+      title: t('events.event2.title'),
+      date: t('events.event2.date'),
+      time: t('events.event2.time'),
+      description: t('events.event2.description'),
+      image: "/events/egyptian-classics.jpg",
+    },
+    {
+      id: 3,
+      title: t('events.event3.title'),
+      date: t('events.event3.date'),
+      time: t('events.event3.time'),
+      description: t('events.event3.description'),
+      image: "/events/documentary-weekend.jpg",
+    },
+  ];
+
   return (
     <>
       <Navbar />
@@ -56,10 +56,10 @@ export default function Events() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-5xl sm:text-6xl font-cinema mb-4 drop-shadow-md">
-              Upcoming Events
+              {t('events.title')}
             </h1>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto drop-shadow">
-              Step into unforgettable nights of cinema, culture, and connection in Jeddah’s Historic District.
+              {t('events.subtitle')}
             </p>
           </motion.div>
 

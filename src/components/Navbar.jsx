@@ -2,19 +2,30 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
+import { Globe } from "lucide-react";
+import { useTranslation } from "react-i18next"; // ✅ NEW: import useTranslation
+import i18n from "../i18n"; // ✅ NEW: import i18n
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [language, setLanguage] = useState("EN");
   const location = useLocation();
+  const { t } = useTranslation(); // ✅ NEW: call useTranslation
   const handleClose = () => setIsOpen(false);
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Movies", path: "/movies" },
-    { name: "Events", path: "/events" },
-    { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
+    { name: t('navbar.home'), path: "/" }, // ✅ translated
+    { name: t('navbar.movies'), path: "/movies" }, // ✅ translated
+    { name: t('navbar.events'), path: "/events" }, // ✅ translated
+    { name: t('navbar.about'), path: "/about" }, // ✅ translated
+    { name: t('navbar.contact'), path: "/contact" }, // ✅ translated
   ];
+
+  const toggleLanguage = () => {
+    const newLang = language === "EN" ? "ar" : "en";
+    i18n.changeLanguage(newLang);
+    setLanguage(newLang.toUpperCase());
+  };
 
   return (
     <header className="fixed top-0 w-full z-50 bg-white shadow-md">
@@ -24,7 +35,7 @@ export default function Navbar() {
           <Link to="/">
             <img
               src={logo}
-              alt="Cinema Al Balad"
+              alt={t('navbar.logoAlt')} // ✅ translated alt text
               className="h-28 w-auto object-contain"
               style={{ maxHeight: "112px" }}
             />
@@ -32,7 +43,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-10 text-black font-cinema text-lg">
+        <nav className="hidden md:flex items-center space-x-10 text-black font-cinema text-lg flex-1 justify-center">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -46,28 +57,40 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Mobile Toggle */}
-        <div className="md:hidden z-50 pl-4 pr-4">
+        {/* Language Switch + Hamburger Container */}
+        <div className="flex items-center gap-4">
+          {/* Language Button */}
           <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="relative w-9 h-9 focus:outline-none"
+            onClick={toggleLanguage}
+            className="flex items-center gap-2 text-black font-cinema text-lg border border-black px-3 py-1 rounded hover:bg-primary hover:text-white transition"
           >
-            <span
-              className={`absolute h-0.5 w-9 bg-black rounded transform transition duration-300 ease-in-out ${
-                isOpen ? "rotate-45 top-4" : "top-1"
-              }`}
-            />
-            <span
-              className={`absolute h-0.5 w-9 bg-black rounded transition-all duration-300 ease-in-out ${
-                isOpen ? "opacity-0" : "top-4"
-              }`}
-            />
-            <span
-              className={`absolute h-0.5 w-9 bg-black rounded transform transition duration-300 ease-in-out ${
-                isOpen ? "-rotate-45 top-4" : "top-7"
-              }`}
-            />
+            <Globe className="w-5 h-5" />
+            {language}
           </button>
+
+          {/* Mobile Toggle */}
+          <div className="md:hidden pr-4">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="relative w-9 h-9 focus:outline-none"
+            >
+              <span
+                className={`absolute h-0.5 w-9 bg-black rounded transform transition duration-300 ease-in-out ${
+                  isOpen ? "rotate-45 top-4" : "top-1"
+                }`}
+              />
+              <span
+                className={`absolute h-0.5 w-9 bg-black rounded transition-all duration-300 ease-in-out ${
+                  isOpen ? "opacity-0" : "top-4"
+                }`}
+              />
+              <span
+                className={`absolute h-0.5 w-9 bg-black rounded transform transition duration-300 ease-in-out ${
+                  isOpen ? "-rotate-45 top-4" : "top-7"
+                }`}
+              />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -94,6 +117,15 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
+
+            {/* Language Button inside Mobile Menu */}
+            <button
+              onClick={toggleLanguage}
+              className="mt-4 flex items-center gap-2 text-black font-cinema text-lg border border-black px-3 py-1 rounded hover:bg-primary hover:text-white transition self-start"
+            >
+              <Globe className="w-5 h-5" />
+              {language}
+            </button>
           </motion.nav>
         )}
       </AnimatePresence>

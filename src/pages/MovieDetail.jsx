@@ -3,9 +3,11 @@ import movies from "../data/movies";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next"; // ✅ NEW
 
 export default function MovieDetail() {
   const { id } = useParams();
+  const { t } = useTranslation(); // ✅ NEW
   const movie = movies.find((m) => m.id === Number(id));
 
   if (!movie) {
@@ -13,9 +15,9 @@ export default function MovieDetail() {
       <>
         <Navbar />
         <main className="pt-44 text-center text-white font-cinema min-h-screen bg-secondary">
-          <h2 className="text-3xl">Movie not found 😢</h2>
+          <h2 className="text-3xl">{t('moviedetail.notFound')}</h2> {/* ✅ */}
           <Link to="/movies" className="mt-4 inline-block text-primary underline">
-            ← Back to Movies
+            ← {t('moviedetail.back')}
           </Link>
         </main>
         <Footer />
@@ -32,7 +34,7 @@ export default function MovieDetail() {
             to="/movies"
             className="inline-block text-primary hover:text-white text-sm sm:text-base transition duration-300"
           >
-            ← Back to Movies
+            ← {t('moviedetail.back')}
           </Link>
         </div>
 
@@ -63,16 +65,17 @@ export default function MovieDetail() {
               <a
                 href={movie.trailer}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="text-primary hover:underline block"
               >
-                ▶ Watch Trailer
+                ▶ {t('moviedetail.watchTrailer')}
               </a>
             )}
 
             {/* Book Now Button */}
             <Link to={`/book?movieId=${movie.id}`}>
               <button className="mt-6 bg-primary text-white px-8 py-3 rounded-full hover:scale-105 transition duration-300">
-                🎟 Book Now
+                🎟 {t('moviedetail.bookNow')}
               </button>
             </Link>
           </motion.div>

@@ -2,8 +2,11 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useTranslation } from "react-i18next"; // ✅ NEW
 
 export default function Contact() {
+  const { t } = useTranslation(); // ✅ NEW
+
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   const handleChange = (e) => {
@@ -13,7 +16,7 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Message sent successfully! ✅");
+    alert(t('contact.success')); // ✅ Translate alert
     setForm({ name: "", email: "", message: "" });
   };
 
@@ -28,9 +31,9 @@ export default function Contact() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-4xl sm:text-5xl mb-4 font-semibold">Get in Touch</h1>
+          <h1 className="text-4xl sm:text-5xl mb-4 font-semibold">{t('contact.title')}</h1> {/* ✅ */}
           <p className="text-gray-700 text-lg mb-12 max-w-2xl mx-auto">
-            Have questions, suggestions, or feedback? We’d love to hear from you.
+            {t('contact.subtitle')}
           </p>
 
           <motion.form
@@ -41,39 +44,39 @@ export default function Contact() {
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             <div>
-              <label className="block text-sm text-gray-700 mb-1">Name</label>
+              <label className="block text-sm text-gray-700 mb-1">{t('contact.name')}</label>
               <input
                 type="text"
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                placeholder="Your name"
+                placeholder={t('contact.namePlaceholder')}
                 className="w-full px-4 py-3 rounded bg-white border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-700 mb-1">Email</label>
+              <label className="block text-sm text-gray-700 mb-1">{t('contact.email')}</label>
               <input
                 type="email"
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                placeholder="you@example.com"
+                placeholder={t('contact.emailPlaceholder')}
                 className="w-full px-4 py-3 rounded bg-white border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-700 mb-1">Message</label>
+              <label className="block text-sm text-gray-700 mb-1">{t('contact.message')}</label>
               <textarea
                 name="message"
                 value={form.message}
                 onChange={handleChange}
                 rows="5"
-                placeholder="Write your message here..."
+                placeholder={t('contact.messagePlaceholder')}
                 className="w-full px-4 py-3 rounded bg-white border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               ></textarea>
@@ -84,7 +87,7 @@ export default function Contact() {
                 type="submit"
                 className="bg-primary px-8 py-4 rounded-full text-white text-lg shadow-md hover:scale-105 transition duration-300"
               >
-                ✉️ Send Message
+                ✉️ {t('contact.sendButton')}
               </button>
             </div>
           </motion.form>
