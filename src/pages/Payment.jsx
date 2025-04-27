@@ -51,32 +51,32 @@ export default function Payment() {
   }, [success, bookingData]);
 
   // Handle pay button click
-  const handlePayment = async (method) => {
-    if (!bookingData) {
+  const handlePayment = async (method, booking) => {
+    if (!booking) {
       alert("Booking details missing.");
       return;
     }
-
+  
     setProcessing(true);
-
+  
     try {
       const res = await fetch("https://cinemaalbalad.onrender.com/api/payments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: bookingData.price,
-          movieId: bookingData.movie,
-          time: bookingData.time,
-          count: bookingData.seats.length,
+          amount: booking.price,
+          movieId: booking.movie,
+          time: booking.time,
+          count: booking.seats.length,
           method,
           redirectUrl: `${window.location.origin}/payment?success=true&details=${encodeURIComponent(
-            JSON.stringify(bookingData)
+            JSON.stringify(booking)
           )}`,
         }),
       });
-
+  
       const data = await res.json();
-
+  
       if (data?.url) {
         console.log("🔁 Redirecting to payment page:", data.url);
         window.location.href = data.url;
@@ -90,6 +90,7 @@ export default function Payment() {
       setProcessing(false);
     }
   };
+  
 
   return (
     <div className="text-white text-center pt-40 space-y-6">
