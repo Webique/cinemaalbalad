@@ -177,9 +177,11 @@ export default function BookNow() {
 
             <div className="mt-8">
               <h3 className="text-lg mb-4 font-semibold">Select Seats (Max 10)</h3>
-              <div className="bg-black/20 rounded-lg py-4 px-2 mb-6">
+              <div className="bg-black/20 rounded-lg py-4 px-4 mb-6">
                 <div className="text-center text-gray-400 font-medium mb-4">SCREEN</div>
-                <div className="grid grid-cols-6 gap-4 justify-center">
+
+                {/* Responsive seat grid */}
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 sm:gap-4 justify-center">
                   {seats.map((seat) => (
                     <button
                       key={seat}
@@ -189,7 +191,7 @@ export default function BookNow() {
                         takenSeats.includes(seat) ||
                         (selectedSeats.length >= 10 && !selectedSeats.includes(seat))
                       }
-                      className={`w-10 h-10 rounded-lg text-sm font-bold
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg text-xs sm:text-sm font-bold flex items-center justify-center
                       ${
                         takenSeats.includes(seat)
                           ? "bg-red-900 text-white"
