@@ -30,11 +30,12 @@ export default function Payment() {
       if (success === "true" && bookingData) {
         console.log("🚀 Sending booking to backend:", bookingData);
         try {
-          const res = await fetch("http://localhost:5000/api/bookings", {
+          const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(bookingData),
           });
+          
 
           const data = await res.json();
           console.log("✅ Booking saved to MongoDB:", data);
