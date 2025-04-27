@@ -38,9 +38,7 @@ export default function BookNow() {
 
   useEffect(() => {
     if (!selectedMovie || !prefilledTime) return;
-
     const matchingShow = selectedMovie.showtimes.find((s) => s.time === prefilledTime);
-
     if (matchingShow) {
       setForm((prev) => ({
         ...prev,
@@ -66,30 +64,25 @@ export default function BookNow() {
   useEffect(() => {
     const fetchTakenSeats = async () => {
       if (!selectedMovie || !form.date || !form.time) return;
-
       try {
         const res = await fetch(
           `https://cinemaalbalad.onrender.com/api/bookings/taken-seats?movie=${selectedMovie.title}&date=${form.date}&time=${form.time}`
         );
-
         const data = await res.json();
         setTakenSeats(data.takenSeats || []);
       } catch (err) {
         console.error("Error fetching taken seats:", err);
       }
     };
-
     fetchTakenSeats();
   }, [selectedMovie, form.date, form.time]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!form.name || !form.email || !form.date || !form.time || selectedSeats.length === 0 || !selectedMovie) {
       alert("Please fill all fields and choose a movie.");
       return;
     }
-
     const bookingDetails = {
       name: form.name,
       email: form.email,
@@ -99,7 +92,6 @@ export default function BookNow() {
       seats: selectedSeats,
       price: selectedSeats.length * ticketPrice,
     };
-
     const queryString = encodeURIComponent(JSON.stringify(bookingDetails));
     navigate(`/payment?details=${queryString}`);
   };
@@ -108,7 +100,7 @@ export default function BookNow() {
     return (
       <>
         <Navbar />
-        <main className="pt-36 text-center text-white bg-black min-h-screen">
+        <main className="pt-36 text-center text-black bg-white">
           <h1 className="text-4xl font-bold">Loading Movie...</h1>
         </main>
         <Footer />
@@ -119,8 +111,9 @@ export default function BookNow() {
   return (
     <>
       <Navbar />
-      <main className="relative min-h-screen text-white font-cinema overflow-hidden pt-36 px-6 sm:px-10 lg:px-20 pb-32">
-        {/* Blurred Background */}
+      <main className="relative bg-white text-black font-sans pt-36 min-h-screen px-6 sm:px-10 lg:px-20 pb-32 overflow-hidden">
+
+        {/* ✅ Background Blur Added Here */}
         <div className="fixed top-0 left-0 w-full h-full -z-10">
           <div
             className="w-full h-full bg-cover bg-center"
@@ -132,14 +125,14 @@ export default function BookNow() {
 
         {/* Page Content */}
         <motion.section className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl mb-6 font-bold">Book Your Seat</h1>
-          <p className="text-gray-300 text-lg mb-12">
-            Movie: <strong className="text-primary">{selectedMovie.title}</strong>
+          <h1 className="text-4xl sm:text-5xl mb-6 font-bold text-black">Book Your Seat</h1>
+          <p className="text-gray-700 text-lg mb-12">
+            Movie: <strong className="text-red-600">{selectedMovie.title}</strong>
           </p>
 
           <form
             onSubmit={handleSubmit}
-            className="bg-white/5 backdrop-blur-md p-8 sm:p-10 rounded-xl shadow-xl space-y-6 text-left"
+            className="bg-gray-100 p-6 rounded-xl shadow-lg text-black"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <input
@@ -148,7 +141,7 @@ export default function BookNow() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Your Name"
-                className="w-full px-4 py-3 rounded bg-white/10 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="px-4 py-3 rounded bg-white text-black border border-gray-300"
               />
               <input
                 type="email"
@@ -156,14 +149,14 @@ export default function BookNow() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="Email"
-                className="w-full px-4 py-3 rounded bg-white/10 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="px-4 py-3 rounded bg-white text-black border border-gray-300"
               />
             </div>
 
             <div className="mt-8">
-              <h3 className="text-lg mb-4 font-semibold text-white">Select Seats (Max 10)</h3>
-              <div className="bg-white/5 p-6 rounded-xl backdrop-blur-md">
-                <div className="text-center text-gray-400 font-medium mb-4">SCREEN</div>
+              <h3 className="text-lg mb-4 font-semibold">Select Seats (Max 10)</h3>
+              <div className="bg-gray-200 rounded-lg py-4 px-2 mb-6">
+                <div className="text-center text-gray-500 font-medium mb-4">SCREEN</div>
                 <div className="grid grid-cols-6 gap-4 justify-center">
                   {seats.map((seat) => (
                     <button
@@ -174,12 +167,13 @@ export default function BookNow() {
                         takenSeats.includes(seat) ||
                         (selectedSeats.length >= 10 && !selectedSeats.includes(seat))
                       }
-                      className={`w-10 h-10 rounded-lg text-sm font-bold ${
+                      className={`w-10 h-10 rounded-lg text-sm font-bold
+                      ${
                         takenSeats.includes(seat)
-                          ? "bg-red-800 text-white"
+                          ? "bg-red-900 text-white"
                           : selectedSeats.includes(seat)
-                          ? "bg-primary text-white"
-                          : "bg-white/10 text-white hover:bg-primary/80"
+                          ? "bg-red-600 text-white"
+                          : "bg-gray-300 text-black hover:bg-red-100"
                       }`}
                     >
                       {seat}
@@ -189,16 +183,16 @@ export default function BookNow() {
               </div>
             </div>
 
-            <div className="mt-6 text-left sm:text-center">
+            <div className="mt-6 text-left sm:text-center text-black">
               <p className="text-sm">Selected: {selectedSeats.join(", ") || "None"}</p>
               <p className="text-sm">Total Tickets: {selectedSeats.length}</p>
               <p className="text-sm">Total Price: {selectedSeats.length * ticketPrice} SAR</p>
             </div>
 
-            <div className="text-center mt-8">
+            <div className="mt-8 text-center">
               <button
                 type="submit"
-                className="bg-primary hover:bg-primary/80 px-8 py-3 rounded-full text-white text-lg shadow-md transition-all"
+                className="bg-red-600 hover:bg-red-700 px-8 py-3 rounded-full text-white text-lg transition duration-300"
               >
                 🎟 Reserve Now
               </button>
