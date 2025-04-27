@@ -22,7 +22,7 @@ export default function BookNow() {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/movies/${movieId}`);
+        const res = await fetch(`https://cinemaalbalad.onrender.com/api/movies/${movieId}`);
         const data = await res.json();
         if (data && data.title) {
           setSelectedMovie(data);
@@ -71,8 +71,9 @@ export default function BookNow() {
 
       try {
         const res = await fetch(
-          `http://localhost:5000/api/bookings/taken-seats?movie=${selectedMovie.title}&date=${form.date}&time=${form.time}`
+          `https://cinemaalbalad.onrender.com/api/bookings/taken-seats?movie=${selectedMovie.title}&date=${form.date}&time=${form.time}`
         );
+        
         const data = await res.json();
         setTakenSeats(data.takenSeats || []);
       } catch (err) {
