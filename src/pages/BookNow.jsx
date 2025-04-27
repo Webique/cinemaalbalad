@@ -18,15 +18,13 @@ export default function BookNow() {
   const [takenSeats, setTakenSeats] = useState([]);
   const ticketPrice = 35;
 
-  // Generate seat labels like A1, A2, ..., B1, B2, ..., C1, etc.
-  const rows = ["A", "B", "C", "D", "E"];
-  const seatsPerRow = 6;
-  const seats = [];
-  rows.forEach((row) => {
-    for (let i = 1; i <= seatsPerRow; i++) {
-      seats.push(`${row}${i}`);
-    }
-  });
+  const seats = Array.from({ length: 30 }, (_, i) => i + 1);
+
+  const seatLabel = (seat) => {
+    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6)); // A, B, C, D, E
+    const number = ((seat - 1) % 6) + 1; // 1 to 6
+    return `${row}${number}`;
+  };
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -80,7 +78,6 @@ export default function BookNow() {
         const res = await fetch(
           `https://cinemaalbalad.onrender.com/api/bookings/taken-seats?movie=${selectedMovie.title}&date=${form.date}&time=${form.time}`
         );
-
         const data = await res.json();
         setTakenSeats(data.takenSeats || []);
       } catch (err) {
@@ -117,19 +114,16 @@ export default function BookNow() {
     return (
       <>
         <Navbar />
-        <main className="pt-36 text-center text-white min-h-screen">
+        <main className="relative min-h-screen text-white font-cinema overflow-hidden pt-36 text-center">
           {/* Blurred Background */}
           <div className="fixed top-0 left-0 w-full h-full -z-10">
             <div
               className="w-full h-full bg-cover bg-center"
-              style={{
-                backgroundImage: "url('/main.png')"
-              }}
+              style={{ backgroundImage: "url('/main.png')" }}
             >
               <div className="w-full h-full bg-black/50 backdrop-blur-sm" />
             </div>
           </div>
-
           <h1 className="text-4xl font-bold">Loading Movie...</h1>
         </main>
         <Footer />
@@ -141,13 +135,11 @@ export default function BookNow() {
     <>
       <Navbar />
       <main className="relative min-h-screen text-white font-cinema overflow-hidden pt-36 px-6 sm:px-10 lg:px-20 pb-32">
-        {/* Blurred Background Layer */}
+        {/* Blurred Background */}
         <div className="fixed top-0 left-0 w-full h-full -z-10">
           <div
             className="w-full h-full bg-cover bg-center"
-            style={{
-              backgroundImage: "url('/main.png')"
-            }}
+            style={{ backgroundImage: "url('/main.png')" }}
           >
             <div className="w-full h-full bg-black/50 backdrop-blur-sm" />
           </div>
@@ -206,7 +198,7 @@ export default function BookNow() {
                           : "bg-gray-300 text-black hover:bg-red-100"
                       }`}
                     >
-                      {seat}
+                      {seatLabel(seat)}
                     </button>
                   ))}
                 </div>
@@ -214,7 +206,7 @@ export default function BookNow() {
             </div>
 
             <div className="mt-6 text-left sm:text-center text-white">
-              <p className="text-sm">Selected: {selectedSeats.join(", ") || "None"}</p>
+              <p className="text-sm">Selected: {selectedSeats.map(seatLabel).join(", ") || "None"}</p>
               <p className="text-sm">Total Tickets: {selectedSeats.length}</p>
               <p className="text-sm">Total Price: {selectedSeats.length * ticketPrice} SAR</p>
             </div>
