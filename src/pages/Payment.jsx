@@ -10,7 +10,6 @@ export default function Payment() {
   const success = searchParams.get("success");
   const details = searchParams.get("details");
 
-  // Parse bookingData from URL param
   useEffect(() => {
     if (details) {
       try {
@@ -23,7 +22,6 @@ export default function Payment() {
     }
   }, [details]);
 
-  // On return from payment, confirm booking to backend
   useEffect(() => {
     const confirmBooking = async () => {
       if (success === "true" && bookingData) {
@@ -49,7 +47,6 @@ export default function Payment() {
     confirmBooking();
   }, [success, bookingData, navigate]);
 
-  // Handle pay button click
   const handlePayment = async (method) => {
     if (!bookingData) {
       alert("Booking details missing.");
@@ -92,40 +89,78 @@ export default function Payment() {
 
   if (!bookingData) {
     return (
-      <div className="text-white text-center pt-40">
-        <h1 className="text-3xl font-bold">Loading booking details...</h1>
-      </div>
+      <main className="relative min-h-screen flex items-center justify-center text-white font-cinema overflow-hidden">
+        {/* Blurred Background */}
+        <div className="fixed top-0 left-0 w-full h-full -z-10">
+          <div
+            className="w-full h-full bg-cover bg-center"
+            style={{ backgroundImage: "url('/main.png')" }}
+          >
+            <div className="w-full h-full bg-black/50 backdrop-blur-sm" />
+          </div>
+        </div>
+
+        <div className="relative z-10 text-center space-y-6">
+          <h1 className="text-4xl font-bold">Loading booking details...</h1>
+        </div>
+      </main>
     );
   }
 
   if (success === "true") {
     return (
-      <div className="text-white text-center pt-40">
-        <h1 className="text-3xl font-bold">Processing your booking...</h1>
-      </div>
+      <main className="relative min-h-screen flex items-center justify-center text-white font-cinema overflow-hidden">
+        {/* Blurred Background */}
+        <div className="fixed top-0 left-0 w-full h-full -z-10">
+          <div
+            className="w-full h-full bg-cover bg-center"
+            style={{ backgroundImage: "url('/main.png')" }}
+          >
+            <div className="w-full h-full bg-black/50 backdrop-blur-sm" />
+          </div>
+        </div>
+
+        <div className="relative z-10 text-center space-y-6">
+          <h1 className="text-4xl font-bold animate-pulse">Processing your booking...</h1>
+        </div>
+      </main>
     );
   }
 
   return (
-    <div className="text-white text-center pt-40 space-y-6">
-      <h1 className="text-3xl font-bold">Choose a Payment Method</h1>
-
-      <div className="flex gap-6 justify-center mt-8">
-        <button
-          onClick={() => handlePayment("creditcard")}
-          className="bg-green-500 px-6 py-3 rounded-full hover:scale-105 transition"
+    <main className="relative min-h-screen flex items-center justify-center text-white font-cinema overflow-hidden px-6">
+      {/* Blurred Background */}
+      <div className="fixed top-0 left-0 w-full h-full -z-10">
+        <div
+          className="w-full h-full bg-cover bg-center"
+          style={{ backgroundImage: "url('/main.png')" }}
         >
-          💳 Pay with Card / Mada
-        </button>
-        <button
-          onClick={() => handlePayment("applepay")}
-          className="bg-black px-6 py-3 rounded-full hover:scale-105 transition"
-        >
-           Apple Pay
-        </button>
+          <div className="w-full h-full bg-black/50 backdrop-blur-sm" />
+        </div>
       </div>
 
-      {processing && <p className="text-gray-400 pt-6">🔄 Processing Payment...</p>}
-    </div>
+      <div className="relative z-10 bg-black/30 backdrop-blur-md p-10 rounded-xl shadow-lg max-w-md w-full text-center space-y-8">
+        <h1 className="text-4xl font-bold">Choose a Payment Method</h1>
+
+        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <button
+            onClick={() => handlePayment("creditcard")}
+            className="bg-green-500 hover:bg-green-600 hover:scale-105 transition-all px-8 py-4 rounded-full text-lg font-semibold shadow-md"
+          >
+            💳 Pay with Card / Mada
+          </button>
+          <button
+            onClick={() => handlePayment("applepay")}
+            className="bg-black hover:bg-gray-900 hover:scale-105 transition-all px-8 py-4 rounded-full text-lg font-semibold shadow-md"
+          >
+             Apple Pay
+          </button>
+        </div>
+
+        {processing && (
+          <p className="text-gray-300 pt-4 animate-pulse">🔄 Processing Payment...</p>
+        )}
+      </div>
+    </main>
   );
 }
