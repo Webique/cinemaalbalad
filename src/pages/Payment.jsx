@@ -7,7 +7,6 @@ export default function Payment() {
   const [processing, setProcessing] = useState(false);
   const [bookingData, setBookingData] = useState(null);
 
-  // Get query params
   const success = searchParams.get("success");
   const details = searchParams.get("details");
 
@@ -28,55 +27,55 @@ export default function Payment() {
   useEffect(() => {
     const confirmBooking = async () => {
       if (success === "true" && bookingData) {
-        console.log("🚀 Sending booking to backend:", bookingData);
+        console.log("🚀 Confirming booking with backend:", bookingData);
         try {
           const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(bookingData),
           });
-          
 
           const data = await res.json();
           console.log("✅ Booking saved to MongoDB:", data);
           navigate("/thankyou");
         } catch (err) {
           console.error("❌ Booking save failed:", err);
-          alert("Something went wrong saving your booking.");
+          alert("Something went wrong saving your booking. Please contact support.");
+          navigate("/"); // Optional: send them home if booking fails
         }
       }
     };
 
     confirmBooking();
-  }, [success, bookingData]);
+  }, [success, bookingData, navigate]);
 
   // Handle pay button click
-  const handlePayment = async (method, booking) => {
-    if (!booking) {
+  const handlePayment = async (method) => {
+    if (!bookingData) {
       alert("Booking details missing.");
       return;
     }
-  
+
     setProcessing(true);
-  
+
     try {
       const res = await fetch("https://cinemaalbalad.onrender.com/api/payments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: booking.price,
-          movieId: booking.movie,
-          time: booking.time,
-          count: booking.seats.length,
+          amount: bookingData.price,
+          movieId: bookingData.movie,
+          time: bookingData.time,
+          count: bookingData.seats.length,
           method,
           redirectUrl: `${window.location.origin}/payment?success=true&details=${encodeURIComponent(
-            JSON.stringify(booking)
+            JSON.stringify(bookingData)
           )}`,
         }),
       });
-  
+
       const data = await res.json();
-  
+
       if (data?.url) {
         console.log("🔁 Redirecting to payment page:", data.url);
         window.location.href = data.url;
@@ -86,28 +85,36 @@ export default function Payment() {
       }
     } catch (err) {
       console.error("❌ Payment error:", err);
-      alert("Payment failed.");
+      alert("Payment failed. Please try again.");
       setProcessing(false);
     }
   };
-  
+
+  if (!bookingData) {
+    return (
+      <div className="text-white text-center pt-40">
+        <h1 className="text-3xl font-bold">Loading booking details...</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="text-white text-center pt-40 space-y-6">
       <h1 className="text-3xl font-bold">Choose a Payment Method</h1>
 
       <div className="flex gap-6 justify-center mt-8">
-      <button
-  onClick={() => handlePayment("creditcard", bookingData)}
->
-  💳 Pay with Card / Mada
-</button>
-<button
-  onClick={() => handlePayment("applepay", bookingData)}
->
-   Apple Pay
-</button>
-
+        <button
+          onClick={() => handlePayment("creditcard")}
+          className="bg-green-500 px-6 py-3 rounded-full hover:scale-105 transition"
+        >
+          💳 Pay with Card / Mada
+        </button>
+        <button
+          onClick={() => handlePayment("applepay")}
+          className="bg-black px-6 py-3 rounded-full hover:scale-105 transition"
+        >
+           Apple Pay
+        </button>
       </div>
 
       {processing && <p className="text-gray-400 pt-6">🔄 Processing Payment...</p>}
