@@ -97,18 +97,17 @@ export default function Payment() {
       <h1 className="text-3xl font-bold">Choose a Payment Method</h1>
 
       <div className="flex gap-6 justify-center mt-8">
-        <button
-          onClick={() => handlePayment("creditcard")}
-          className="bg-green-500 px-6 py-3 rounded-full hover:scale-105 transition"
-        >
-          💳 Pay with Card / Mada
-        </button>
-        <button
-          onClick={() => handlePayment("applepay")}
-          className="bg-black px-6 py-3 rounded-full hover:scale-105 transition"
-        >
-           Apple Pay
-        </button>
+      <button
+  onClick={() => handlePayment("creditcard", bookingData)}
+>
+  💳 Pay with Card / Mada
+</button>
+<button
+  onClick={() => handlePayment("applepay", bookingData)}
+>
+   Apple Pay
+</button>
+
       </div>
 
       {processing && <p className="text-gray-400 pt-6">🔄 Processing Payment...</p>}
