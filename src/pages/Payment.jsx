@@ -151,12 +151,14 @@ export default function Payment() {
           >
             💳 {t('payment.payCard')}
           </button>
-          <button
-            onClick={() => handlePayment("applepay")}
-            className="bg-black hover:bg-gray-900 hover:scale-105 transition-all px-8 py-4 rounded-full text-lg font-semibold shadow-md"
-          >
-             {t('payment.payApple')}
-          </button>
+  {/* 
+  <button
+    onClick={() => handlePayment("applepay")}
+    className="bg-black hover:bg-gray-900 hover:scale-105 transition-all px-8 py-4 rounded-full text-lg font-semibold shadow-md"
+  >
+     {t('payment.payApple')}
+  </button>
+  */}
         </div>
 
         {processing && (
