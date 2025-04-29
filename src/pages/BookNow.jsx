@@ -72,7 +72,7 @@ export default function BookNow() {
       prev.includes(seat) ? prev.filter((s) => s !== seat) : [...prev, seat]
     );
   };
-
+// comment
   useEffect(() => {
     const fetchTakenSeats = async () => {
       if (!selectedMovie || !form.date || !form.time) return;
