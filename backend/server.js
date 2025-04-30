@@ -301,3 +301,25 @@ app.post("/api/payments", async (req, res) => {
     res.status(500).json({ error: "Payment failed." });
   }
 });
+
+// ✅ Verify QR and mark as scanned
+app.post("/api/bookings/scan", async (req, res) => {
+  try {
+    const { bookingId } = req.body;
+
+    const booking = await Booking.findById(bookingId);
+    if (!booking) return res.status(404).json({ error: "Booking not found" });
+
+    if (booking.scanned) {
+      return res.status(409).json({ message: "❗ Already scanned" });
+    }
+
+    booking.scanned = true;
+    await booking.save();
+
+    res.json({ message: "✅ Booking marked as scanned", booking });
+  } catch (err) {
+    console.error("Scan error:", err);
+    res.status(500).json({ error: "Failed to scan booking" });
+  }
+});

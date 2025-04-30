@@ -9,6 +9,9 @@ const bookingSchema = new mongoose.Schema({
   date: { type: String, required: true },
   seats: { type: [Number], required: true },
   createdAt: { type: Date, default: Date.now },
+  qrCodeData: { type: String },
+  scanned: { type: Boolean, default: false },
+
 });
 
 export default mongoose.model("Booking", bookingSchema);
