@@ -19,15 +19,11 @@ export default function ScanPage() {
 
   const fetchBookings = async () => {
     try {
-      const res = await fetch(
-        `https://cinemaalbalad.onrender.com/api/bookings/by-showtime?movie=${encodeURIComponent(
-          selectedMovie
-        )}&date=${selectedDate}&time=${selectedTime}`
-      );
+      const res = await fetch(`https://cinemaalbalad.onrender.com/api/bookings/by-showtime?movie=${encodeURIComponent(selectedMovie)}&date=${selectedDate}&time=${selectedTime}`);
       const data = await res.json();
       setBookings(data);
-    } catch (err) {
-      console.error("Failed to load bookings:", err);
+    } catch {
+      console.error("Failed to load bookings");
     }
   };
 
@@ -80,6 +76,8 @@ export default function ScanPage() {
   };
 
   const handleScanFromQR = async (id) => {
+    if (!scanning) return;
+    setScanning(false);
     try {
       const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings/scan", {
         method: "POST",
@@ -88,11 +86,10 @@ export default function ScanPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        alert(data.message || data.error);
+        setError(data.message || data.error);
       } else {
         setResult(data.booking);
         setBookingId(id);
-        setScanning(false);
         fetchBookings();
       }
     } catch {
@@ -100,42 +97,31 @@ export default function ScanPage() {
     }
   };
 
-  // Camera setup
   useEffect(() => {
     const html5QrCode = new Html5Qrcode(qrRegionId);
 
-    Html5Qrcode.getCameras().then((devices) => {
-      if (devices && devices.length) {
+    if (scanning) {
+      Html5Qrcode.getCameras().then((devices) => {
         const backCamera = devices.find((d) => d.label.toLowerCase().includes("back")) || devices[0];
 
-        if (scanning) {
-          html5QrCode
-            .start(
-              backCamera.id,
-              {
-                fps: 10,
-                qrbox: { width: 250, height: 250 },
-              },
-              async (decodedText) => {
-                try {
-                  const parsed = JSON.parse(decodedText);
-                  if (parsed._id) {
-                    await handleScanFromQR(parsed._id);
-                    await html5QrCode.stop();
-                    document.getElementById(qrRegionId).innerHTML = "";
-                  }
-                } catch {
-                  alert("Invalid QR code.");
-                }
-              },
-              (err) => {}
-            )
-            .catch((err) => console.error("Camera start error:", err));
+        html5QrCode
+          .start(backCamera.id, { fps: 10, qrbox: { width: 250, height: 250 } }, async (decodedText) => {
+            try {
+              const parsed = JSON.parse(decodedText);
+              if (parsed._id) {
+                await handleScanFromQR(parsed._id);
+                await html5QrCode.stop();
+                document.getElementById(qrRegionId).innerHTML = "";
+              }
+            } catch {
+              setError("Invalid QR code.");
+            }
+          })
+          .catch((err) => console.error("Camera start error:", err));
 
-          scannerRef.current = html5QrCode;
-        }
-      }
-    });
+        scannerRef.current = html5QrCode;
+      });
+    }
 
     return () => {
       if (scannerRef.current) {
@@ -145,42 +131,28 @@ export default function ScanPage() {
   }, [scanning]);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const res = await fetch("https://cinemaalbalad.onrender.com/api/movies");
-        const data = await res.json();
-        setMovies(data);
-      } catch (err) {
-        console.error("Failed to load movies:", err);
-      }
-    };
-    fetchMovies();
+    fetch("https://cinemaalbalad.onrender.com/api/movies")
+      .then((res) => res.json())
+      .then(setMovies)
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
-    if (selectedMovie) {
-      const movie = movies.find((m) => m.title === selectedMovie);
-      if (movie) setShowtimes(movie.showtimes || []);
-    } else {
-      setShowtimes([]);
-    }
+    const movie = movies.find((m) => m.title === selectedMovie);
+    setShowtimes(movie?.showtimes || []);
   }, [selectedMovie, movies]);
 
   return (
     <main className="min-h-screen bg-black text-white px-4 py-8 font-cinema">
       <h1 className="text-3xl font-bold mb-6 text-center">🎟️ Scan Tickets</h1>
 
-      {/* QR Scanner */}
       {scanning && (
-        <div className="max-w-sm mx-auto mb-4">
+        <div className="max-w-sm mx-auto mb-6">
           <div id={qrRegionId} className="rounded overflow-hidden" />
-          <p className="text-center mt-2 text-sm text-gray-400">
-            📷 Scan booking QR code using your camera
-          </p>
+          <p className="text-center mt-2 text-sm text-gray-400">📷 Scan booking QR code</p>
         </div>
       )}
 
-      {/* Continue Scanning */}
       {!scanning && (
         <div className="text-center mb-6">
           <button
@@ -190,14 +162,13 @@ export default function ScanPage() {
               setError("");
               setScanning(true);
             }}
-            className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700"
+            className="bg-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-blue-700"
           >
             🔁 Continue Scanning
           </button>
         </div>
       )}
 
-      {/* Manual Entry */}
       <div className="max-w-md mx-auto space-y-4 mb-10">
         <input
           type="text"
@@ -226,10 +197,8 @@ export default function ScanPage() {
         )}
       </div>
 
-      {/* Filter & Booking List */}
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-4">📋 View Bookings by Movie & Time</h2>
-
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           <select
             value={selectedMovie}
@@ -246,7 +215,6 @@ export default function ScanPage() {
               <option key={m._id} value={m.title}>{m.title}</option>
             ))}
           </select>
-
           <select
             value={selectedDate}
             onChange={(e) => {
@@ -262,7 +230,6 @@ export default function ScanPage() {
               <option key={date} value={date}>{date}</option>
             ))}
           </select>
-
           <select
             value={selectedTime}
             onChange={(e) => setSelectedTime(e.target.value)}
@@ -298,18 +265,18 @@ export default function ScanPage() {
                   <p>{b.seats.join(", ")} – ID: {b._id}</p>
                   <p>Status: {b.scanned ? "✅ Scanned" : "❌ Not Scanned"}</p>
                 </div>
-                <div className="flex gap-2 w-full sm:w-auto">
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   {!b.scanned ? (
                     <button
                       onClick={() => markAsScanned(b._id)}
-                      className="flex-1 sm:flex-none bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                      className="flex-1 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                     >
                       ✅ Scan
                     </button>
                   ) : (
                     <button
                       onClick={() => unscanBooking(b._id)}
-                      className="flex-1 sm:flex-none bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                      className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                     >
                       ⏪ Unscan
                     </button>
