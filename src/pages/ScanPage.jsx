@@ -17,6 +17,7 @@ export default function ScanPage() {
   const scannerRef = useRef(null);
   const qrRegionId = "qr-reader";
 
+  // 🔄 Load bookings for selected movie/showtime
   const fetchBookings = async () => {
     try {
       const res = await fetch(`https://cinemaalbalad.onrender.com/api/bookings/by-showtime?movie=${encodeURIComponent(selectedMovie)}&date=${selectedDate}&time=${selectedTime}`);
@@ -77,7 +78,7 @@ export default function ScanPage() {
 
   const handleScanFromQR = async (id) => {
     if (!scanning) return;
-    setScanning(false);
+    setScanning(false); // pause scanning immediately
     try {
       const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings/scan", {
         method: "POST",
@@ -97,6 +98,7 @@ export default function ScanPage() {
     }
   };
 
+  // 🎥 Setup camera scanner on load
   useEffect(() => {
     const html5QrCode = new Html5Qrcode(qrRegionId);
 
@@ -130,6 +132,7 @@ export default function ScanPage() {
     };
   }, [scanning]);
 
+  // 🎬 Load all movies
   useEffect(() => {
     fetch("https://cinemaalbalad.onrender.com/api/movies")
       .then((res) => res.json())
@@ -137,6 +140,7 @@ export default function ScanPage() {
       .catch(console.error);
   }, []);
 
+  // ⏰ Filter showtimes per movie
   useEffect(() => {
     const movie = movies.find((m) => m.title === selectedMovie);
     setShowtimes(movie?.showtimes || []);
@@ -146,6 +150,7 @@ export default function ScanPage() {
     <main className="min-h-screen bg-black text-white px-4 py-8 font-cinema">
       <h1 className="text-3xl font-bold mb-6 text-center">🎟️ Scan Tickets</h1>
 
+      {/* ✅ QR Camera */}
       {scanning && (
         <div className="max-w-sm mx-auto mb-6">
           <div id={qrRegionId} className="rounded overflow-hidden" />
@@ -153,6 +158,7 @@ export default function ScanPage() {
         </div>
       )}
 
+      {/* ✅ Continue Scanning Button */}
       {!scanning && (
         <div className="text-center mb-6">
           <button
@@ -169,6 +175,7 @@ export default function ScanPage() {
         </div>
       )}
 
+      {/* ✅ Manual Scan */}
       <div className="max-w-md mx-auto space-y-4 mb-10">
         <input
           type="text"
@@ -197,6 +204,7 @@ export default function ScanPage() {
         )}
       </div>
 
+      {/* 🎞️ Bookings per Movie/Time */}
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-4">📋 View Bookings by Movie & Time</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -253,6 +261,7 @@ export default function ScanPage() {
           🔍 Load Bookings
         </button>
 
+        {/* ✅ Bookings List */}
         {bookings.length > 0 && (
           <div className="space-y-4 pb-20">
             {bookings.map((b) => (
