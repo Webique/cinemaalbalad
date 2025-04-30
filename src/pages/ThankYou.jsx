@@ -3,10 +3,21 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import { useTranslation } from "react-i18next"; // ✅ NEW
+import { useTranslation } from "react-i18next";
+import { QRCodeCanvas } from "qrcode.react";
+import { useEffect, useState } from "react";
 
 export default function ThankYou() {
-  const { t } = useTranslation(); // ✅ NEW
+  const { t } = useTranslation();
+
+  const [bookingData, setBookingData] = useState(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("latestBooking");
+    if (saved) {
+      setBookingData(JSON.parse(saved));
+    }
+  }, []);
 
   return (
     <>
@@ -50,6 +61,36 @@ export default function ThankYou() {
           >
             {t('thankyou.subtitle')}
           </motion.p>
+
+          {/* ✅ QR Code Block */}
+          {bookingData && (
+            <motion.div
+              className="space-y-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+            >
+              <h2 className="text-2xl font-semibold">{t('thankyou.qrTitle') || 'Your Booking QR Code'}</h2>
+              <div className="flex justify-center">
+                <QRCodeCanvas
+                  value={JSON.stringify({
+                    ...bookingData,
+                    scanned: false,
+                  })}
+                  size={200}
+                  bgColor="#ffffff"
+                  fgColor="#000000"
+                  level="H"
+                  includeMargin={true}
+                />
+              </div>
+              <p className="text-sm text-gray-400">
+                🎟️ {bookingData.name} | {bookingData.movie} | {bookingData.date} @ {bookingData.time} <br />
+                Seats: {bookingData.seats.join(", ")} <br />
+                Scanned: ❌
+              </p>
+            </motion.div>
+          )}
 
           <motion.div
             className="flex justify-center gap-6 flex-wrap mt-8"

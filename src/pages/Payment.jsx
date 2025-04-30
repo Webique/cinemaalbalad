@@ -37,6 +37,8 @@ export default function Payment() {
 
           const data = await res.json();
           console.log("✅ Booking saved to MongoDB:", data);
+          localStorage.setItem("latestBooking", JSON.stringify(bookingData));
+
           navigate("/thankyou");
         } catch (err) {
           console.error("❌ Booking save failed:", err);
