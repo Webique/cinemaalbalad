@@ -2,10 +2,11 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { CalendarDays, Clock } from "lucide-react";
-import { useTranslation } from "react-i18next"; // ✅ NEW
+import { useTranslation } from "react-i18next";
 
 export default function Events() {
-  const { t } = useTranslation(); // ✅ NEW
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
 
   const events = [
     {
@@ -38,7 +39,10 @@ export default function Events() {
     <>
       <Navbar />
       <main
-        className="relative text-white font-cinema pt-36 pb-40 min-h-screen"
+        dir={isArabic ? "rtl" : "ltr"}
+        className={`relative text-white font-cinema pt-36 pb-40 min-h-screen ${
+          isArabic ? "text-right" : "text-left"
+        }`}
         style={{
           backgroundImage: "url('/main.png')",
           backgroundSize: "cover",
@@ -101,7 +105,11 @@ export default function Events() {
                   <p className="text-gray-200 text-md sm:text-lg leading-relaxed drop-shadow-sm">
                     {event.description}
                   </p>
-                  <div className="flex justify-center md:justify-start gap-4 text-gray-300 text-sm mt-2">
+                  <div
+                    className={`flex ${
+                      isArabic ? "justify-end md:justify-end" : "justify-center md:justify-start"
+                    } gap-4 text-gray-300 text-sm mt-2`}
+                  >
                     <div className="flex items-center gap-1">
                       <Clock size={16} /> {event.time}
                     </div>
