@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import QrReader from "react-qr-reader";
 
 export default function ScanPage() {
   const [bookingId, setBookingId] = useState("");
@@ -12,7 +13,6 @@ export default function ScanPage() {
   const [showtimes, setShowtimes] = useState([]);
   const [bookings, setBookings] = useState([]);
 
-  // Fetch movies and showtimes
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -56,46 +56,94 @@ export default function ScanPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bookingId: id }),
       });
-
       const data = await res.json();
+      if (!res.ok) alert(data.message || data.error);
+      fetchBookings();
+    } catch {
+      alert("Scan failed.");
+    }
+  };
 
-      if (!res.ok) {
-        alert(data.error || data.message);
-      } else {
-        // update list
-        fetchBookings();
-      }
-    } catch (err) {
-      alert("Failed to mark as scanned.");
+  const unscanBooking = async (id) => {
+    try {
+      const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings/unscan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId: id }),
+      });
+      const data = await res.json();
+      if (!res.ok) alert(data.message || data.error);
+      fetchBookings();
+    } catch {
+      alert("Unscan failed.");
     }
   };
 
   const handleScan = async () => {
+    if (!bookingId) return;
     setError("");
     setResult(null);
-
     try {
       const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings/scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bookingId }),
       });
-
       const data = await res.json();
+      if (!res.ok) setError(data.message || data.error);
+      else setResult(data.booking);
+    } catch {
+      setError("Scan failed.");
+    }
+  };
 
+  const handleQRRead = (value) => {
+    if (value) {
+      try {
+        const parsed = JSON.parse(value);
+        if (parsed._id) {
+          setBookingId(parsed._id);
+          handleScanFromQR(parsed._id);
+        }
+      } catch (err) {
+        console.error("Invalid QR Code");
+      }
+    }
+  };
+
+  const handleScanFromQR = async (id) => {
+    try {
+      const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId: id }),
+      });
+      const data = await res.json();
       if (!res.ok) {
-        setError(data.error || data.message);
+        alert(data.message || data.error);
       } else {
         setResult(data.booking);
+        fetchBookings();
       }
-    } catch (err) {
-      setError("Something went wrong.");
+    } catch {
+      alert("Failed to scan via camera.");
     }
   };
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-10 font-cinema">
       <h1 className="text-3xl font-bold mb-8 text-center">🎟️ Scan Tickets</h1>
+
+      {/* QR Camera */}
+      <div className="max-w-md mx-auto mb-8">
+        <QrReader
+          delay={300}
+          onError={(err) => console.error(err)}
+          onScan={handleQRRead}
+          style={{ width: "100%" }}
+        />
+        <p className="text-center mt-2 text-sm text-gray-400">📷 Scan booking QR code using your camera</p>
+      </div>
 
       {/* Manual Input */}
       <div className="max-w-md mx-auto space-y-4 mb-12">
@@ -112,9 +160,7 @@ export default function ScanPage() {
         >
           Verify & Mark as Scanned
         </button>
-
         {error && <p className="text-red-400">{error}</p>}
-
         {result && (
           <div className="mt-6 bg-white text-black p-4 rounded space-y-1 shadow">
             <p><strong>Name:</strong> {result.name}</p>
@@ -128,7 +174,7 @@ export default function ScanPage() {
         )}
       </div>
 
-      {/* Movie & Showtime Selection */}
+      {/* Movie/Time Selection */}
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-4">📋 View Bookings by Movie & Time</h2>
 
@@ -200,14 +246,23 @@ export default function ScanPage() {
                   <p>{b.seats.join(", ")} – ID: {b._id}</p>
                   <p>Status: {b.scanned ? "✅ Scanned" : "❌ Not Scanned"}</p>
                 </div>
-                {!b.scanned && (
-                  <button
-                    onClick={() => markAsScanned(b._id)}
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                  >
-                    ✅ Scan
-                  </button>
-                )}
+                <div className="flex gap-2">
+                  {!b.scanned ? (
+                    <button
+                      onClick={() => markAsScanned(b._id)}
+                      className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                    >
+                      ✅ Scan
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => unscanBooking(b._id)}
+                      className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                    >
+                      ⏪ Unscan
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>

@@ -362,3 +362,20 @@ app.get("/api/bookings/by-showtime", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch bookings." });
   }
 });
+// ✅ Unscan a booking
+app.post("/api/bookings/unscan", async (req, res) => {
+  try {
+    const { bookingId } = req.body;
+
+    const booking = await Booking.findById(bookingId);
+    if (!booking) return res.status(404).json({ error: "Booking not found" });
+
+    booking.scanned = false;
+    await booking.save();
+
+    res.json({ message: "✅ Booking unmarked as scanned", booking });
+  } catch (err) {
+    console.error("Unscan error:", err);
+    res.status(500).json({ error: "Failed to unscan booking" });
+  }
+});
