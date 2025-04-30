@@ -2,10 +2,11 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useTranslation } from "react-i18next"; // ✅ NEW
+import { useTranslation } from "react-i18next";
 
 export default function Contact() {
-  const { t } = useTranslation(); // ✅ NEW
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
 
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
@@ -16,29 +17,35 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(t('contact.success')); // ✅ Translate alert
+    alert(t('contact.success'));
     setForm({ name: "", email: "", message: "" });
   };
 
   return (
     <>
       <Navbar />
-      <main className="relative z-0 bg-[#fdf8f6] text-black font-cinema pt-40 pb-36 min-h-screen px-6 sm:px-10 lg:px-20">
-
+      <main
+        dir={isArabic ? "rtl" : "ltr"}
+        className={`relative z-0 bg-[#fdf8f6] text-black font-cinema pt-40 pb-36 min-h-screen px-6 sm:px-10 lg:px-20 ${
+          isArabic ? "text-right" : "text-left"
+        }`}
+      >
         <motion.section
           className="max-w-4xl mx-auto text-center z-10"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-4xl sm:text-5xl mb-4 font-semibold">{t('contact.title')}</h1> {/* ✅ */}
+          <h1 className="text-4xl sm:text-5xl mb-4 font-semibold">{t('contact.title')}</h1>
           <p className="text-gray-700 text-lg mb-12 max-w-2xl mx-auto">
             {t('contact.subtitle')}
           </p>
 
           <motion.form
             onSubmit={handleSubmit}
-            className="bg-black/5 p-8 sm:p-10 rounded-xl backdrop-blur-md shadow-2xl space-y-6 text-left"
+            className={`bg-black/5 p-8 sm:p-10 rounded-xl backdrop-blur-md shadow-2xl space-y-6 ${
+              isArabic ? "text-right" : "text-left"
+            }`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
