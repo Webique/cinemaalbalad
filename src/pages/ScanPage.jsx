@@ -1,11 +1,9 @@
-import { useState, useEffect, useRef } from "react";
-import { Html5Qrcode } from "html5-qrcode";
+import { useState, useEffect } from "react";
 
 export default function ScanPage() {
   const [bookingId, setBookingId] = useState("");
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
-  const [scanning, setScanning] = useState(true);
 
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState("");
@@ -13,9 +11,6 @@ export default function ScanPage() {
   const [selectedTime, setSelectedTime] = useState("");
   const [showtimes, setShowtimes] = useState([]);
   const [bookings, setBookings] = useState([]);
-
-  const scannerRef = useRef(null);
-  const qrRegionId = "qr-reader";
 
   const fetchBookings = async () => {
     try {
@@ -75,61 +70,6 @@ export default function ScanPage() {
     }
   };
 
-  const handleScanFromQR = async (id) => {
-    if (!scanning) return;
-    setScanning(false);
-    try {
-      const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings/scan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bookingId: id }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.message || data.error);
-      } else {
-        setResult(data.booking);
-        setBookingId(id);
-        fetchBookings();
-      }
-    } catch {
-      alert("Failed to scan via camera.");
-    }
-  };
-
-  useEffect(() => {
-    const html5QrCode = new Html5Qrcode(qrRegionId);
-
-    if (scanning) {
-      Html5Qrcode.getCameras().then((devices) => {
-        const backCamera = devices.find((d) => d.label.toLowerCase().includes("back")) || devices[0];
-
-        html5QrCode
-          .start(backCamera.id, { fps: 10, qrbox: { width: 250, height: 250 } }, async (decodedText) => {
-            try {
-              const parsed = JSON.parse(decodedText);
-              if (parsed._id) {
-                await handleScanFromQR(parsed._id);
-                await html5QrCode.stop();
-                document.getElementById(qrRegionId).innerHTML = "";
-              }
-            } catch {
-              setError("Invalid QR code.");
-            }
-          })
-          .catch((err) => console.error("Camera start error:", err));
-
-        scannerRef.current = html5QrCode;
-      });
-    }
-
-    return () => {
-      if (scannerRef.current) {
-        scannerRef.current.stop().catch(() => {});
-      }
-    };
-  }, [scanning]);
-
   useEffect(() => {
     fetch("https://cinemaalbalad.onrender.com/api/movies")
       .then((res) => res.json())
@@ -146,29 +86,7 @@ export default function ScanPage() {
     <main className="min-h-screen bg-black text-white px-4 py-8 font-cinema">
       <h1 className="text-3xl font-bold mb-6 text-center">🎟️ Scan Tickets</h1>
 
-      {scanning && (
-        <div className="max-w-sm mx-auto mb-6">
-          <div id={qrRegionId} className="rounded overflow-hidden" />
-          <p className="text-center mt-2 text-sm text-gray-400">📷 Scan booking QR code</p>
-        </div>
-      )}
-
-      {!scanning && (
-        <div className="text-center mb-6">
-          <button
-            onClick={() => {
-              setResult(null);
-              setBookingId("");
-              setError("");
-              setScanning(true);
-            }}
-            className="bg-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-blue-700"
-          >
-            🔁 Continue Scanning
-          </button>
-        </div>
-      )}
-
+      {/* ✅ Manual Scan */}
       <div className="max-w-md mx-auto space-y-4 mb-10">
         <input
           type="text"
@@ -197,6 +115,7 @@ export default function ScanPage() {
         )}
       </div>
 
+      {/* 🎞️ Bookings per Movie/Time */}
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-4">📋 View Bookings by Movie & Time</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
