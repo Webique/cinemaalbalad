@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { Html5Qrcode } from "html5-qrcode";
 
 export default function ScanPage() {
   const [bookingId, setBookingId] = useState("");
@@ -13,7 +13,8 @@ export default function ScanPage() {
   const [showtimes, setShowtimes] = useState([]);
   const [bookings, setBookings] = useState([]);
 
-  const qrScannerRef = useRef(null);
+  const scannerRef = useRef(null);
+  const qrRegionId = "qr-reader";
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -119,37 +120,46 @@ export default function ScanPage() {
     }
   };
 
-  // ✅ Initialize camera scanner
+  // ✅ Initialize and auto-stop scanner
   useEffect(() => {
-    if (!qrScannerRef.current) {
-      qrScannerRef.current = new Html5QrcodeScanner("qr-reader", {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-        rememberLastUsedCamera: true,
-        showTorchButtonIfSupported: true,
-      });
+    const html5QrCode = new Html5Qrcode(qrRegionId);
 
-      qrScannerRef.current.render(
-        (decodedText) => {
-          try {
-            const parsed = JSON.parse(decodedText);
-            if (parsed._id) {
-              handleScanFromQR(parsed._id);
-            }
-          } catch {
-            alert("Invalid QR code.");
-          }
-        },
-        (errorMessage) => {
-          // Ignore scanner errors
-        }
-      );
-    }
+    Html5Qrcode.getCameras().then((devices) => {
+      if (devices && devices.length) {
+        const backCamera = devices.find((d) => d.label.toLowerCase().includes("back")) || devices[0];
+
+        html5QrCode
+          .start(
+            backCamera.id,
+            {
+              fps: 10,
+              qrbox: { width: 250, height: 250 },
+            },
+            async (decodedText) => {
+              try {
+                const parsed = JSON.parse(decodedText);
+                if (parsed._id) {
+                  await handleScanFromQR(parsed._id);
+                  await html5QrCode.stop();
+                  document.getElementById(qrRegionId).innerHTML = "";
+                }
+              } catch {
+                alert("Invalid QR code.");
+              }
+            },
+            (err) => {}
+          )
+          .catch((err) => {
+            console.error("Camera start error:", err);
+          });
+
+        scannerRef.current = html5QrCode;
+      }
+    });
 
     return () => {
-      if (qrScannerRef.current) {
-        qrScannerRef.current.clear().catch(() => {});
-        qrScannerRef.current = null;
+      if (scannerRef.current) {
+        scannerRef.current.stop().catch(() => {});
       }
     };
   }, []);
@@ -160,7 +170,7 @@ export default function ScanPage() {
 
       {/* ✅ Camera Scanner */}
       <div className="max-w-sm mx-auto mb-6">
-        <div id="qr-reader" className="rounded overflow-hidden" />
+        <div id={qrRegionId} className="rounded overflow-hidden" />
         <p className="text-center mt-2 text-sm text-gray-400">
           📷 Scan booking QR code using your camera
         </p>
