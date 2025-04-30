@@ -10,6 +10,9 @@ import bcrypt from "bcrypt";
 import User from "./models/User.js";
 import axios from "axios";
 
+import QRCode from "qrcode";
+
+
 
 // App config
 const app = express();
@@ -64,20 +67,44 @@ app.post("/api/bookings", async (req, res) => {
       });
     }
 
-    // Save the booking
+    // Step 1: Save the booking (without QR for now)
     const newBooking = new Booking({ name, email, movie, date, time, seats });
     await newBooking.save();
 
-    // Update the reserved seats
+    // Step 2: Generate QR code payload including booking ID
+    const qrPayload = JSON.stringify({
+      _id: newBooking._id,
+      name,
+      email,
+      movie,
+      date,
+      time,
+      seats,
+      scanned: false,
+    });
+
+    const qrCodeData = await QRCode.toDataURL(qrPayload);
+
+    // Step 3: Save QR code to booking record
+    newBooking.qrCodeData = qrCodeData;
+    await newBooking.save();
+
+    // Step 4: Update reserved seats
     showtime.reservedSeats.push(...seats);
     await movieDoc.save();
 
-    res.status(201).json({ message: "✅ Booking confirmed!", bookingId: newBooking._id });
+    // Step 5: Send response with booking ID and QR code
+    res.status(201).json({
+      message: "✅ Booking confirmed!",
+      bookingId: newBooking._id,
+      qrCodeData,
+    });
   } catch (err) {
     console.error("Booking save error:", err);
     res.status(500).json({ error: "Failed to save booking." });
   }
 });
+
 
 
 // GET taken seats for a specific movie, date, and time

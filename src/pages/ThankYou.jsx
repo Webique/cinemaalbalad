@@ -87,12 +87,13 @@ export default function ThankYou() {
                   includeMargin={true}
                 />
               </div>
-              <p className="text-sm text-gray-400">
-                🎟️ {bookingData.name} | {bookingData.movie} | {bookingData.date} @ {bookingData.time} <br />
-                Seats: {bookingData.seats.join(", ")} <br />
-                Booking ID: {bookingData._id} <br />
-                Scanned: ❌
-              </p>
+              <div className="text-sm text-gray-300 space-y-1">
+  <p>🎟️ <strong>{bookingData.name}</strong> booked <strong>{bookingData.movie}</strong></p>
+  <p>🗓️ {bookingData.date} at {bookingData.time} | Seats: {bookingData.seats.join(", ")}</p>
+  <p>🔐 <span className="text-gray-400">Booking Code:</span> <span className="text-green-400 font-mono">{bookingData._id}</span></p>
+  <p>📍 Scanned: ❌</p>
+</div>
+
             </motion.div>
           )}
 
