@@ -5,6 +5,7 @@ export default function ScanPage() {
   const [bookingId, setBookingId] = useState("");
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+  const [scanning, setScanning] = useState(true);
 
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState("");
@@ -15,28 +16,6 @@ export default function ScanPage() {
 
   const scannerRef = useRef(null);
   const qrRegionId = "qr-reader";
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const res = await fetch("https://cinemaalbalad.onrender.com/api/movies");
-        const data = await res.json();
-        setMovies(data);
-      } catch (err) {
-        console.error("Failed to load movies:", err);
-      }
-    };
-    fetchMovies();
-  }, []);
-
-  useEffect(() => {
-    if (selectedMovie) {
-      const movie = movies.find((m) => m.title === selectedMovie);
-      if (movie) setShowtimes(movie.showtimes || []);
-    } else {
-      setShowtimes([]);
-    }
-  }, [selectedMovie, movies]);
 
   const fetchBookings = async () => {
     try {
@@ -113,6 +92,7 @@ export default function ScanPage() {
       } else {
         setResult(data.booking);
         setBookingId(id);
+        setScanning(false);
         fetchBookings();
       }
     } catch {
@@ -120,7 +100,7 @@ export default function ScanPage() {
     }
   };
 
-  // ✅ Initialize and auto-stop scanner
+  // Camera setup
   useEffect(() => {
     const html5QrCode = new Html5Qrcode(qrRegionId);
 
@@ -128,32 +108,32 @@ export default function ScanPage() {
       if (devices && devices.length) {
         const backCamera = devices.find((d) => d.label.toLowerCase().includes("back")) || devices[0];
 
-        html5QrCode
-          .start(
-            backCamera.id,
-            {
-              fps: 10,
-              qrbox: { width: 250, height: 250 },
-            },
-            async (decodedText) => {
-              try {
-                const parsed = JSON.parse(decodedText);
-                if (parsed._id) {
-                  await handleScanFromQR(parsed._id);
-                  await html5QrCode.stop();
-                  document.getElementById(qrRegionId).innerHTML = "";
+        if (scanning) {
+          html5QrCode
+            .start(
+              backCamera.id,
+              {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+              },
+              async (decodedText) => {
+                try {
+                  const parsed = JSON.parse(decodedText);
+                  if (parsed._id) {
+                    await handleScanFromQR(parsed._id);
+                    await html5QrCode.stop();
+                    document.getElementById(qrRegionId).innerHTML = "";
+                  }
+                } catch {
+                  alert("Invalid QR code.");
                 }
-              } catch {
-                alert("Invalid QR code.");
-              }
-            },
-            (err) => {}
-          )
-          .catch((err) => {
-            console.error("Camera start error:", err);
-          });
+              },
+              (err) => {}
+            )
+            .catch((err) => console.error("Camera start error:", err));
 
-        scannerRef.current = html5QrCode;
+          scannerRef.current = html5QrCode;
+        }
       }
     });
 
@@ -162,22 +142,63 @@ export default function ScanPage() {
         scannerRef.current.stop().catch(() => {});
       }
     };
+  }, [scanning]);
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const res = await fetch("https://cinemaalbalad.onrender.com/api/movies");
+        const data = await res.json();
+        setMovies(data);
+      } catch (err) {
+        console.error("Failed to load movies:", err);
+      }
+    };
+    fetchMovies();
   }, []);
 
+  useEffect(() => {
+    if (selectedMovie) {
+      const movie = movies.find((m) => m.title === selectedMovie);
+      if (movie) setShowtimes(movie.showtimes || []);
+    } else {
+      setShowtimes([]);
+    }
+  }, [selectedMovie, movies]);
+
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-10 font-cinema">
-      <h1 className="text-3xl font-bold mb-8 text-center">🎟️ Scan Tickets</h1>
+    <main className="min-h-screen bg-black text-white px-4 py-8 font-cinema">
+      <h1 className="text-3xl font-bold mb-6 text-center">🎟️ Scan Tickets</h1>
 
-      {/* ✅ Camera Scanner */}
-      <div className="max-w-sm mx-auto mb-6">
-        <div id={qrRegionId} className="rounded overflow-hidden" />
-        <p className="text-center mt-2 text-sm text-gray-400">
-          📷 Scan booking QR code using your camera
-        </p>
-      </div>
+      {/* QR Scanner */}
+      {scanning && (
+        <div className="max-w-sm mx-auto mb-4">
+          <div id={qrRegionId} className="rounded overflow-hidden" />
+          <p className="text-center mt-2 text-sm text-gray-400">
+            📷 Scan booking QR code using your camera
+          </p>
+        </div>
+      )}
 
-      {/* ✅ Manual Booking ID Input */}
-      <div className="max-w-md mx-auto space-y-4 mb-12">
+      {/* Continue Scanning */}
+      {!scanning && (
+        <div className="text-center mb-6">
+          <button
+            onClick={() => {
+              setResult(null);
+              setBookingId("");
+              setError("");
+              setScanning(true);
+            }}
+            className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700"
+          >
+            🔁 Continue Scanning
+          </button>
+        </div>
+      )}
+
+      {/* Manual Entry */}
+      <div className="max-w-md mx-auto space-y-4 mb-10">
         <input
           type="text"
           placeholder="Paste Booking ID"
@@ -193,7 +214,7 @@ export default function ScanPage() {
         </button>
         {error && <p className="text-red-400">{error}</p>}
         {result && (
-          <div className="mt-6 bg-white text-black p-4 rounded space-y-1 shadow">
+          <div className="mt-4 bg-white text-black p-4 rounded space-y-1 shadow">
             <p><strong>Name:</strong> {result.name}</p>
             <p><strong>Email:</strong> {result.email}</p>
             <p><strong>Movie:</strong> {result.movie}</p>
@@ -205,7 +226,7 @@ export default function ScanPage() {
         )}
       </div>
 
-      {/* ✅ Movie/Time Filtering */}
+      {/* Filter & Booking List */}
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-4">📋 View Bookings by Movie & Time</h2>
 
@@ -266,29 +287,29 @@ export default function ScanPage() {
         </button>
 
         {bookings.length > 0 && (
-          <div className="space-y-4">
+          <div className="space-y-4 pb-20">
             {bookings.map((b) => (
               <div
                 key={b._id}
-                className="flex justify-between items-center bg-white text-black p-4 rounded shadow"
+                className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center bg-white text-black p-4 rounded shadow space-y-3 sm:space-y-0"
               >
-                <div>
+                <div className="text-sm sm:text-base">
                   <p><strong>{b.name}</strong> ({b.email})</p>
                   <p>{b.seats.join(", ")} – ID: {b._id}</p>
                   <p>Status: {b.scanned ? "✅ Scanned" : "❌ Not Scanned"}</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full sm:w-auto">
                   {!b.scanned ? (
                     <button
                       onClick={() => markAsScanned(b._id)}
-                      className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                      className="flex-1 sm:flex-none bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                     >
                       ✅ Scan
                     </button>
                   ) : (
                     <button
                       onClick={() => unscanBooking(b._id)}
-                      className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                      className="flex-1 sm:flex-none bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                     >
                       ⏪ Unscan
                     </button>
