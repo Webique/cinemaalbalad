@@ -1,15 +1,21 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
-import { useTranslation } from "react-i18next"; // ✅ NEW
+import { useTranslation } from "react-i18next";
 
 export default function Terms() {
-  const { t } = useTranslation(); // ✅ NEW
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
 
   return (
     <>
       <Navbar />
-      <main className="bg-gradient-to-b from-secondary via-black to-secondary text-white font-cinema pt-20 min-h-screen px-6 sm:px-10 lg:px-20 pb-32">
+      <main
+        dir={isArabic ? "rtl" : "ltr"}
+        className={`bg-gradient-to-b from-secondary via-black to-secondary text-white font-cinema pt-20 min-h-screen px-6 sm:px-10 lg:px-20 pb-32 ${
+          isArabic ? "text-right" : "text-left"
+        }`}
+      >
         <motion.section
           className="max-w-4xl mx-auto space-y-8"
           initial={{ opacity: 0, y: 40 }}
