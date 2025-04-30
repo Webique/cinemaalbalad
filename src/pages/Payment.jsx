@@ -34,11 +34,17 @@ export default function Payment() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(bookingData),
           });
-
+  
           const data = await res.json();
           console.log("✅ Booking saved to MongoDB:", data);
-          localStorage.setItem("latestBooking", JSON.stringify(bookingData));
-
+  
+          // ✅ FIX: include _id and qrCodeData in localStorage
+          localStorage.setItem("latestBooking", JSON.stringify({
+            ...bookingData,
+            _id: data.bookingId,
+            qrCodeData: data.qrCodeData || ""
+          }));
+  
           navigate("/thankyou");
         } catch (err) {
           console.error("❌ Booking save failed:", err);
@@ -47,9 +53,10 @@ export default function Payment() {
         }
       }
     };
-
+  
     confirmBooking();
   }, [success, bookingData, navigate, t]);
+  
 
   const handlePayment = async (method) => {
     if (!bookingData) {
@@ -76,7 +83,6 @@ export default function Payment() {
       });
 
       const data = await res.json();
-      localStorage.setItem("latestBooking", JSON.stringify({ ...bookingData, _id: data.bookingId }));
 
 
       if (data?.url) {
