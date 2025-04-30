@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { QrReader } from "react-qr-reader";
+import { useState, useEffect, useRef } from "react";
+import { Html5QrcodeScanner } from "html5-qrcode";
 
 export default function ScanPage() {
   const [bookingId, setBookingId] = useState("");
@@ -12,6 +12,8 @@ export default function ScanPage() {
   const [selectedTime, setSelectedTime] = useState("");
   const [showtimes, setShowtimes] = useState([]);
   const [bookings, setBookings] = useState([]);
+
+  const qrScannerRef = useRef(null);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -97,20 +99,6 @@ export default function ScanPage() {
     }
   };
 
-  const handleQRRead = (value) => {
-    if (value) {
-      try {
-        const parsed = JSON.parse(value);
-        if (parsed._id) {
-          setBookingId(parsed._id);
-          handleScanFromQR(parsed._id);
-        }
-      } catch (err) {
-        console.error("Invalid QR Code");
-      }
-    }
-  };
-
   const handleScanFromQR = async (id) => {
     try {
       const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings/scan", {
@@ -123,6 +111,7 @@ export default function ScanPage() {
         alert(data.message || data.error);
       } else {
         setResult(data.booking);
+        setBookingId(id);
         fetchBookings();
       }
     } catch {
@@ -130,22 +119,54 @@ export default function ScanPage() {
     }
   };
 
+  // ✅ Initialize camera scanner
+  useEffect(() => {
+    if (!qrScannerRef.current) {
+      qrScannerRef.current = new Html5QrcodeScanner("qr-reader", {
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+        rememberLastUsedCamera: true,
+        showTorchButtonIfSupported: true,
+      });
+
+      qrScannerRef.current.render(
+        (decodedText) => {
+          try {
+            const parsed = JSON.parse(decodedText);
+            if (parsed._id) {
+              handleScanFromQR(parsed._id);
+            }
+          } catch {
+            alert("Invalid QR code.");
+          }
+        },
+        (errorMessage) => {
+          // Ignore scanner errors
+        }
+      );
+    }
+
+    return () => {
+      if (qrScannerRef.current) {
+        qrScannerRef.current.clear().catch(() => {});
+        qrScannerRef.current = null;
+      }
+    };
+  }, []);
+
   return (
     <main className="min-h-screen bg-black text-white px-6 py-10 font-cinema">
       <h1 className="text-3xl font-bold mb-8 text-center">🎟️ Scan Tickets</h1>
 
-      {/* QR Camera */}
-      <div className="max-w-md mx-auto mb-8">
-        <QrReader
-          delay={300}
-          onError={(err) => console.error(err)}
-          onScan={handleQRRead}
-          style={{ width: "100%" }}
-        />
-        <p className="text-center mt-2 text-sm text-gray-400">📷 Scan booking QR code using your camera</p>
+      {/* ✅ Camera Scanner */}
+      <div className="max-w-sm mx-auto mb-6">
+        <div id="qr-reader" className="rounded overflow-hidden" />
+        <p className="text-center mt-2 text-sm text-gray-400">
+          📷 Scan booking QR code using your camera
+        </p>
       </div>
 
-      {/* Manual Input */}
+      {/* ✅ Manual Booking ID Input */}
       <div className="max-w-md mx-auto space-y-4 mb-12">
         <input
           type="text"
@@ -174,7 +195,7 @@ export default function ScanPage() {
         )}
       </div>
 
-      {/* Movie/Time Selection */}
+      {/* ✅ Movie/Time Filtering */}
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-4">📋 View Bookings by Movie & Time</h2>
 
