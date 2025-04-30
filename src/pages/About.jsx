@@ -1,16 +1,20 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
-import { useTranslation } from "react-i18next"; // ✅ NEW
+import { useTranslation } from "react-i18next";
 
 export default function About() {
-  const { t } = useTranslation(); // ✅ NEW
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
 
   return (
     <>
       <Navbar />
       <main
-        className="relative min-h-screen font-cinema pt-40 pb-32 px-6 sm:px-10 lg:px-28"
+        dir={isArabic ? "rtl" : "ltr"}
+        className={`relative min-h-screen font-cinema pt-40 pb-32 px-6 sm:px-10 lg:px-28 ${
+          isArabic ? "text-right" : "text-left"
+        }`}
         style={{
           backgroundImage: "url('/main.png')",
           backgroundSize: "cover",
@@ -29,7 +33,7 @@ export default function About() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            {t('about.title')} {/* ✅ */}
+            {t("about.title")}
           </motion.h1>
 
           {[...Array(6)].map((_, index) => (
@@ -41,7 +45,7 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              {t(`about.paragraph${index + 1}`)} {/* ✅ */}
+              {t(`about.paragraph${index + 1}`)}
             </motion.p>
           ))}
         </div>
