@@ -3,10 +3,11 @@ import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next"; // ✅ NEW
+import { useTranslation } from "react-i18next";
 
 export default function BookNow() {
-  const { t } = useTranslation(); // ✅ NEW
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
 
   const [form, setForm] = useState({ name: "", email: "", date: "", time: "", tickets: 0 });
   const [searchParams] = useSearchParams();
@@ -24,8 +25,8 @@ export default function BookNow() {
   const seats = Array.from({ length: 30 }, (_, i) => i + 1);
 
   const seatLabel = (seat) => {
-    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6)); // A, B, C, D, E
-    const number = ((seat - 1) % 6) + 1; // 1 to 6
+    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6));
+    const number = ((seat - 1) % 6) + 1;
     return `${row}${number}`;
   };
 
@@ -72,7 +73,7 @@ export default function BookNow() {
       prev.includes(seat) ? prev.filter((s) => s !== seat) : [...prev, seat]
     );
   };
-// comment
+
   useEffect(() => {
     const fetchTakenSeats = async () => {
       if (!selectedMovie || !form.date || !form.time) return;
@@ -117,8 +118,10 @@ export default function BookNow() {
     return (
       <>
         <Navbar />
-        <main className="relative min-h-screen text-white font-cinema overflow-hidden pt-36 text-center">
-          {/* Blurred Background */}
+        <main
+          dir={isArabic ? "rtl" : "ltr"}
+          className="relative min-h-screen text-white font-cinema overflow-hidden pt-36 text-center"
+        >
           <div className="fixed top-0 left-0 w-full h-full -z-10">
             <div
               className="w-full h-full bg-cover bg-center"
@@ -137,8 +140,12 @@ export default function BookNow() {
   return (
     <>
       <Navbar />
-      <main className="relative min-h-screen text-white font-cinema overflow-hidden pt-36 px-6 sm:px-10 lg:px-20 pb-32">
-        {/* Blurred Background */}
+      <main
+        dir={isArabic ? "rtl" : "ltr"}
+        className={`relative min-h-screen text-white font-cinema overflow-hidden pt-36 px-6 sm:px-10 lg:px-20 pb-32 ${
+          isArabic ? "text-right" : "text-left"
+        }`}
+      >
         <div className="fixed top-0 left-0 w-full h-full -z-10">
           <div
             className="w-full h-full bg-cover bg-center"
@@ -148,7 +155,6 @@ export default function BookNow() {
           </div>
         </div>
 
-        {/* Content */}
         <motion.section className="max-w-4xl mx-auto text-center relative z-10">
           <h1 className="text-4xl sm:text-5xl mb-6 font-bold">{t('booknow.title')}</h1>
           <p className="text-gray-300 text-lg mb-12">
@@ -209,7 +215,9 @@ export default function BookNow() {
             </div>
 
             <div className="mt-6 text-left sm:text-center text-white">
-              <p className="text-sm">{t('booknow.selected')}: {selectedSeats.map(seatLabel).join(", ") || t('booknow.none')}</p>
+              <p className="text-sm">
+                {t('booknow.selected')}: {selectedSeats.map(seatLabel).join(", ") || t('booknow.none')}
+              </p>
               <p className="text-sm">{t('booknow.totalTickets')}: {selectedSeats.length}</p>
               <p className="text-sm">{t('booknow.totalPrice')}: {selectedSeats.length * ticketPrice} SAR</p>
             </div>
