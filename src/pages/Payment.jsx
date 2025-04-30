@@ -76,6 +76,8 @@ export default function Payment() {
       });
 
       const data = await res.json();
+      localStorage.setItem("latestBooking", JSON.stringify({ ...bookingData, _id: data.bookingId }));
+
 
       if (data?.url) {
         console.log("🔁 Redirecting to payment page:", data.url);

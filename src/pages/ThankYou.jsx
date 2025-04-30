@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 
 export default function ThankYou() {
   const { t } = useTranslation();
-
   const [bookingData, setBookingData] = useState(null);
 
   useEffect(() => {
@@ -23,7 +22,6 @@ export default function ThankYou() {
     <>
       <Navbar />
       <main className="relative min-h-screen text-white font-cinema overflow-hidden pt-36 px-6 sm:px-10 lg:px-20 pb-32 flex items-center justify-center">
-        {/* Blurred Background */}
         <div className="fixed top-0 left-0 w-full h-full -z-10">
           <div
             className="w-full h-full bg-cover bg-center"
@@ -33,7 +31,6 @@ export default function ThankYou() {
           </div>
         </div>
 
-        {/* Content */}
         <section className="relative z-10 max-w-3xl w-full text-center space-y-12 bg-black/30 backdrop-blur-md rounded-2xl p-10 shadow-xl">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
@@ -74,7 +71,13 @@ export default function ThankYou() {
               <div className="flex justify-center">
                 <QRCodeCanvas
                   value={JSON.stringify({
-                    ...bookingData,
+                    _id: bookingData._id,
+                    name: bookingData.name,
+                    email: bookingData.email,
+                    movie: bookingData.movie,
+                    date: bookingData.date,
+                    time: bookingData.time,
+                    seats: bookingData.seats,
                     scanned: false,
                   })}
                   size={200}
@@ -87,6 +90,7 @@ export default function ThankYou() {
               <p className="text-sm text-gray-400">
                 🎟️ {bookingData.name} | {bookingData.movie} | {bookingData.date} @ {bookingData.time} <br />
                 Seats: {bookingData.seats.join(", ")} <br />
+                Booking ID: {bookingData._id} <br />
                 Scanned: ❌
               </p>
             </motion.div>
