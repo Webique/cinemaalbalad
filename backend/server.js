@@ -97,8 +97,9 @@ app.post("/api/bookings", async (req, res) => {
     res.status(201).json({
       message: "✅ Booking confirmed!",
       bookingId: newBooking._id,
-      qrCodeData,
+      qrCodeData, // Optional, helpful for Thank You page too
     });
+    
   } catch (err) {
     console.error("Booking save error:", err);
     res.status(500).json({ error: "Failed to save booking." });
