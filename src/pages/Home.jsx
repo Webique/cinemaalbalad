@@ -4,15 +4,19 @@ import HeroVideo from "../components/HeroVideo";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 import { Film } from "lucide-react";
-import { useTranslation } from "react-i18next"; // ✅ NEW
+import { useTranslation } from "react-i18next";
 
 export default function Home() {
-  const { t } = useTranslation(); // ✅ NEW
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
 
   return (
     <>
       <Navbar />
-      <main className="relative min-h-screen text-white font-cinema overflow-hidden">
+      <main
+        dir={isArabic ? "rtl" : "ltr"}
+        className={`relative min-h-screen text-white font-cinema overflow-hidden ${isArabic ? "text-right" : "text-left"}`}
+      >
         {/* Blurred Background Layer */}
         <div className="fixed top-0 left-0 w-full h-full -z-10">
           <div
@@ -38,7 +42,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.9 }}
             >
-              <div className="text-center md:text-left space-y-6 max-w-xl">
+              <div className={`space-y-6 max-w-xl ${isArabic ? "text-right md:text-right" : "text-center md:text-left"}`}>
                 <h2 className="text-4xl sm:text-5xl font-cinema leading-tight drop-shadow-lg">
                   {t('home.discover')}
                 </h2>
