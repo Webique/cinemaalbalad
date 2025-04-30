@@ -351,3 +351,14 @@ app.post("/api/bookings/scan", async (req, res) => {
     res.status(500).json({ error: "Failed to scan booking" });
   }
 });
+
+app.get("/api/bookings/by-showtime", async (req, res) => {
+  const { movie, date, time } = req.query;
+  try {
+    const bookings = await Booking.find({ movie, date, time });
+    res.json(bookings);
+  } catch (err) {
+    console.error("Failed to fetch bookings by showtime:", err);
+    res.status(500).json({ error: "Failed to fetch bookings." });
+  }
+});
