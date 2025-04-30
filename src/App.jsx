@@ -13,6 +13,8 @@ import Payment from "./pages/Payment";
 import ScrollToTop from "./components/ScrollToTop"; // ✅ Import it
 import Terms from "./pages/Terms"; // ✅ Import it
 import "./i18n"; // 👈 Import i18n so it initializes
+import ScanPage from "./pages/ScanPage";
+
 
 
 export default function App() {
@@ -33,6 +35,8 @@ export default function App() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/scan" element={<ScanPage />} />
+
       </Routes>
     </div> 
   );
