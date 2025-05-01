@@ -88,12 +88,19 @@ export default function ThankYou() {
                 />
               </div>
               <div className="text-sm text-gray-300 space-y-1">
-  <p>🎟️ <strong>{bookingData.name}</strong> booked <strong>{bookingData.movie}</strong></p>
-  <p>🗓️ {bookingData.date} at {bookingData.time} | Seats: {bookingData.seats.join(", ")}</p>
-  <p>🔐 <span className="text-gray-400">Booking Code:</span> <span className="text-green-400 font-mono">{bookingData._id}</span></p>
-  <p>📍 Scanned: ❌</p>
-</div>
-
+                <p>🎟️ <strong>{bookingData.name}</strong> booked <strong>{bookingData.movie}</strong></p>
+                <p>🗓️ {bookingData.date} at {bookingData.time} | Seats: {bookingData.seats.join(", ")}</p>
+                <p>🔐 <span className="text-gray-400">Booking Code:</span> <span className="text-green-400 font-mono">{bookingData._id}</span></p>
+                <p>📍 Scanned: ❌</p>
+              </div>
+              <motion.p
+                className="text-md text-gray-300 mt-4"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
+              >
+                Here to screenshot or press here to download the ticket info with all the details in a PDF.
+              </motion.p>
             </motion.div>
           )}
 
