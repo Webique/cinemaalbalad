@@ -69,11 +69,15 @@ export default function BookNow() {
   };
 
   const toggleSeat = (seat) => {
-    setSelectedSeats((prev) =>
-      prev.includes(seat) ? prev.filter((s) => s !== seat) : [...prev, seat]
-    );
+    if (selectedSeats.includes(seat)) {
+      setSelectedSeats((prev) => prev.filter((s) => s !== seat));
+    } else {
+      if (selectedSeats.length < prefilledCount) {
+        setSelectedSeats((prev) => [...prev, seat]);
+      }
+    }
   };
-
+  
   useEffect(() => {
     const fetchTakenSeats = async () => {
       if (!selectedMovie || !form.date || !form.time) return;
@@ -95,10 +99,16 @@ export default function BookNow() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!form.name || !form.email || !form.date || !form.time || selectedSeats.length === 0 || !selectedMovie) {
+    if (!form.name || !form.email || !form.date || !form.time || !selectedMovie) {
       alert(t('booknow.fillFields'));
       return;
     }
+    
+    if (selectedSeats.length < prefilledCount) {
+      alert(`Please select ${prefilledCount} seats before continuing.`);
+      return;
+    }
+    
 
     const bookingDetails = {
       name: form.name,
