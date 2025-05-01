@@ -5,11 +5,13 @@ import { motion } from "framer-motion";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useTranslation } from "react-i18next";
 import { QRCodeCanvas } from "qrcode.react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import jsPDF from "jspdf";
 
 export default function ThankYou() {
   const { t } = useTranslation();
   const [bookingData, setBookingData] = useState(null);
+  const qrRef = useRef(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("latestBooking");
@@ -17,6 +19,31 @@ export default function ThankYou() {
       setBookingData(JSON.parse(saved));
     }
   }, []);
+
+  const handleDownloadPDF = () => {
+    if (!bookingData) return;
+
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text("🎟️ Cinema Al Balad – Ticket Info", 20, 20);
+    doc.setFontSize(12);
+    doc.text(`Name: ${bookingData.name}`, 20, 40);
+    doc.text(`Movie: ${bookingData.movie}`, 20, 50);
+    doc.text(`Date: ${bookingData.date}`, 20, 60);
+    doc.text(`Time: ${bookingData.time}`, 20, 70);
+    doc.text(`Seats: ${bookingData.seats.join(", ")}`, 20, 80);
+    doc.text(`Booking Code: ${bookingData._id}`, 20, 90);
+    doc.text(`Scanned: ❌`, 20, 100);
+
+    // QR Code Image
+    const qrCanvas = qrRef.current?.querySelector("canvas");
+    if (qrCanvas) {
+      const imgData = qrCanvas.toDataURL("image/png");
+      doc.addImage(imgData, "PNG", 140, 40, 50, 50);
+    }
+
+    doc.save("CinemaTicket.pdf");
+  };
 
   return (
     <>
@@ -59,7 +86,6 @@ export default function ThankYou() {
             {t('thankyou.subtitle')}
           </motion.p>
 
-          {/* ✅ QR Code Block */}
           {bookingData && (
             <motion.div
               className="space-y-4"
@@ -68,7 +94,8 @@ export default function ThankYou() {
               transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
             >
               <h2 className="text-2xl font-semibold">{t('thankyou.qrTitle') || 'Your Booking QR Code'}</h2>
-              <div className="flex justify-center">
+
+              <div className="flex justify-center" ref={qrRef}>
                 <QRCodeCanvas
                   value={JSON.stringify({
                     _id: bookingData._id,
@@ -87,20 +114,24 @@ export default function ThankYou() {
                   includeMargin={true}
                 />
               </div>
+
               <div className="text-sm text-gray-300 space-y-1">
                 <p>🎟️ <strong>{bookingData.name}</strong> booked <strong>{bookingData.movie}</strong></p>
                 <p>🗓️ {bookingData.date} at {bookingData.time} | Seats: {bookingData.seats.join(", ")}</p>
                 <p>🔐 <span className="text-gray-400">Booking Code:</span> <span className="text-green-400 font-mono">{bookingData._id}</span></p>
                 <p>📍 Scanned: ❌</p>
               </div>
-              <motion.p
-                className="text-md text-gray-300 mt-4"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
+
+              <p className="text-md text-gray-300 mt-4">
+                Please screenshot this page or click the button below to download your ticket info as a PDF.
+              </p>
+
+              <button
+                onClick={handleDownloadPDF}
+                className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-md hover:scale-105"
               >
-                Here to screenshot or press here to download the ticket info with all the details in a PDF.
-              </motion.p>
+                📥 Download Ticket PDF
+              </button>
             </motion.div>
           )}
 
