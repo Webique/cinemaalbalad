@@ -83,22 +83,24 @@ export default function Footer() {
       </motion.div>
 
       {/* Location Map */}
-      <motion.div
-        className="max-w-7xl mx-auto mt-20 overflow-hidden rounded-2xl shadow-xl"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        <iframe
-          title={t('footer.mapTitle')} // ✅
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14850.17596925637!2d39.17412030530276!3d21.486402101057426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15c3cf1a4b78394b%3A0xb2f902e7dad72c0!2sAl-Balad%2C%20Jeddah%20Saudi%20Arabia!5e0!3m2!1sen!2suk!4v1742957821428!5m2!1sen!2suk"
-          className="w-full h-[300px] md:h-[400px] border-0"
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-      </motion.div>
+      {/* Location Map */}
+    <motion.div
+      className="max-w-7xl mx-auto mt-20 overflow-hidden rounded-2xl shadow-xl"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
+      <iframe
+        title={t('footer.mapTitle')} // ✅
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3711.8943493574784!2d39.18959727506993!3d21.488774980244012!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15c3cf00767924af%3A0xb56a3f3d1e864761!2z2YXYs9iq2LTZgdmK2Kkg2YXYr9mK2YbYp9ixIC0gQ2luZW1hIEFsIEJhbGFk!5e0!3m2!1sar!2ssa!4v1714728307301!5m2!1sar!2ssa"
+        className="w-full h-[300px] md:h-[400px] border-0"
+        allowFullScreen=""
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+      />
+    </motion.div>
+
 
       {/* Copyright */}
       <div className="mt-16 text-center text-xs text-gray-500 pb-10">
