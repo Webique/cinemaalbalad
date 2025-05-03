@@ -21,7 +21,7 @@ export default function ThankYou() {
   }, []);
 
   const seatLabel = (seat) => {
-    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6)); // A, B, C...
+    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6));
     const number = ((seat - 1) % 6) + 1;
     return `${row}${number}`;
   };
@@ -98,7 +98,7 @@ export default function ThankYou() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
             >
-              {/* ✅ Download button shown right after subtitle */}
+              {/* ✅ Download button placed immediately after subtitle */}
               <button
                 onClick={handleDownloadPDF}
                 className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-md hover:scale-105"
@@ -106,6 +106,12 @@ export default function ThankYou() {
                 📥 Download Ticket PDF
               </button>
 
+              {/* ✅ Screenshot notice */}
+              <p className="text-md text-gray-300">
+                Please screenshot this page or click the button above to download your ticket info as a PDF.
+              </p>
+
+              {/* ✅ QR Code */}
               <div className="flex justify-center" ref={qrRef}>
                 <QRCodeCanvas
                   value={JSON.stringify({
@@ -126,6 +132,7 @@ export default function ThankYou() {
                 />
               </div>
 
+              {/* ✅ Booking Info */}
               <div className="text-sm text-gray-300 space-y-1">
                 <p>🎟️ <strong>{bookingData.name}</strong> booked <strong>{bookingData.movie}</strong></p>
                 <p>🗓️ {bookingData.date} at {bookingData.time} | Seats: {bookingData.seats.map(seatLabel).join(", ")}</p>
@@ -133,8 +140,9 @@ export default function ThankYou() {
                 <p>📍 Scanned: ❌</p>
               </div>
 
+              {/* ✅ Reservation reminder */}
               <p className="text-md text-gray-300 mt-4">
-                Please screenshot this page or click the button above to download your ticket info as a PDF.
+                Your reservation has been confirmed. Please arrive 15 minutes before your showtime.
               </p>
             </motion.div>
           )}
