@@ -26,10 +26,11 @@ export default function BookNow() {
 
 
   const seatLabel = (seat) => {
-    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6));
-    const number = ((seat - 1) % 6) + 1;
+    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 8)); // A–F
+    const number = ((seat - 1) % 8) + 1; // 1–8
     return `${row}${number}`;
   };
+  
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -199,8 +200,8 @@ export default function BookNow() {
               <h3 className="text-lg mb-4 font-semibold">{t('booknow.selectSeats')}</h3>
               <div className="bg-black/20 rounded-lg py-4 px-2 mb-6">
                 <div className="text-center text-gray-400 font-medium mb-4">{t('booknow.screen')}</div>
-                <div className="grid grid-cols-6 gap-4 justify-center">
-                  {seats.map((seat) => (
+                <div className="grid grid-cols-8 gap-4 justify-center">
+                {seats.map((seat) => (
                     <button
                       key={seat}
                       type="button"
