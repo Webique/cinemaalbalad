@@ -12,6 +12,12 @@ export default function ScanPage() {
   const [showtimes, setShowtimes] = useState([]);
   const [bookings, setBookings] = useState([]);
 
+  const seatLabel = (seat) => {
+    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6)); // A, B, C...
+    const number = ((seat - 1) % 6) + 1;
+    return `${row}${number}`;
+  };
+
   const fetchBookings = async () => {
     try {
       const res = await fetch(`https://cinemaalbalad.onrender.com/api/bookings/by-showtime?movie=${encodeURIComponent(selectedMovie)}&date=${selectedDate}&time=${selectedTime}`);
@@ -109,7 +115,7 @@ export default function ScanPage() {
             <p><strong>Movie:</strong> {result.movie}</p>
             <p><strong>Date:</strong> {result.date}</p>
             <p><strong>Time:</strong> {result.time}</p>
-            <p><strong>Seats:</strong> {result.seats.join(", ")}</p>
+            <p><strong>Seats:</strong> {result.seats.map(seatLabel).join(", ")}</p>
             <p><strong>Status:</strong> ✅ Scanned</p>
           </div>
         )}
@@ -181,7 +187,7 @@ export default function ScanPage() {
               >
                 <div className="text-sm sm:text-base">
                   <p><strong>{b.name}</strong> ({b.email})</p>
-                  <p>{b.seats.join(", ")} – ID: {b._id}</p>
+                  <p>{b.seats.map(seatLabel).join(", ")} – ID: {b._id}</p>
                   <p>Status: {b.scanned ? "✅ Scanned" : "❌ Not Scanned"}</p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
