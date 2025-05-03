@@ -98,7 +98,7 @@ export default function ThankYou() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
             >
-              {/* ✅ Download button placed immediately after subtitle */}
+              {/* ✅ Download button */}
               <button
                 onClick={handleDownloadPDF}
                 className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-md hover:scale-105"
@@ -139,19 +139,25 @@ export default function ThankYou() {
                 <p>🔐 <span className="text-gray-400">Booking Code:</span> <span className="text-green-400 font-mono">{bookingData._id}</span></p>
                 <p>📍 Scanned: ❌</p>
               </div>
-
-              {/* ✅ Reservation reminder */}
-              <p className="text-md text-gray-300 mt-4">
-                Your reservation has been confirmed. Please arrive 15 minutes before your showtime.
-              </p>
             </motion.div>
           )}
 
+          {/* ✅ Reservation confirmation text */}
+          <motion.p
+            className="text-md text-white font-semibold mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.75, duration: 0.8, ease: "easeOut" }}
+          >
+            Your reservation is confirmed. We can’t wait to welcome you to Cinema Al Balad. Get ready for an unforgettable experience!
+          </motion.p>
+
+          {/* ✅ Buttons */}
           <motion.div
-            className="flex justify-center gap-6 flex-wrap mt-8"
+            className="flex justify-center gap-6 flex-wrap mt-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
+            transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
           >
             <Link
               to="/"
