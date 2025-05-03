@@ -98,7 +98,13 @@ export default function ThankYou() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
             >
-              <h2 className="text-2xl font-semibold">{t('thankyou.qrTitle') || 'Your Booking QR Code'}</h2>
+              {/* ✅ Download button shown right after subtitle */}
+              <button
+                onClick={handleDownloadPDF}
+                className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-md hover:scale-105"
+              >
+                📥 Download Ticket PDF
+              </button>
 
               <div className="flex justify-center" ref={qrRef}>
                 <QRCodeCanvas
@@ -119,14 +125,6 @@ export default function ThankYou() {
                   includeMargin={true}
                 />
               </div>
-
-              {/* 📥 PRIORITY Download Button */}
-              <button
-                onClick={handleDownloadPDF}
-                className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-md hover:scale-105"
-              >
-                📥 Download Ticket PDF
-              </button>
 
               <div className="text-sm text-gray-300 space-y-1">
                 <p>🎟️ <strong>{bookingData.name}</strong> booked <strong>{bookingData.movie}</strong></p>
