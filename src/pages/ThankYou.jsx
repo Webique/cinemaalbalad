@@ -21,10 +21,11 @@ export default function ThankYou() {
   }, []);
 
   const seatLabel = (seat) => {
-    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6));
-    const number = ((seat - 1) % 6) + 1;
+    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 8)); // A–F
+    const number = ((seat - 1) % 8) + 1; // 1–8
     return `${row}${number}`;
   };
+  
 
   const handleDownloadPDF = () => {
     if (!bookingData) return;
