@@ -39,7 +39,6 @@ export default function ThankYou() {
     doc.text(`Time: ${bookingData.time}`, 20, 70);
     doc.text(`Seats: ${bookingData.seats.map(seatLabel).join(", ")}`, 20, 80);
     doc.text(`Booking Code: ${bookingData._id}`, 20, 90);
-    doc.text(`Scanned: ❌`, 20, 100);
 
     const qrCanvas = qrRef.current?.querySelector("canvas");
     if (qrCanvas) {
@@ -82,21 +81,12 @@ export default function ThankYou() {
             {t('thankyou.title')}
           </motion.h1>
 
-          <motion.p
-            className="text-lg text-gray-300 max-w-xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
-          >
-            {t('thankyou.subtitle')}
-          </motion.p>
-
           {bookingData && (
             <motion.div
               className="space-y-4"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+              transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
             >
               {/* ✅ Download button */}
               <button
@@ -137,7 +127,6 @@ export default function ThankYou() {
                 <p>🎟️ <strong>{bookingData.name}</strong> booked <strong>{bookingData.movie}</strong></p>
                 <p>🗓️ {bookingData.date} at {bookingData.time} | Seats: {bookingData.seats.map(seatLabel).join(", ")}</p>
                 <p>🔐 <span className="text-gray-400">Booking Code:</span> <span className="text-green-400 font-mono">{bookingData._id}</span></p>
-                <p>📍 Scanned: ❌</p>
               </div>
             </motion.div>
           )}
