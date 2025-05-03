@@ -11,9 +11,10 @@ export default function ScanPage() {
   const [selectedTime, setSelectedTime] = useState("");
   const [showtimes, setShowtimes] = useState([]);
   const [bookings, setBookings] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const seatLabel = (seat) => {
-    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6)); // A, B, C...
+    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6));
     const number = ((seat - 1) % 6) + 1;
     return `${row}${number}`;
   };
@@ -87,6 +88,11 @@ export default function ScanPage() {
     const movie = movies.find((m) => m.title === selectedMovie);
     setShowtimes(movie?.showtimes || []);
   }, [selectedMovie, movies]);
+
+  const filteredBookings = bookings.filter((b) =>
+    b.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    b.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <main className="min-h-screen bg-black text-white px-4 py-8 font-cinema">
@@ -170,17 +176,27 @@ export default function ScanPage() {
           </select>
         </div>
 
-        <button
-          className="bg-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-blue-700 mb-6"
-          onClick={fetchBookings}
-          disabled={!selectedMovie || !selectedDate || !selectedTime}
-        >
-          🔍 Load Bookings
-        </button>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 mb-6">
+          <button
+            className="bg-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-blue-700"
+            onClick={fetchBookings}
+            disabled={!selectedMovie || !selectedDate || !selectedTime}
+          >
+            🔍 Load Bookings
+          </button>
+          <input
+            type="text"
+            placeholder="Search by name or email"
+            className="mt-4 sm:mt-0 p-3 text-black rounded w-full sm:w-auto"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            disabled={bookings.length === 0}
+          />
+        </div>
 
-        {bookings.length > 0 && (
+        {filteredBookings.length > 0 && (
           <div className="space-y-4 pb-20">
-            {bookings.map((b) => (
+            {filteredBookings.map((b) => (
               <div
                 key={b._id}
                 className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center bg-white text-black p-4 rounded shadow space-y-3 sm:space-y-0"
