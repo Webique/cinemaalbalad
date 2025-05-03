@@ -22,7 +22,8 @@ export default function BookNow() {
   const [takenSeats, setTakenSeats] = useState([]);
   const ticketPrice = 35;
 
-  const seats = Array.from({ length: 30 }, (_, i) => i + 1);
+  const seats = Array.from({ length: 48 }, (_, i) => i + 1);
+
 
   const seatLabel = (seat) => {
     const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6));
