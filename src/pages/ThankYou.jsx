@@ -20,6 +20,12 @@ export default function ThankYou() {
     }
   }, []);
 
+  const seatLabel = (seat) => {
+    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 6)); // A, B, C...
+    const number = ((seat - 1) % 6) + 1;
+    return `${row}${number}`;
+  };
+
   const handleDownloadPDF = () => {
     if (!bookingData) return;
 
@@ -31,11 +37,10 @@ export default function ThankYou() {
     doc.text(`Movie: ${bookingData.movie}`, 20, 50);
     doc.text(`Date: ${bookingData.date}`, 20, 60);
     doc.text(`Time: ${bookingData.time}`, 20, 70);
-    doc.text(`Seats: ${bookingData.seats.join(", ")}`, 20, 80);
+    doc.text(`Seats: ${bookingData.seats.map(seatLabel).join(", ")}`, 20, 80);
     doc.text(`Booking Code: ${bookingData._id}`, 20, 90);
     doc.text(`Scanned: ❌`, 20, 100);
 
-    // QR Code Image
     const qrCanvas = qrRef.current?.querySelector("canvas");
     if (qrCanvas) {
       const imgData = qrCanvas.toDataURL("image/png");
@@ -115,23 +120,24 @@ export default function ThankYou() {
                 />
               </div>
 
-              <div className="text-sm text-gray-300 space-y-1">
-                <p>🎟️ <strong>{bookingData.name}</strong> booked <strong>{bookingData.movie}</strong></p>
-                <p>🗓️ {bookingData.date} at {bookingData.time} | Seats: {bookingData.seats.join(", ")}</p>
-                <p>🔐 <span className="text-gray-400">Booking Code:</span> <span className="text-green-400 font-mono">{bookingData._id}</span></p>
-                <p>📍 Scanned: ❌</p>
-              </div>
-
-              <p className="text-md text-gray-300 mt-4">
-                Please screenshot this page or click the button below to download your ticket info as a PDF.
-              </p>
-
+              {/* 📥 PRIORITY Download Button */}
               <button
                 onClick={handleDownloadPDF}
                 className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-md hover:scale-105"
               >
                 📥 Download Ticket PDF
               </button>
+
+              <div className="text-sm text-gray-300 space-y-1">
+                <p>🎟️ <strong>{bookingData.name}</strong> booked <strong>{bookingData.movie}</strong></p>
+                <p>🗓️ {bookingData.date} at {bookingData.time} | Seats: {bookingData.seats.map(seatLabel).join(", ")}</p>
+                <p>🔐 <span className="text-gray-400">Booking Code:</span> <span className="text-green-400 font-mono">{bookingData._id}</span></p>
+                <p>📍 Scanned: ❌</p>
+              </div>
+
+              <p className="text-md text-gray-300 mt-4">
+                Please screenshot this page or click the button above to download your ticket info as a PDF.
+              </p>
             </motion.div>
           )}
 
