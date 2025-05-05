@@ -42,6 +42,8 @@ app.get("/api/movies", async (req, res) => {
 app.get("/", (req, res) => {
   res.send("Server is running 🚀");
 });
+
+
 app.post("/api/bookings", async (req, res) => {
   try {
     const { name, email, movie, date, time, seats } = req.body;
@@ -129,41 +131,34 @@ app.get("/api/movies/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch movie" });
   }
 });
-app.post("/api/admin/seed-movies-formatted", async (req, res) => {
+app.post("/api/admin/add-movie-may8", async (req, res) => {
   try {
-    const fixedDate = "2025-05-05"; // 🎯 May 5, 2025
-
-    // Step 1: Delete all existing movies
-    await Movie.deleteMany({});
-    console.log("🗑️ All previous movies deleted.");
-
-    // Step 2: Create the new movie
     const movie = {
-      title: "Desert Dreams",
-      runtime: "118 min",
-      rating: "PG",
-      synopsis: "An epic journey through the vast deserts of Arabia.",
-      poster: "/posters/desert-dreams.jpg",
+      title: "Moonlight Mirage",
+      runtime: "102 min",
+      rating: "PG-13",
+      synopsis: "A mysterious tale set under the stars of the Arabian desert.",
+      poster: "/posters/moonlight-mirage.jpg",
       trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      ticketPrice: 35,
+      ticketPrice: 40,
       showtimes: [
         {
-          date: fixedDate,
-          time: "8:30 PM",
+          date: "2025-05-08",
+          time: "9:00 PM",
           reservedSeats: []
         }
       ],
     };
 
-    // Step 3: Insert the new movie
     await Movie.insertMany([movie]);
 
-    res.status(201).json({ message: "✅ All old movies deleted. 1 new movie seeded for May 5, 2025." });
+    res.status(201).json({ message: "✅ New movie added for May 8, 2025 at 9:00 PM." });
   } catch (err) {
-    console.error("❌ Error seeding 1 movie:", err);
-    res.status(500).json({ error: "Failed to seed the movie." });
+    console.error("❌ Error adding movie:", err);
+    res.status(500).json({ error: "Failed to add the movie." });
   }
 });
+
 
 
 
