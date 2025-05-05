@@ -30,23 +30,32 @@ export default function ThankYou() {
   const handleDownloadPDF = () => {
     if (!bookingData) return;
   
-    // Normalize helper to remove spaces
-    const normalize = (str) =>
-      str?.normalize("NFC").replace(/\s/g, "").replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, "");
+    // ✅ Debug: Show exact movie title from booking data
+    console.log("Original movie title:", bookingData.movie);
   
+    // ✅ Normalize helper to remove spaces and special characters
+    const normalize = (str) =>
+      str?.normalize("NFC").replace(/\s/g, "").replace(/[^\u0600-\u06FFa-zA-Z0-9]/g, "");
+  
+    // ✅ Define your translation map with normalized keys (no spaces)
     const movieTranslations = {
       "الرحلة": "The Journey",
       "عائلهموفم": "Moving Family",
       "سطار": "Sattar",
       "واديالجن": "Valley of the Jinn",
-      "كراكونفيالشارع": "Karakon in the Street",
+      "كراكونفيالشارع": "Karakon in the Street", // <- normalized key
     };
   
+    // ✅ Normalize the incoming movie title
     const normalizedMovie = normalize(bookingData.movie);
-    const translatedMovie = movieTranslations[normalizedMovie] || "Unknown Movie";
+    console.log("Normalized movie title:", normalizedMovie); // for debugging
   
+    // ✅ Lookup the translated movie name
+    const translatedMovie = movieTranslations[normalizedMovie] || bookingData.movie;
+  
+    // ✅ Create and populate the PDF
     const doc = new jsPDF();
-    doc.setFont("helvetica", ""); // ✅ ensure ASCII-safe font
+    doc.setFont("helvetica"); // ensures compatibility with ASCII/English
     doc.setFontSize(16);
     doc.text("Cinema Al Balad - Ticket Info", 20, 20);
   
@@ -58,12 +67,14 @@ export default function ThankYou() {
     doc.text(`Seats: ${bookingData.seats.map(seatLabel).join(", ")}`, 20, 80);
     doc.text(`Booking Code: ${bookingData._id}`, 20, 90);
   
+    // ✅ Add QR Code image from canvas
     const qrCanvas = qrRef.current?.querySelector("canvas");
     if (qrCanvas) {
       const imgData = qrCanvas.toDataURL("image/png");
       doc.addImage(imgData, "PNG", 140, 40, 50, 50);
     }
   
+    // ✅ Save the PDF
     doc.save("CinemaTicket.pdf");
   };
   
