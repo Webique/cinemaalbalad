@@ -1,3 +1,10 @@
+// ✅ Cleaned & updated ScanPage component with:
+// - No emojis
+// - Professional design
+// - Manual walk-in/cash seat booking
+// - Visual seat grid revealed via dropdown
+// - Support for multiple bookings
+
 import { useState, useEffect } from "react";
 
 export default function ScanPage() {
@@ -13,10 +20,11 @@ export default function ScanPage() {
   const [bookings, setBookings] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [freeName, setFreeName] = useState("");
-  const [selectedFreeSeat, setSelectedFreeSeat] = useState(null);
+  const [walkinName, setWalkinName] = useState("");
+  const [walkinSeats, setWalkinSeats] = useState([]);
   const [takenSeats, setTakenSeats] = useState([]);
-  const [totalSeats, setTotalSeats] = useState(48); // default
+  const [totalSeats, setTotalSeats] = useState(48);
+  const [showSeatGrid, setShowSeatGrid] = useState(false);
 
   const seatLabel = (seat) => {
     const row = String.fromCharCode(65 + Math.floor((seat - 1) / 8));
@@ -24,9 +32,15 @@ export default function ScanPage() {
     return `${row}${number}`;
   };
 
+  const seatButtons = Array.from({ length: totalSeats }, (_, i) => i + 1);
+
   const fetchBookings = async () => {
     try {
-      const res = await fetch(`https://cinemaalbalad.onrender.com/api/bookings/by-showtime?movie=${encodeURIComponent(selectedMovie)}&date=${selectedDate}&time=${selectedTime}`);
+      const res = await fetch(
+        `https://cinemaalbalad.onrender.com/api/bookings/by-showtime?movie=${encodeURIComponent(
+          selectedMovie
+        )}&date=${selectedDate}&time=${selectedTime}`
+      );
       const data = await res.json();
       setBookings(data);
     } catch {
@@ -36,7 +50,9 @@ export default function ScanPage() {
 
   const fetchTakenSeats = async () => {
     try {
-      const res = await fetch(`https://cinemaalbalad.onrender.com/api/bookings/taken-seats?movie=${selectedMovie}&date=${selectedDate}&time=${selectedTime}`);
+      const res = await fetch(
+        `https://cinemaalbalad.onrender.com/api/bookings/taken-seats?movie=${selectedMovie}&date=${selectedDate}&time=${selectedTime}`
+      );
       const data = await res.json();
       setTakenSeats(data.takenSeats || []);
     } catch {
@@ -72,7 +88,8 @@ export default function ScanPage() {
 
   const handleScan = async () => {
     if (!bookingId) return;
-    setError(""); setResult(null);
+    setError("");
+    setResult(null);
     try {
       const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings/scan", {
         method: "POST",
@@ -84,6 +101,48 @@ export default function ScanPage() {
       else setResult(data.booking);
     } catch {
       setError("Scan failed.");
+    }
+  };
+
+  const handleWalkinBooking = async () => {
+    if (!walkinName || walkinSeats.length === 0 || !selectedMovie || !selectedDate || !selectedTime) {
+      alert("Please fill all fields and select seats.");
+      return;
+    }
+
+    try {
+      const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: walkinName,
+          email: "walkin@cinema.com",
+          movie: selectedMovie,
+          date: selectedDate,
+          time: selectedTime,
+          seats: walkinSeats,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.message || data.error);
+        return;
+      }
+      setWalkinName("");
+      setWalkinSeats([]);
+      alert("Walk-in booking added.");
+      fetchBookings();
+      fetchTakenSeats();
+    } catch {
+      alert("Failed to add booking.");
+    }
+  };
+
+  const toggleSeat = (seat) => {
+    if (walkinSeats.includes(seat)) {
+      setWalkinSeats((prev) => prev.filter((s) => s !== seat));
+    } else {
+      setWalkinSeats((prev) => [...prev, seat]);
     }
   };
 
@@ -101,62 +160,17 @@ export default function ScanPage() {
   }, [selectedMovie, movies]);
 
   useEffect(() => {
-    if (selectedMovie && selectedDate && selectedTime) {
-      fetchTakenSeats();
-    }
+    if (selectedMovie && selectedDate && selectedTime) fetchTakenSeats();
   }, [selectedMovie, selectedDate, selectedTime]);
-
-  const handleFreeBooking = async () => {
-    if (!freeName || !selectedFreeSeat || !selectedMovie || !selectedDate || !selectedTime) {
-      alert("Fill all fields.");
-      return;
-    }
-
-    try {
-      const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: freeName,
-          email: "walkin@cinema.com",
-          movie: selectedMovie,
-          date: selectedDate,
-          time: selectedTime,
-          seats: [selectedFreeSeat],
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        alert(data.message || data.error);
-        return;
-      }
-
-      await fetch("https://cinemaalbalad.onrender.com/api/bookings/scan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bookingId: data.bookingId }),
-      });
-
-      setFreeName("");
-      setSelectedFreeSeat(null);
-      alert("✅ Free booking added & scanned.");
-      fetchBookings();
-      fetchTakenSeats();
-    } catch {
-      alert("Failed to add booking.");
-    }
-  };
 
   const filteredBookings = bookings.filter((b) =>
     b.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     b.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const seatButtons = Array.from({ length: totalSeats }, (_, i) => i + 1);
-
   return (
     <main className="min-h-screen bg-black text-white px-4 py-8 font-cinema">
-      <h1 className="text-3xl font-bold mb-6 text-center">🎟️ Scan Tickets</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Scan Tickets</h1>
 
       <div className="max-w-md mx-auto space-y-4 mb-10">
         <input
@@ -181,14 +195,13 @@ export default function ScanPage() {
             <p><strong>Date:</strong> {result.date}</p>
             <p><strong>Time:</strong> {result.time}</p>
             <p><strong>Seats:</strong> {result.seats.map(seatLabel).join(", ")}</p>
-            <p><strong>Status:</strong> ✅ Scanned</p>
+            <p><strong>Status:</strong> Scanned</p>
           </div>
         )}
       </div>
 
-      {/* Movie, date, time selection */}
-      <div className="max-w-4xl mx-auto mb-10">
-        <h2 className="text-2xl font-bold mb-4">📋 View Bookings by Movie & Time</h2>
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4">Manage Bookings</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           <select
             value={selectedMovie}
@@ -239,64 +252,58 @@ export default function ScanPage() {
               ))}
           </select>
         </div>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 mb-6">
+
+        {/* Seat Booking Section Toggle */}
+        <div className="mb-6">
           <button
-            className="bg-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-blue-700"
-            onClick={fetchBookings}
-            disabled={!selectedMovie || !selectedDate || !selectedTime}
+            onClick={() => setShowSeatGrid(!showSeatGrid)}
+            className="bg-gray-700 text-white px-4 py-2 rounded-full hover:bg-gray-600"
           >
-            🔍 Load Bookings
+            {showSeatGrid ? "Hide Walk-in Booking Form" : "Show Walk-in / Cash Booking Form"}
           </button>
-          <input
-            type="text"
-            placeholder="Search by name or email"
-            className="mt-4 sm:mt-0 p-3 text-black rounded w-full sm:w-auto"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            disabled={bookings.length === 0}
-          />
         </div>
 
-        {/* ➕ Free Booking Visual Grid */}
-        <div className="bg-white/10 border border-white/20 p-6 rounded-xl mb-10">
-          <h3 className="text-lg font-bold mb-4">➕ Free Booking (Cash)</h3>
-          <input
-            type="text"
-            placeholder="Customer Name"
-            value={freeName}
-            onChange={(e) => setFreeName(e.target.value)}
-            className="p-3 text-black rounded mb-4 w-full"
-          />
-          <div className="grid grid-cols-8 gap-2 mb-4">
-            {seatButtons.map((seat) => (
-              <button
-                key={seat}
-                onClick={() => setSelectedFreeSeat(seat)}
-                disabled={takenSeats.includes(seat)}
-                className={`h-10 rounded text-sm font-bold ${
-                  takenSeats.includes(seat)
-                    ? "bg-red-900 text-white"
-                    : selectedFreeSeat === seat
-                    ? "bg-red-600 text-white"
-                    : "bg-gray-300 text-black hover:bg-red-200"
-                }`}
-              >
-                {seatLabel(seat)}
-              </button>
-            ))}
+        {showSeatGrid && (
+          <div className="bg-white/10 border border-white/20 p-6 rounded-xl mb-10">
+            <h3 className="text-lg font-bold mb-4">Walk-in / Cash Booking</h3>
+            <input
+              type="text"
+              placeholder="Customer Name"
+              value={walkinName}
+              onChange={(e) => setWalkinName(e.target.value)}
+              className="p-3 text-black rounded mb-4 w-full"
+            />
+            <div className="text-center text-gray-400 font-medium mb-2">Screen</div>
+            <div className="grid grid-cols-8 gap-2 mb-4">
+              {seatButtons.map((seat) => (
+                <button
+                  key={seat}
+                  onClick={() => toggleSeat(seat)}
+                  disabled={takenSeats.includes(seat)}
+                  className={`h-10 rounded text-sm font-bold ${
+                    takenSeats.includes(seat)
+                      ? "bg-red-900 text-white"
+                      : walkinSeats.includes(seat)
+                      ? "bg-red-600 text-white"
+                      : "bg-gray-300 text-black hover:bg-red-200"
+                  }`}
+                >
+                  {seatLabel(seat)}
+                </button>
+              ))}
+            </div>
+            <p className="text-sm mb-4">
+              Selected: {walkinSeats.length > 0 ? walkinSeats.map(seatLabel).join(", ") : "None"}
+            </p>
+            <button
+              onClick={handleWalkinBooking}
+              className="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700"
+            >
+              Add Walk-in Booking
+            </button>
           </div>
-          <p className="text-sm mb-4">
-            Selected: {selectedFreeSeat ? seatLabel(selectedFreeSeat) : "None"}
-          </p>
-          <button
-            onClick={handleFreeBooking}
-            className="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700"
-          >
-            💸 Add Free Booking
-          </button>
-        </div>
+        )}
 
-        {/* Booking list */}
         {filteredBookings.length > 0 && (
           <div className="space-y-4 pb-20">
             {filteredBookings.map((b) => (
@@ -307,7 +314,7 @@ export default function ScanPage() {
                 <div className="text-sm sm:text-base">
                   <p><strong>{b.name}</strong> ({b.email})</p>
                   <p>{b.seats.map(seatLabel).join(", ")} – ID: {b._id}</p>
-                  <p>Status: {b.scanned ? "✅ Scanned" : "❌ Not Scanned"}</p>
+                  <p>Status: {b.scanned ? "Scanned" : "Not Scanned"}</p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   {!b.scanned ? (
@@ -315,14 +322,14 @@ export default function ScanPage() {
                       onClick={() => markAsScanned(b._id)}
                       className="flex-1 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                     >
-                      ✅ Scan
+                      Mark as Scanned
                     </button>
                   ) : (
                     <button
                       onClick={() => unscanBooking(b._id)}
                       className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                     >
-                      ⏪ Unscan
+                      Unscan
                     </button>
                   )}
                 </div>
