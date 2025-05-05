@@ -20,7 +20,7 @@ export default function BookNow() {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [takenSeats, setTakenSeats] = useState([]);
-  const ticketPrice = 35;
+
 
   const seats = Array.from({ length: 48 }, (_, i) => i + 1);
 
@@ -119,7 +119,7 @@ export default function BookNow() {
       time: form.time,
       date: form.date,
       seats: selectedSeats,
-      price: selectedSeats.length * ticketPrice,
+      price: selectedSeats.length * selectedMovie.ticketPrice,
     };
 
     const queryString = encodeURIComponent(JSON.stringify(bookingDetails));
@@ -227,12 +227,15 @@ export default function BookNow() {
             </div>
 
             <div className="mt-6 text-left sm:text-center text-white">
-              <p className="text-sm">
-                {t('booknow.selected')}: {selectedSeats.map(seatLabel).join(", ") || t('booknow.none')}
-              </p>
-              <p className="text-sm">{t('booknow.totalTickets')}: {selectedSeats.length}</p>
-              <p className="text-sm">{t('booknow.totalPrice')}: {selectedSeats.length * ticketPrice} SAR</p>
-            </div>
+  <p className="text-sm">
+    {t('booknow.selected')}: {selectedSeats.map(seatLabel).join(", ") || t('booknow.none')}
+  </p>
+  <p className="text-sm">{t('booknow.totalTickets')}: {selectedSeats.length}</p>
+  <p className="text-sm">
+    {t('booknow.totalPrice')}: {selectedSeats.length * (selectedMovie.ticketPrice || 35)} SAR
+  </p>
+</div>
+
 
             <div className="mt-8 text-center">
               <button
