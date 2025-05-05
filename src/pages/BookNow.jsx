@@ -22,7 +22,11 @@ export default function BookNow() {
   const [takenSeats, setTakenSeats] = useState([]);
 
 
-  const seats = Array.from({ length: 48 }, (_, i) => i + 1);
+  const [totalSeats, setTotalSeats] = useState(48); // default value
+
+  // Dynamically generate seat numbers based on total
+  const seats = Array.from({ length: totalSeats }, (_, i) => i + 1);
+  
 
 
   const seatLabel = (seat) => {
@@ -39,9 +43,11 @@ export default function BookNow() {
         const data = await res.json();
         if (data && data.title) {
           setSelectedMovie(data);
+          setTotalSeats(data.totalSeats || 48); // 👈 dynamically set total seats
         } else {
           console.error("Invalid movie data", data);
         }
+        
       } catch (err) {
         console.error("Failed to fetch movie:", err);
       }
