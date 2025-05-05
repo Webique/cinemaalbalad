@@ -42,24 +42,22 @@ app.get("/api/movies", async (req, res) => {
 app.get("/", (req, res) => {
   res.send("Server is running 🚀");
 });
-
 app.post("/api/bookings", async (req, res) => {
   try {
     const { name, email, movie, date, time, seats } = req.body;
     console.log("📥 Booking request received:", req.body);
 
-    // Find the movie
+    // Step 1: Find the movie
     const movieDoc = await Movie.findOne({ title: movie });
     if (!movieDoc) return res.status(404).json({ error: "Movie not found" });
 
-    // Find the showtime
-    const showtime = movieDoc.showtimes.find(
-      (s) => s.date === date && s.time === time
-    );
+    const showtime = movieDoc.showtimes.find((s) => s.date === date && s.time === time);
     if (!showtime) return res.status(404).json({ error: "Showtime not found" });
 
-    // Check for already taken seats
-    const alreadyTaken = seats.filter((seat) => showtime.reservedSeats.includes(seat));
+    // ✅ Step 2: Check taken seats using Booking collection (not reservedSeats)
+    const existingBookings = await Booking.find({ movie, date, time });
+    const bookedSeats = existingBookings.flatMap(b => b.seats);
+    const alreadyTaken = seats.filter(seat => bookedSeats.includes(seat));
     if (alreadyTaken.length > 0) {
       return res.status(409).json({
         error: "Some seats are already taken",
@@ -67,11 +65,11 @@ app.post("/api/bookings", async (req, res) => {
       });
     }
 
-    // Step 1: Save the booking (without QR for now)
+    // Step 3: Save the booking (without QR for now)
     const newBooking = new Booking({ name, email, movie, date, time, seats });
     await newBooking.save();
 
-    // Step 2: Generate QR code payload including booking ID
+    // Step 4: Generate and save QR
     const qrPayload = JSON.stringify({
       _id: newBooking._id,
       name,
@@ -82,24 +80,17 @@ app.post("/api/bookings", async (req, res) => {
       seats,
       scanned: false,
     });
-
     const qrCodeData = await QRCode.toDataURL(qrPayload);
-
-    // Step 3: Save QR code to booking record
     newBooking.qrCodeData = qrCodeData;
     await newBooking.save();
 
-    // Step 4: Update reserved seats
-    showtime.reservedSeats.push(...seats);
-    await movieDoc.save();
-
-    // Step 5: Send response with booking ID and QR code
+    // Step 5: Respond with booking ID + QR
     res.status(201).json({
       message: "✅ Booking confirmed!",
       bookingId: newBooking._id,
-      qrCodeData, // Optional, helpful for Thank You page too
+      qrCodeData,
     });
-    
+
   } catch (err) {
     console.error("Booking save error:", err);
     res.status(500).json({ error: "Failed to save booking." });
