@@ -223,17 +223,18 @@ export default function Movies() {
                         </div>
                       </div>
 
-                      <div className="text-sm text-gray-300">
-                        {t('movies.total')}:{" "}
-                        <span className="text-white font-bold flex items-center gap-2">
+                      <div className="text-sm text-gray-300 flex items-center gap-2">
+                        {t('movies.total')}:
+                        <span className="text-white font-bold flex items-center gap-1">
                           {(booking[movie._id]?.count || 1) * (movie.ticketPrice || 35)}
                           <img
                             src="/saudi-riyal.png"
                             alt="SAR"
-                            className="w-5 h-5 sm:w-6 sm:h-6 inline-block"
+                            className="w-5 h-5 sm:w-6 sm:h-6"
                           />
                         </span>
                       </div>
+
 
 
                       <button
