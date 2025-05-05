@@ -30,27 +30,25 @@ export default function ThankYou() {
   const handleDownloadPDF = () => {
     if (!bookingData) return;
   
-    // 1. Normalize helper to remove spaces and invisible chars
+    // Normalize helper to remove spaces
     const normalize = (str) =>
       str?.normalize("NFC").replace(/\s/g, "").replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, "");
   
-    // 2. Translation map with normalized keys
     const movieTranslations = {
       "الرحلة": "The Journey",
       "عائلهموفم": "Moving Family",
       "سطار": "Sattar",
       "واديالجن": "Valley of the Jinn",
-      "كراكونفيالشارع": "Karakon in the Street", // ✅ updated key (no spaces)
-      "وراء الجبل": "zobrya al jabal",
-      
+      "كراكونفيالشارع": "Karakon in the Street",
     };
   
     const normalizedMovie = normalize(bookingData.movie);
-    const translatedMovie = movieTranslations[normalizedMovie] || bookingData.movie;
+    const translatedMovie = movieTranslations[normalizedMovie] || "Unknown Movie";
   
     const doc = new jsPDF();
+    doc.setFont("helvetica", ""); // ✅ ensure ASCII-safe font
     doc.setFontSize(16);
-    doc.text(" Cinema Al Balad – Ticket Info", 20, 20);
+    doc.text("Cinema Al Balad - Ticket Info", 20, 20);
   
     doc.setFontSize(12);
     doc.text(`Name: ${bookingData.name}`, 20, 40);
