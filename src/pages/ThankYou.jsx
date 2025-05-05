@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 import { QRCodeCanvas } from "qrcode.react";
 import { useEffect, useRef, useState } from "react";
 import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
 
 export default function ThankYou() {
   const { t } = useTranslation();
@@ -27,32 +29,26 @@ export default function ThankYou() {
   };
   
 
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
     if (!bookingData) return;
   
-    const doc = new jsPDF();
-    doc.setFont("Helvetica"); // ✅ use built-in Unicode-compatible font
-    doc.setFontSize(16);
-    doc.text("🎟️ Cinema Al Balad – Ticket Info", 20, 20);
+    const ticketElement = document.getElementById("ticketContent");
+    if (!ticketElement) return;
   
-    doc.setFontSize(12);
+    const canvas = await html2canvas(ticketElement, {
+      scale: 2,
+      useCORS: true
+    });
   
-    // Use `splitTextToSize` for long/unicode-safe strings if needed
-    doc.text(`Name: ${bookingData.name}`, 20, 40);
-    doc.text(`Movie: ${bookingData.movie}`, 20, 50);
-    doc.text(`Date: ${bookingData.date}`, 20, 60);
-    doc.text(`Time: ${bookingData.time}`, 20, 70);
-    doc.text(`Seats: ${bookingData.seats.map(seatLabel).join(", ")}`, 20, 80);
-    doc.text(`Booking Code: ${bookingData._id}`, 20, 90);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "px",
+      format: [canvas.width, canvas.height],
+    });
   
-    // Handle QR code
-    const qrCanvas = qrRef.current?.querySelector("canvas");
-    if (qrCanvas) {
-      const imgData = qrCanvas.toDataURL("image/png");
-      doc.addImage(imgData, "PNG", 140, 40, 50, 50);
-    }
-  
-    doc.save("CinemaTicket.pdf");
+    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+    pdf.save("CinemaTicket.pdf");
   };
   
 
@@ -90,11 +86,13 @@ export default function ThankYou() {
 
           {bookingData && (
             <motion.div
-              className="space-y-4"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
-            >
+            className="space-y-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+            id="ticketContent" // ✅ Add this here
+          >
+          
               {/* ✅ Download button */}
               <button
                 onClick={handleDownloadPDF}
