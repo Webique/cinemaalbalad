@@ -29,26 +29,32 @@ export default function ThankYou() {
 
   const handleDownloadPDF = () => {
     if (!bookingData) return;
-
+  
     const doc = new jsPDF();
+    doc.setFont("Helvetica"); // ✅ use built-in Unicode-compatible font
     doc.setFontSize(16);
     doc.text("🎟️ Cinema Al Balad – Ticket Info", 20, 20);
+  
     doc.setFontSize(12);
+  
+    // Use `splitTextToSize` for long/unicode-safe strings if needed
     doc.text(`Name: ${bookingData.name}`, 20, 40);
     doc.text(`Movie: ${bookingData.movie}`, 20, 50);
     doc.text(`Date: ${bookingData.date}`, 20, 60);
     doc.text(`Time: ${bookingData.time}`, 20, 70);
     doc.text(`Seats: ${bookingData.seats.map(seatLabel).join(", ")}`, 20, 80);
     doc.text(`Booking Code: ${bookingData._id}`, 20, 90);
-
+  
+    // Handle QR code
     const qrCanvas = qrRef.current?.querySelector("canvas");
     if (qrCanvas) {
       const imgData = qrCanvas.toDataURL("image/png");
       doc.addImage(imgData, "PNG", 140, 40, 50, 50);
     }
-
+  
     doc.save("CinemaTicket.pdf");
   };
+  
 
   return (
     <>
