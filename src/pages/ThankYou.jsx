@@ -7,8 +7,6 @@ import { useTranslation } from "react-i18next";
 import { QRCodeCanvas } from "qrcode.react";
 import { useEffect, useRef, useState } from "react";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-
 
 export default function ThankYou() {
   const { t } = useTranslation();
@@ -29,26 +27,44 @@ export default function ThankYou() {
   };
   
 
-  const handleDownloadPDF = async () => {
+  const handleDownloadPDF = () => {
     if (!bookingData) return;
   
-    const ticketElement = document.getElementById("ticketContent");
-    if (!ticketElement) return;
+    // 🔠 Manual translation map for known Arabic titles
+    const movieTranslations = {
+      "الرحلة": "The Journey",
+      "عائلة موفم": "Moving Family",
+      "سطار": "Sattar",
+      "وادي الجن": "Valley of the Jinn",
+      "كراكون في الشارع": "Karakon in the Street", // ✅ new addition
+    };
+    
   
-    const canvas = await html2canvas(ticketElement, {
-      scale: 2,
-      useCORS: true
-    });
+    // 🈁 Get English title or fallback to original
+    const translatedMovie = movieTranslations[bookingData.movie] || bookingData.movie;
   
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "px",
-      format: [canvas.width, canvas.height],
-    });
+    const doc = new jsPDF();
   
-    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-    pdf.save("CinemaTicket.pdf");
+    doc.setFontSize(16);
+    doc.text("🎟️ Cinema Al Balad – Ticket Info", 20, 20);
+  
+    doc.setFontSize(12);
+    doc.text(`Name: ${bookingData.name}`, 20, 40);
+    doc.text(`Movie: ${translatedMovie}`, 20, 50);
+    doc.text(`Date: ${bookingData.date}`, 20, 60);
+    doc.text(`Time: ${bookingData.time}`, 20, 70);
+    doc.text(`Seats: ${bookingData.seats.map(seatLabel).join(", ")}`, 20, 80);
+    doc.text(`Booking Code: ${bookingData._id}`, 20, 90);
+  
+    // 🧾 QR Code image from canvas
+    const qrCanvas = qrRef.current?.querySelector("canvas");
+    if (qrCanvas) {
+      const imgData = qrCanvas.toDataURL("image/png");
+      doc.addImage(imgData, "PNG", 140, 40, 50, 50);
+    }
+  
+    // 💾 Save file
+    doc.save("CinemaTicket.pdf");
   };
   
 
@@ -86,13 +102,11 @@ export default function ThankYou() {
 
           {bookingData && (
             <motion.div
-            className="space-y-4"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
-            id="ticketContent" // ✅ Add this here
-          >
-          
+              className="space-y-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+            >
               {/* ✅ Download button */}
               <button
                 onClick={handleDownloadPDF}
