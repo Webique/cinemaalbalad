@@ -130,13 +130,14 @@ export default function Movies() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: index * 0.1 }}
                 >
-                  <Link to={`/movies/${movie._id}`} className="w-full md:w-[55%]">
-                    <img
-                      src={movie.poster || "/default-poster.jpg"}
-                      alt={movie.title}
-                      className="w-full h-[400px] sm:h-[500px] md:h-[520px] object-cover rounded-2xl shadow-2xl cursor-pointer hover:scale-105 transition duration-500"
-                    />
-                  </Link>
+              <div className="w-full md:w-[55%]">
+                <img
+                  src={movie.poster || "/default-poster.jpg"}
+                  alt={movie.title}
+                  className="w-full h-[400px] sm:h-[500px] md:h-[520px] object-cover rounded-2xl shadow-2xl"
+                />
+              </div>
+
 
                   <div className="w-full md:w-1/2 text-center md:text-left space-y-4">
                     <h2 className="text-3xl sm:text-4xl font-bold drop-shadow-md">{movie.title}</h2>
