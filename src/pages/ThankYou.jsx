@@ -61,7 +61,7 @@ export default function ThankYou() {
   
     doc.setFontSize(12);
     doc.text(`Name: ${bookingData.name}`, 20, 40);
-    doc.text(`Movie: ${translatedMovie}`, 20, 50);
+    //doc.text(`Movie: ${translatedMovie}`, 20, 50);
     doc.text(`Date: ${bookingData.date}`, 20, 60);
     doc.text(`Time: ${bookingData.time}`, 20, 70);
     doc.text(`Seats: ${bookingData.seats.map(seatLabel).join(", ")}`, 20, 80);
