@@ -216,7 +216,7 @@ export default function BookNow() {
                         takenSeats.includes(seat) ||
                         (selectedSeats.length >= 10 && !selectedSeats.includes(seat))
                       }
-                      className={`w-10 h-10 rounded-lg text-sm font-bold
+                      className={`w-10 h-10 m-[2px] rounded-lg text-sm font-bold
                       ${
                         takenSeats.includes(seat)
                           ? "bg-red-900 text-white"
