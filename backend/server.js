@@ -134,17 +134,17 @@ app.get("/api/movies/:id", async (req, res) => {
 app.post("/api/admin/add-movie-may8", async (req, res) => {
   try {
     const movie = {
-      title: "Moonlight Mirage",
+      title: "Maflam Nights",
       runtime: "102 min",
       rating: "PG-13",
       synopsis: "A mysterious tale set under the stars of the Arabian desert.",
-      poster: "/posters/moonlight-mirage.jpg",
+      poster: "/posters/maflam.jpg",
       trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       ticketPrice: 40,
       showtimes: [
         {
           date: "2025-05-08",
-          time: "9:00 PM",
+          time: "8:00 PM",
           reservedSeats: []
         }
       ],
@@ -152,7 +152,7 @@ app.post("/api/admin/add-movie-may8", async (req, res) => {
 
     await Movie.insertMany([movie]);
 
-    res.status(201).json({ message: "✅ New movie added for May 8, 2025 at 9:00 PM." });
+    res.status(201).json({ message: "✅ New movie added for May 8, 2025 at 8:00 PM." });
   } catch (err) {
     console.error("❌ Error adding movie:", err);
     res.status(500).json({ error: "Failed to add the movie." });
