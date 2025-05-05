@@ -18,7 +18,6 @@ export default function Navbar() {
     { name: t('navbar.movies'), path: "/movies" }, // ✅ translated
     { name: t('navbar.events'), path: "/events" }, // ✅ translated
     { name: t('navbar.about'), path: "/about" }, // ✅ translated
-    { name: t('navbar.contact'), path: "/contact" }, // ✅ translated
   ];
 
   const toggleLanguage = () => {
