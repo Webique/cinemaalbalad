@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next"; // ✅ NEW
+import { useTranslation } from "react-i18next";
 
 export default function Payment() {
-  const { t } = useTranslation(); // ✅ NEW
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [processing, setProcessing] = useState(false);
@@ -34,17 +34,16 @@ export default function Payment() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(bookingData),
           });
-  
+
           const data = await res.json();
           console.log("✅ Booking saved to MongoDB:", data);
-  
-          // ✅ FIX: include _id and qrCodeData in localStorage
+
           localStorage.setItem("latestBooking", JSON.stringify({
             ...bookingData,
             _id: data.bookingId,
             qrCodeData: data.qrCodeData || ""
           }));
-  
+
           navigate("/thankyou");
         } catch (err) {
           console.error("❌ Booking save failed:", err);
@@ -53,12 +52,11 @@ export default function Payment() {
         }
       }
     };
-  
+
     confirmBooking();
   }, [success, bookingData, navigate, t]);
-  
 
-  const handlePayment = async (method) => {
+  const startMoyasarPayment = () => {
     if (!bookingData) {
       alert(t('payment.missingDetails'));
       return;
@@ -66,43 +64,27 @@ export default function Payment() {
 
     setProcessing(true);
 
-    try {
-      const res = await fetch("https://cinemaalbalad.onrender.com/api/payments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: bookingData.price,
-          movieId: bookingData.movie,
-          time: bookingData.time,
-          count: bookingData.seats.length,
-          method,
-          redirectUrl: `${window.location.origin}/payment?success=true&details=${encodeURIComponent(
-            JSON.stringify(bookingData)
-          )}`,
-        }),
+    const script = document.createElement("script");
+    script.src = "https://cdn.moyasar.com/mpf/1.15.0/moyasar.js";
+    script.onload = () => {
+      window.Moyasar.init({
+        element: ".mysr-form",
+        amount: bookingData.price * 100, // in Halalas
+        currency: "SAR",
+        description: `Booking for ${bookingData.movie}`,
+        publishable_api_key: "pk_live_7rNCmzYDRdxgfkcjsmZRUqvruqJ7hDQKP8QpZHfR", // 🔑 Replace with your real key
+        callback_url: `${window.location.origin}/payment?success=true&details=${encodeURIComponent(
+          JSON.stringify(bookingData)
+        )}`,
+        methods: ["creditcard"],
       });
-
-      const data = await res.json();
-
-
-      if (data?.url) {
-        console.log("🔁 Redirecting to payment page:", data.url);
-        window.location.href = data.url;
-      } else {
-        alert(t('payment.paymentFailed'));
-        setProcessing(false);
-      }
-    } catch (err) {
-      console.error("❌ Payment error:", err);
-      alert(t('payment.paymentError'));
-      setProcessing(false);
-    }
+    };
+    document.body.appendChild(script);
   };
 
   if (!bookingData) {
     return (
       <main className="relative min-h-screen flex items-center justify-center text-white font-cinema overflow-hidden">
-        {/* Blurred Background */}
         <div className="fixed top-0 left-0 w-full h-full -z-10">
           <div
             className="w-full h-full bg-cover bg-center"
@@ -122,7 +104,6 @@ export default function Payment() {
   if (success === "true") {
     return (
       <main className="relative min-h-screen flex items-center justify-center text-white font-cinema overflow-hidden">
-        {/* Blurred Background */}
         <div className="fixed top-0 left-0 w-full h-full -z-10">
           <div
             className="w-full h-full bg-cover bg-center"
@@ -141,7 +122,6 @@ export default function Payment() {
 
   return (
     <main className="relative min-h-screen flex items-center justify-center text-white font-cinema overflow-hidden px-6">
-      {/* Blurred Background */}
       <div className="fixed top-0 left-0 w-full h-full -z-10">
         <div
           className="w-full h-full bg-cover bg-center"
@@ -156,20 +136,14 @@ export default function Payment() {
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <button
-            onClick={() => handlePayment("creditcard")}
+            onClick={startMoyasarPayment}
             className="bg-green-500 hover:bg-green-600 hover:scale-105 transition-all px-8 py-4 rounded-full text-lg font-semibold shadow-md"
           >
             💳 {t('payment.payCard')}
           </button>
-  {/* 
-  <button
-    onClick={() => handlePayment("applepay")}
-    className="bg-black hover:bg-gray-900 hover:scale-105 transition-all px-8 py-4 rounded-full text-lg font-semibold shadow-md"
-  >
-     {t('payment.payApple')}
-  </button>
-  */}
         </div>
+
+        <div className="mysr-form mt-6"></div>
 
         {processing && (
           <p className="text-gray-300 pt-4 animate-pulse">🔄 {t('payment.processingPayment')}</p>

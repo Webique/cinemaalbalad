@@ -278,57 +278,34 @@ app.delete("/api/admin/delete-all-movies", async (req, res) => {
 });
 
 
-app.post("/api/payments", async (req, res) => {
+const axios = require("axios");
+
+app.get("/api/verify-payment", async (req, res) => {
+  const { id } = req.query;
+  if (!id) return res.status(400).json({ error: "Missing payment ID" });
+
   try {
-    const { amount, movieId, time, count, method, redirectUrl } = req.body;
-
-    console.log("📤 Sending payment request:", { amount, movieId, time, count, method });
-
-    let source;
-    if (method === "creditcard" || method === "mada") {
-      source = {
-        type: "creditcard",
-        name: "Test User",
-        number: "4111111111111111",
-        month: "12",
-        year: "25",
-        cvc: "123",
-      };
-    } else if (method === "applepay") {
-      source = {
-        type: "applepay",
-        token: "tok_test_applepay",
-      };
-    } else {
-      return res.status(400).json({ error: "Invalid payment method." });
-    }
-
-    const response = await axios.post(
-      "https://api.moyasar.com/v1/payments",
-      {
-        amount: amount * 100,
-        currency: "SAR",
-        description: `Booking for movie ${movieId}, ${time}, ${count} tickets`,
-        callback_url: redirectUrl, // ✅ Use the one passed from frontend
-        source,
+    const response = await axios.get(`https://api.moyasar.com/v1/payments/${id}`, {
+      auth: {
+        username: "sk_live_jWYvF8kcqYZhurrkMmxFm9dXbgmnGFUbcVySi1oR", // ✅ Use your real secret key
+        password: "",
       },
-      {
-        auth: {
-          username: "sk_test_oQ87yapoFzbp1wAEoxZkjQrTZJVvbaw5uBBXkYdy",
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    });
 
-    console.log("✅ Redirect to:", response.data.source.transaction_url);
-    res.json({ url: response.data.source.transaction_url });
-  } catch (error) {
-    console.error("❌ Moyasar payment error:", error.response?.data || error.message);
-    res.status(500).json({ error: "Payment failed." });
+    const payment = response.data;
+
+    if (payment.status === "paid") {
+      // Optional: You can log or save the payment
+      return res.status(200).json({ success: true, payment });
+    } else {
+      return res.status(400).json({ success: false, message: "Payment not completed", payment });
+    }
+  } catch (err) {
+    console.error("❌ Error verifying payment:", err.response?.data || err.message);
+    res.status(500).json({ error: "Payment verification failed" });
   }
 });
+
 
 // ✅ Verify QR and mark as scanned
 app.post("/api/bookings/scan", async (req, res) => {
