@@ -225,10 +225,16 @@ export default function Movies() {
 
                       <div className="text-sm text-gray-300">
                         {t('movies.total')}:{" "}
-                        <span className="text-white font-bold">
-                          {(booking[movie._id]?.count || 1) * (movie.ticketPrice || 35)} SAR
+                        <span className="text-white font-bold flex items-center gap-2">
+                          {(booking[movie._id]?.count || 1) * (movie.ticketPrice || 35)}
+                          <img
+                            src="/saudi-riyal.png"
+                            alt="SAR"
+                            className="w-5 h-5 sm:w-6 sm:h-6 inline-block"
+                          />
                         </span>
                       </div>
+
 
                       <button
                         onClick={() => handleBooking(movie._id)}
