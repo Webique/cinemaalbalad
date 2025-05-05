@@ -30,21 +30,25 @@ export default function ThankYou() {
   const handleDownloadPDF = () => {
     if (!bookingData) return;
   
-    // 🔠 Manual translation map for known Arabic titles
+    // 1. Normalize helper to remove spaces and invisible chars
+    const normalize = (str) =>
+      str?.normalize("NFC").replace(/\s/g, "").replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, "");
+  
+    // 2. Translation map with normalized keys
     const movieTranslations = {
       "الرحلة": "The Journey",
-      "عائلة موفم": "Moving Family",
+      "عائلهموفم": "Moving Family",
       "سطار": "Sattar",
-      "وادي الجن": "Valley of the Jinn",
-      "كراكون في الشارع": "Karakon in the Street", // ✅ new addition
+      "واديالجن": "Valley of the Jinn",
+      "كراكونفيالشارع": "Karakon in the Street", // ✅ updated key (no spaces)
+      "وراء الجبل": "zobrya al jabal",
+      
     };
-    
   
-    // 🈁 Get English title or fallback to original
-    const translatedMovie = movieTranslations[bookingData.movie] || bookingData.movie;
+    const normalizedMovie = normalize(bookingData.movie);
+    const translatedMovie = movieTranslations[normalizedMovie] || bookingData.movie;
   
     const doc = new jsPDF();
-  
     doc.setFontSize(16);
     doc.text("🎟️ Cinema Al Balad – Ticket Info", 20, 20);
   
@@ -56,16 +60,15 @@ export default function ThankYou() {
     doc.text(`Seats: ${bookingData.seats.map(seatLabel).join(", ")}`, 20, 80);
     doc.text(`Booking Code: ${bookingData._id}`, 20, 90);
   
-    // 🧾 QR Code image from canvas
     const qrCanvas = qrRef.current?.querySelector("canvas");
     if (qrCanvas) {
       const imgData = qrCanvas.toDataURL("image/png");
       doc.addImage(imgData, "PNG", 140, 40, 50, 50);
     }
   
-    // 💾 Save file
     doc.save("CinemaTicket.pdf");
   };
+  
   
 
   return (
