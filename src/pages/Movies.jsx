@@ -147,14 +147,7 @@ export default function Movies() {
                       {movie.synopsis || t('movies.defaultSynopsis')}
                     </p>
 
-                    {movie.trailer && (
-                      <button
-                        onClick={() => setSelectedTrailer(movie.trailer)}
-                        className="mt-2 text-primary hover:underline"
-                      >
-                        ▶ {t('movies.watchTrailer')}
-                      </button>
-                    )}
+
 
                     <div className="pt-6 border-t border-white/10 space-y-4">
                       <p className="text-primary text-lg font-semibold">{t('movies.bookTickets')}</p>
