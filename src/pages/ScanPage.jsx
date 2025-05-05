@@ -1,10 +1,4 @@
-// ✅ Cleaned & updated ScanPage component with:
-// - No emojis
-// - Professional design
-// - Manual walk-in/cash seat booking
-// - Visual seat grid revealed via dropdown
-// - Support for multiple bookings
-
+// ✅ ScanPage with fixed seat validation & success popup for walk-in bookings
 import { useState, useEffect } from "react";
 
 export default function ScanPage() {
@@ -25,6 +19,7 @@ export default function ScanPage() {
   const [takenSeats, setTakenSeats] = useState([]);
   const [totalSeats, setTotalSeats] = useState(48);
   const [showSeatGrid, setShowSeatGrid] = useState(false);
+  const [successPopup, setSuccessPopup] = useState(false);
 
   const seatLabel = (seat) => {
     const row = String.fromCharCode(65 + Math.floor((seat - 1) / 8));
@@ -54,7 +49,7 @@ export default function ScanPage() {
         `https://cinemaalbalad.onrender.com/api/bookings/taken-seats?movie=${selectedMovie}&date=${selectedDate}&time=${selectedTime}`
       );
       const data = await res.json();
-      setTakenSeats(data.takenSeats || []);
+      setTakenSeats(data.takenSeats?.filter(seat => seat <= totalSeats) || []);
     } catch {
       console.error("Error fetching taken seats");
     }
@@ -110,6 +105,14 @@ export default function ScanPage() {
       return;
     }
 
+    await fetchTakenSeats(); // ensure latest
+
+    const invalid = walkinSeats.some((seat) => takenSeats.includes(seat));
+    if (invalid) {
+      alert("Some seats are already taken. Please refresh and try again.");
+      return;
+    }
+
     try {
       const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
         method: "POST",
@@ -130,7 +133,7 @@ export default function ScanPage() {
       }
       setWalkinName("");
       setWalkinSeats([]);
-      alert("Walk-in booking added.");
+      setSuccessPopup(true);
       fetchBookings();
       fetchTakenSeats();
     } catch {
@@ -253,7 +256,6 @@ export default function ScanPage() {
           </select>
         </div>
 
-        {/* Seat Booking Section Toggle */}
         <div className="mb-6">
           <button
             onClick={() => setShowSeatGrid(!showSeatGrid)}
@@ -301,6 +303,13 @@ export default function ScanPage() {
             >
               Add Walk-in Booking
             </button>
+          </div>
+        )}
+
+        {successPopup && (
+          <div className="fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded shadow-lg">
+            Booking successful!
+            <button onClick={() => setSuccessPopup(false)} className="ml-4 text-sm underline">Dismiss</button>
           </div>
         )}
 
