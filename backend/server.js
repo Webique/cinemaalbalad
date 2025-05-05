@@ -140,40 +140,43 @@ app.get("/api/movies/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch movie" });
   }
 });
-
-
-
-
-// ✅ Seed 23 formatted movies for frontend
 app.post("/api/admin/seed-movies-formatted", async (req, res) => {
   try {
-    const movies = [];
+    const fixedDate = "2025-05-05"; // 🎯 May 5, 2025
 
-    for (let i = 1; i <= 23; i++) {
-      movies.push({
-        title: `Movie ${i}`,
-        runtime: "120 min",
-        rating: "PG-13",
-        synopsis: `This is a placeholder synopsis for Movie ${i}.`,
-        poster: `/posters/movie${i}.jpg`,
-        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        ticketPrice: 35,
-        showtimes: [
-          { time: "6:00 PM", date: "2025-05-01", seats: [] },
-          { time: "9:00 PM", date: "2025-05-01", seats: [] },
-        ],
-      });
-    }
-
+    // Step 1: Delete all existing movies
     await Movie.deleteMany({});
-    await Movie.insertMany(movies);
+    console.log("🗑️ All previous movies deleted.");
 
-    res.status(201).json({ message: "✅ Formatted movies seeded successfully!" });
+    // Step 2: Create the new movie
+    const movie = {
+      title: "Desert Dreams",
+      runtime: "118 min",
+      rating: "PG",
+      synopsis: "An epic journey through the vast deserts of Arabia.",
+      poster: "/posters/desert-dreams.jpg",
+      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      ticketPrice: 35,
+      showtimes: [
+        {
+          date: fixedDate,
+          time: "8:30 PM",
+          reservedSeats: []
+        }
+      ],
+    };
+
+    // Step 3: Insert the new movie
+    await Movie.insertMany([movie]);
+
+    res.status(201).json({ message: "✅ All old movies deleted. 1 new movie seeded for May 5, 2025." });
   } catch (err) {
-    console.error("Seeding formatted movies error:", err);
-    res.status(500).json({ error: "Failed to seed formatted movies." });
+    console.error("❌ Error seeding 1 movie:", err);
+    res.status(500).json({ error: "Failed to seed the movie." });
   }
 });
+
+
 
 
 
@@ -278,7 +281,6 @@ app.delete("/api/admin/delete-all-movies", async (req, res) => {
 });
 
 
-const axios = require("axios");
 
 app.get("/api/verify-payment", async (req, res) => {
   const { id } = req.query;
