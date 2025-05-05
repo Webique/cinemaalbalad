@@ -13,12 +13,17 @@ export default function ScanPage() {
   const [bookings, setBookings] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // ➕ Free manual booking form
+  const [freeName, setFreeName] = useState("");
+  const [freeEmail, setFreeEmail] = useState("");
+  const [freeSeat, setFreeSeat] = useState("");
+
   const seatLabel = (seat) => {
-    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 8)); // A–F
-    const number = ((seat - 1) % 8) + 1; // 1–8
+    const row = String.fromCharCode(65 + Math.floor((seat - 1) / 8));
+    const number = ((seat - 1) % 8) + 1;
     return `${row}${number}`;
   };
-  
+
   const fetchBookings = async () => {
     try {
       const res = await fetch(`https://cinemaalbalad.onrender.com/api/bookings/by-showtime?movie=${encodeURIComponent(selectedMovie)}&date=${selectedDate}&time=${selectedTime}`);
@@ -93,6 +98,54 @@ export default function ScanPage() {
     b.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     b.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleFreeBooking = async () => {
+    if (!freeName || !freeEmail || !freeSeat || !selectedMovie || !selectedDate || !selectedTime) {
+      alert("Fill all fields to book manually.");
+      return;
+    }
+
+    const seatNum = parseInt(freeSeat);
+    if (isNaN(seatNum) || seatNum < 1 || seatNum > 48) {
+      alert("Seat must be between 1 and 48.");
+      return;
+    }
+
+    try {
+      const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: freeName,
+          email: freeEmail,
+          movie: selectedMovie,
+          date: selectedDate,
+          time: selectedTime,
+          seats: [seatNum],
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.message || data.error);
+        return;
+      }
+
+      // Immediately mark as scanned
+      await fetch("https://cinemaalbalad.onrender.com/api/bookings/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId: data.bookingId }),
+      });
+
+      setFreeName("");
+      setFreeEmail("");
+      setFreeSeat("");
+      alert("✅ Free booking created and marked as scanned");
+      fetchBookings();
+    } catch {
+      alert("Failed to create free booking.");
+    }
+  };
 
   return (
     <main className="min-h-screen bg-black text-white px-4 py-8 font-cinema">
@@ -192,6 +245,22 @@ export default function ScanPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
             disabled={bookings.length === 0}
           />
+        </div>
+
+        {/* ➕ Manual Free Booking */}
+        <div className="bg-white/10 border border-white/20 p-6 rounded-xl mb-10">
+          <h3 className="text-lg font-bold mb-4">➕ Create Free Booking (Cash/Walk-in)</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <input type="text" placeholder="Name" value={freeName} onChange={(e) => setFreeName(e.target.value)} className="p-3 text-black rounded" />
+            <input type="email" placeholder="Email" value={freeEmail} onChange={(e) => setFreeEmail(e.target.value)} className="p-3 text-black rounded" />
+            <input type="number" placeholder="Seat Number (1-48)" value={freeSeat} onChange={(e) => setFreeSeat(e.target.value)} className="p-3 text-black rounded" />
+          </div>
+          <button
+            onClick={handleFreeBooking}
+            className="mt-4 bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700"
+          >
+            💸 Add Free Booking
+          </button>
         </div>
 
         {filteredBookings.length > 0 && (
