@@ -107,26 +107,24 @@ app.post("/api/bookings", async (req, res) => {
 });
 
 
-
-// GET taken seats for a specific movie, date, and time
+// ✅ FIXED: Dynamically fetch taken seats from bookings collection
 app.get("/api/bookings/taken-seats", async (req, res) => {
   try {
     const { movie, date, time } = req.query;
 
-    const movieDoc = await Movie.findOne({ title: movie });
-    if (!movieDoc) return res.status(404).json({ error: "Movie not found" });
+    // Find all bookings for the same movie, date, and time
+    const bookings = await Booking.find({ movie, date, time });
 
-    const showtime = movieDoc.showtimes.find(
-      (s) => s.date === date && s.time === time
-    );
-    if (!showtime) return res.status(404).json({ error: "Showtime not found" });
+    // Merge all booked seats into one array
+    const takenSeats = bookings.flatMap((b) => b.seats);
 
-    res.json({ takenSeats: showtime.reservedSeats || [] });
+    res.json({ takenSeats });
   } catch (err) {
     console.error("Error getting taken seats:", err);
     res.status(500).json({ error: "Failed to get taken seats" });
   }
 });
+
 
 
 
