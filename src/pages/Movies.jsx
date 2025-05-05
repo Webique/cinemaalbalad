@@ -134,9 +134,11 @@ export default function Movies() {
                 <img
                   src={movie.poster || "/default-poster.jpg"}
                   alt={movie.title}
-                  className="w-full h-[400px] sm:h-[500px] md:h-[520px] object-cover rounded-2xl shadow-2xl"
+                  className="w-full aspect-[2/3] object-contain rounded-2xl shadow-2xl"
                 />
+
               </div>
+
 
 
                   <div className="w-full md:w-1/2 text-center md:text-left space-y-4">
