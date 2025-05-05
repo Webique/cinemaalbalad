@@ -238,17 +238,18 @@ export default function BookNow() {
     {t('booknow.selected')}: {selectedSeats.map(seatLabel).join(", ") || t('booknow.none')}
   </p>
   <p className="text-sm">{t('booknow.totalTickets')}: {selectedSeats.length}</p>
-  <p className="text-sm flex items-center justify-center gap-2 text-center">
-  {t('booknow.totalPrice')}: 
-  <span className="text-white font-bold flex items-center gap-1">
-    {selectedSeats.length * (selectedMovie.ticketPrice || 35)}
-    <img
-      src="/saudi-riyal.png"
-      alt="SAR"
-      className="w-5 h-5 sm:w-6 sm:h-6"
-    />
-  </span>
+  <p className="text-sm flex items-center gap-2 text-left sm:justify-center sm:text-center">
+    {t('booknow.totalPrice')}: 
+    <span className="text-white font-bold flex items-center gap-1">
+      {selectedSeats.length * (selectedMovie.ticketPrice || 35)}
+      <img
+        src="/saudi-riyal.png"
+        alt="SAR"
+        className="w-5 h-5 sm:w-6 sm:h-6"
+      />
+    </span>
   </p>
+
 
 </div>
 
