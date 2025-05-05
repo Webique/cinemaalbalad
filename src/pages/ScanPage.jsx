@@ -1,4 +1,3 @@
-// ✅ ScanPage with fixed seat validation & success popup for walk-in bookings
 import { useState, useEffect } from "react";
 
 export default function ScanPage() {
@@ -30,6 +29,7 @@ export default function ScanPage() {
   const seatButtons = Array.from({ length: totalSeats }, (_, i) => i + 1);
 
   const fetchBookings = async () => {
+    if (!selectedMovie || !selectedDate || !selectedTime) return;
     try {
       const res = await fetch(
         `https://cinemaalbalad.onrender.com/api/bookings/by-showtime?movie=${encodeURIComponent(
@@ -44,12 +44,16 @@ export default function ScanPage() {
   };
 
   const fetchTakenSeats = async () => {
+    if (!selectedMovie || !selectedDate || !selectedTime) return;
     try {
       const res = await fetch(
         `https://cinemaalbalad.onrender.com/api/bookings/taken-seats?movie=${selectedMovie}&date=${selectedDate}&time=${selectedTime}`
       );
       const data = await res.json();
-      setTakenSeats(data.takenSeats?.filter(seat => seat <= totalSeats) || []);
+      const valid = Array.isArray(data.takenSeats)
+        ? data.takenSeats.filter((seat) => Number.isInteger(seat) && seat <= totalSeats)
+        : [];
+      setTakenSeats(valid);
     } catch {
       console.error("Error fetching taken seats");
     }
@@ -105,7 +109,7 @@ export default function ScanPage() {
       return;
     }
 
-    await fetchTakenSeats(); // ensure latest
+    await fetchTakenSeats();
 
     const invalid = walkinSeats.some((seat) => takenSeats.includes(seat));
     if (invalid) {
@@ -142,11 +146,9 @@ export default function ScanPage() {
   };
 
   const toggleSeat = (seat) => {
-    if (walkinSeats.includes(seat)) {
-      setWalkinSeats((prev) => prev.filter((s) => s !== seat));
-    } else {
-      setWalkinSeats((prev) => [...prev, seat]);
-    }
+    setWalkinSeats((prev) =>
+      prev.includes(seat) ? prev.filter((s) => s !== seat) : [...prev, seat]
+    );
   };
 
   useEffect(() => {
@@ -163,7 +165,10 @@ export default function ScanPage() {
   }, [selectedMovie, movies]);
 
   useEffect(() => {
-    if (selectedMovie && selectedDate && selectedTime) fetchTakenSeats();
+    if (selectedMovie && selectedDate && selectedTime) {
+      fetchTakenSeats();
+      fetchBookings();
+    }
   }, [selectedMovie, selectedDate, selectedTime]);
 
   const filteredBookings = bookings.filter((b) =>
@@ -240,20 +245,33 @@ export default function ScanPage() {
           </select>
           <select
             value={selectedTime}
-            onChange={(e) => {
-              setSelectedTime(e.target.value);
-              fetchBookings();
-            }}
+            onChange={(e) => setSelectedTime(e.target.value)}
             className="p-3 text-black rounded"
             disabled={!selectedDate}
           >
             <option value="">Select Time</option>
-            {showtimes
-              .filter((s) => s.date === selectedDate)
-              .map((s, i) => (
-                <option key={i} value={s.time}>{s.time}</option>
-              ))}
+            {showtimes.filter((s) => s.date === selectedDate).map((s, i) => (
+              <option key={i} value={s.time}>{s.time}</option>
+            ))}
           </select>
+        </div>
+
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 mb-6">
+          <button
+            className="bg-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-blue-700"
+            onClick={fetchBookings}
+            disabled={!selectedMovie || !selectedDate || !selectedTime}
+          >
+            Load Bookings
+          </button>
+          <input
+            type="text"
+            placeholder="Search by name or email"
+            className="mt-4 sm:mt-0 p-3 text-black rounded w-full sm:w-auto"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            disabled={bookings.length === 0}
+          />
         </div>
 
         <div className="mb-6">
