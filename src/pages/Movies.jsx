@@ -19,13 +19,16 @@ export default function Movies() {
   const generateAllDates = () => {
     const dates = [];
     const today = new Date();
-    const end = new Date("2025-06-16");
+    const end = new Date();
+    end.setDate(today.getDate() + 6); // only the next 7 days
+  
     while (today <= end) {
       dates.push(new Date(today).toISOString().split("T")[0]);
       today.setDate(today.getDate() + 1);
     }
     return dates;
   };
+  
 
   const allDates = generateAllDates();
   const visibleDates = allDates.slice(startIndex, startIndex + 3);
