@@ -216,14 +216,15 @@ export default function BookNow() {
                         takenSeats.includes(seat) ||
                         (selectedSeats.length >= 10 && !selectedSeats.includes(seat))
                       }
-                      className={`w-10 h-10 m-1.5 rounded-lg text-sm font-bold
-                      ${
-                        takenSeats.includes(seat)
-                          ? "bg-red-900 text-white"
-                          : selectedSeats.includes(seat)
-                          ? "bg-red-600 text-white"
-                          : "bg-gray-300 text-black hover:bg-red-100"
-                      }`}
+                      className={`w-8 h-8 sm:w-10 sm:h-10 m-[2px] sm:m-1.5 rounded-lg text-xs sm:text-sm font-bold
+                        ${
+                          takenSeats.includes(seat)
+                            ? "bg-red-900 text-white"
+                            : selectedSeats.includes(seat)
+                            ? "bg-red-600 text-white"
+                            : "bg-gray-300 text-black hover:bg-red-100"
+                        }`}
+                      
                     >
                       {seatLabel(seat)}
                     </button>
