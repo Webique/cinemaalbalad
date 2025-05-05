@@ -94,14 +94,15 @@ export default function Home() {
                 <p className="uppercase text-sm tracking-widest text-gray-300 mb-2">
                   {t('home.ticketPrice')}
                 </p>
-                <h3 className="text-4xl sm:text-5xl font-bold text-white drop-shadow flex items-center justify-center gap-2">
+                <h3 className="text-4xl sm:text-5xl font-bold text-white drop-shadow flex items-center justify-center gap-3">
                   35
                   <img
                     src="/saudi-riyal.png"
                     alt="SAR"
-                    className="w-6 h-6 sm:w-8 sm:h-8 inline-block"
+                    className="w-9 h-9 sm:w-11 sm:h-11 inline-block"
                   />
                 </h3>
+
 
                 <p className="text-gray-400 text-sm mt-2">{t('home.perPerson')}</p>
               </div>
