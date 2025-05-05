@@ -109,13 +109,19 @@ export default function ScanPage() {
       return;
     }
 
-    await fetchTakenSeats();
+// Fetch latest taken seats directly without relying on possibly outdated state
+const res = await fetch(
+  `https://cinemaalbalad.onrender.com/api/bookings/taken-seats?movie=${selectedMovie}&date=${selectedDate}&time=${selectedTime}`
+);
+const data = await res.json();
+const latestTaken = Array.isArray(data.takenSeats) ? data.takenSeats : [];
 
-    const invalid = walkinSeats.some((seat) => takenSeats.includes(seat));
-    if (invalid) {
-      alert("Some seats are already taken. Please refresh and try again.");
-      return;
-    }
+const invalid = walkinSeats.some((seat) => latestTaken.includes(seat));
+if (invalid) {
+  alert("Some seats are already taken. Please refresh and try again.");
+  return;
+}
+
 
     try {
       const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
