@@ -50,7 +50,7 @@ export default function ThankYou() {
   
     const doc = new jsPDF();
     doc.setFontSize(16);
-    doc.text("🎟️ Cinema Al Balad – Ticket Info", 20, 20);
+    doc.text(" Cinema Al Balad – Ticket Info", 20, 20);
   
     doc.setFontSize(12);
     doc.text(`Name: ${bookingData.name}`, 20, 40);
