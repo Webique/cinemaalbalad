@@ -143,12 +143,10 @@ export default function Movies() {
 
                   <div className="w-full md:w-1/2 text-center md:text-left space-y-4">
                     <h2 className="text-3xl sm:text-4xl font-bold drop-shadow-md">{movie.title}</h2>
-                    <p className="text-sm text-gray-300">
-                      {movie.runtime || t('movies.defaultRuntime')} • {movie.rating || t('movies.defaultRating')}
-                    </p>
-                    <p className="text-gray-200 text-lg">
-                      {movie.synopsis || t('movies.defaultSynopsis')}
-                    </p>
+                      <p className="text-sm text-gray-300">
+                        {movie.runtime || t('movies.defaultRuntime')} • {movie.rating || t('movies.defaultRating')}
+                      </p>
+
 
 
 
