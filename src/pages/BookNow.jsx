@@ -103,21 +103,19 @@ export default function BookNow() {
 
     fetchTakenSeats();
   }, [selectedMovie, form.date, form.time]);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!form.name || !form.email || !form.date || !form.time || !selectedMovie) {
       alert(t('booknow.fillFields'));
       return;
     }
-    
+  
     if (selectedSeats.length < prefilledCount) {
       alert(`Please select ${prefilledCount} seats before continuing.`);
       return;
     }
-    
-
+  
     const bookingDetails = {
       name: form.name,
       email: form.email,
@@ -127,9 +125,9 @@ export default function BookNow() {
       seats: selectedSeats,
       price: selectedSeats.length * selectedMovie.ticketPrice,
     };
-
+  
     const queryString = encodeURIComponent(JSON.stringify(bookingDetails));
-
+  
     if (selectedMovie.title === "Maflam Nights" && form.date === "2025-05-07") {
       // Save directly without payment
       try {
@@ -138,7 +136,7 @@ export default function BookNow() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...bookingDetails, price: 0 }),
         });
-    
+  
         const data = await res.json();
         if (res.ok) {
           localStorage.setItem("latestBooking", JSON.stringify({
@@ -158,7 +156,8 @@ export default function BookNow() {
     } else {
       navigate(`/payment?details=${queryString}`);
     }
-    
+  };
+  
 
   if (!selectedMovie) {
     return (
