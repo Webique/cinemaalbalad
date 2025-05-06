@@ -227,21 +227,21 @@ export default function Movies() {
                         </div>
                       </div>
 
-                                      {isFreeShowtime(movie, selectedDate) ? (
-                  <p className="text-sm text-green-400 font-semibold">🎉 Free Screening!</p>
-                ) : (
-                  <div className="text-sm text-gray-300 flex items-center gap-2">
-                    {t('movies.total')}:
-                    <span className="text-white font-bold flex items-center gap-1">
-                      {(booking[movie._id]?.count || 1) * (movie.ticketPrice || 35)}
-                      <img
-                        src="/saudi-riyal.png"
-                        alt="SAR"
-                        className="w-5 h-5 sm:w-6 sm:h-6"
-                      />
-                    </span>
-                  </div>
-                )}
+{isFreeShowtime(movie, selectedDate) ? (
+  <p className="text-sm text-green-400 font-semibold">🎉 Free Screening!</p>
+) : (
+  <div className="text-sm text-gray-300 flex items-center gap-2">
+    {t('movies.total')}:
+    <span className="text-white font-bold flex items-center gap-1">
+      {(booking[movie._id]?.count || 1) * (movie.ticketPrice || 35)}
+      <img
+        src="/saudi-riyal.png"
+        alt="SAR"
+        className="w-5 h-5 sm:w-6 sm:h-6"
+      />
+    </span>
+  </div>
+)}
 
 
 
