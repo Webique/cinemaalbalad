@@ -70,59 +70,58 @@ export default function Home() {
               </motion.div>
             </motion.div>
           </section>
+{/*
+<section className="py-24 px-6 sm:px-10 lg:px-20 text-white text-center">
+  <motion.h2
+    className="text-5xl font-cinema mb-16 tracking-wider drop-shadow-lg"
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8, ease: "easeOut" }}
+  >
+    {t('home.showtimeTitle')}
+  </motion.h2>
 
-          {/* Showtime Info */}
-          <section className="py-24 px-6 sm:px-10 lg:px-20 text-white text-center">
-            <motion.h2
-              className="text-5xl font-cinema mb-16 tracking-wider drop-shadow-lg"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              {t('home.showtimeTitle')}
-            </motion.h2>
+  <motion.div
+    className="space-y-12"
+    initial={{ opacity: 0 }}
+    whileInView={{ opacity: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 1.2 }}
+  >
+    <div>
+      <p className="uppercase text-sm tracking-widest text-gray-300 mb-2">
+        {t('home.ticketPrice')}
+      </p>
+      <h3 className="text-4xl sm:text-5xl font-bold text-white drop-shadow flex items-center justify-center gap-3">
+        35
+        <img
+          src="/saudi-riyal.png"
+          alt="SAR"
+          className="w-9 h-9 sm:w-11 sm:h-11 inline-block"
+        />
+      </h3>
+      <p className="text-gray-400 text-sm mt-2">{t('home.perPerson')}</p>
+    </div>
 
-            <motion.div
-              className="space-y-12"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2 }}
-            >
-              <div>
-                <p className="uppercase text-sm tracking-widest text-gray-300 mb-2">
-                  {t('home.ticketPrice')}
-                </p>
-                <h3 className="text-4xl sm:text-5xl font-bold text-white drop-shadow flex items-center justify-center gap-3">
-                  35
-                  <img
-                    src="/saudi-riyal.png"
-                    alt="SAR"
-                    className="w-9 h-9 sm:w-11 sm:h-11 inline-block"
-                  />
-                </h3>
+    <div>
+      <p className="uppercase text-sm tracking-widest text-gray-300 mb-4">
+        {t('home.dailyShowtimes')}
+      </p>
+      <div className="flex justify-center gap-6 flex-wrap">
+        <span className="text-xl sm:text-2xl font-cinema text-primary glow-sm">
+          🎬 6:00 PM
+        </span>
+        <span className="text-xl sm:text-2xl font-cinema text-primary glow-sm">
+          🌙 9:00 PM
+        </span>
+      </div>
+      <p className="text-gray-400 text-sm mt-3">{t('home.openingHours')}</p>
+    </div>
+  </motion.div>
+</section>
+*/}
 
-
-                <p className="text-gray-400 text-sm mt-2">{t('home.perPerson')}</p>
-              </div>
-
-              <div>
-                <p className="uppercase text-sm tracking-widest text-gray-300 mb-4">
-                  {t('home.dailyShowtimes')}
-                </p>
-                <div className="flex justify-center gap-6 flex-wrap">
-                  <span className="text-xl sm:text-2xl font-cinema text-primary glow-sm">
-                    🎬 6:00 PM
-                  </span>
-                  <span className="text-xl sm:text-2xl font-cinema text-primary glow-sm">
-                    🌙 9:00 PM
-                  </span>
-                </div>
-                <p className="text-gray-400 text-sm mt-3">{t('home.openingHours')}</p>
-              </div>
-            </motion.div>
-          </section>
 
           {/* Footer */}
           <Footer />
