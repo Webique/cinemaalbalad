@@ -147,33 +147,53 @@ app.get("/api/movies/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch movie" });
   }
 });
-app.post("/api/admin/add-movie-may8", async (req, res) => {
+
+
+app.post("/api/admin/add-movies-may6", async (req, res) => {
   try {
-    const movie = {
-      title: "Maflam Nights",
-      runtime: "120 min",
-      rating: "PG-13",
-      synopsis: "A mysterious tale set under the stars of the Arabian desert.",
-      poster: "/posters/maflam.jpg",
-      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      ticketPrice: 40,
-      showtimes: [
-        {
-          date: "2025-05-07",
-          time: "8:00 PM",
-          reservedSeats: []
-        }
-      ],
-    };
+    const movies = [
+      {
+        title: "The Date Market",
+        runtime: "90 min",
+        rating: "PG",
+        synopsis: "A lighthearted journey through a bustling Saudi date market.",
+        poster: "/posters/date-market.jpg",
+        trailer: "https://www.youtube.com/watch?v=3GwjfUFyY6M",
+        ticketPrice: 25,
+        showtimes: [
+          {
+            date: "2025-05-06",
+            time: "7:30 PM",
+            reservedSeats: []
+          }
+        ],
+      },
+      {
+        title: "Winds of Jeddah",
+        runtime: "90 min",
+        rating: "PG",
+        synopsis: "A touching story about youth, dreams, and friendship in Jeddah.",
+        poster: "/posters/winds-of-jeddah.jpg",
+        trailer: "https://www.youtube.com/watch?v=oHg5SJYRHA0",
+        ticketPrice: 25,
+        showtimes: [
+          {
+            date: "2025-05-06",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ],
+      }
+    ];
 
-    await Movie.insertMany([movie]);
-
-    res.status(201).json({ message: "✅ New movie added for May 7, 2025 at 8:00 PM." });
+    await Movie.insertMany(movies);
+    res.status(201).json({ message: "✅ Two movies added for May 6, 2025." });
   } catch (err) {
-    console.error("❌ Error adding movie:", err);
-    res.status(500).json({ error: "Failed to add the movie." });
+    console.error("❌ Error adding May 6 movies:", err);
+    res.status(500).json({ error: "Failed to add May 6 movies." });
   }
 });
+
 
 
 
