@@ -8,6 +8,20 @@ export default function ScanPage() {
   const [error, setError] = useState("");
   const [authorized, setAuthorized] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
+  const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
+  const [showtimes, setShowtimes] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [walkinName, setWalkinName] = useState("");
+  const [walkinSeats, setWalkinSeats] = useState([]);
+  const [takenSeats, setTakenSeats] = useState([]);
+  const [totalSeats, setTotalSeats] = useState(48);
+  const [showSeatGrid, setShowSeatGrid] = useState(false);
+  const [successPopup, setSuccessPopup] = useState(false);
 
   if (!authorized) {
     return (
@@ -38,22 +52,6 @@ export default function ScanPage() {
     );
   }
 
-
-
-  const [movies, setMovies] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTime, setSelectedTime] = useState("");
-  const [showtimes, setShowtimes] = useState([]);
-  const [bookings, setBookings] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const [walkinName, setWalkinName] = useState("");
-  const [walkinSeats, setWalkinSeats] = useState([]);
-  const [takenSeats, setTakenSeats] = useState([]);
-  const [totalSeats, setTotalSeats] = useState(48);
-  const [showSeatGrid, setShowSeatGrid] = useState(false);
-  const [successPopup, setSuccessPopup] = useState(false);
 
   const seatLabel = (seat) => {
     const row = String.fromCharCode(65 + Math.floor((seat - 1) / 8));
