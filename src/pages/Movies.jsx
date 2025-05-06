@@ -134,14 +134,14 @@ export default function Movies() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: index * 0.1 }}
                 >
-              <div className="w-full md:w-[55%]">
-                <img
-                  src={movie.poster || "/default-poster.jpg"}
-                  alt={movie.title}
-                  className="w-full aspect-[2/3] object-contain rounded-2xl shadow-2xl"
-                />
+<div className="w-full md:w-[55%] inline-block rounded-2xl shadow-2xl bg-black">
+  <img
+    src={movie.poster || "/default-poster.jpg"}
+    alt={movie.title}
+    className="w-full h-auto object-contain rounded-2xl shadow-2xl"
+  />
+</div>
 
-              </div>
 
 
 
@@ -227,7 +227,7 @@ export default function Movies() {
                         </div>
                       </div>
 
-{isFreeShowtime(movie, selectedDate) ? (
+                      {isFreeShowtime(movie, selectedDate) ? (
   <p className="text-sm text-green-400 font-semibold">🎉 Free Screening!</p>
 ) : (
   <div className="text-sm text-gray-300 flex items-center gap-2">
