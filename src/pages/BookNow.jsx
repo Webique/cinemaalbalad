@@ -129,8 +129,17 @@ export default function BookNow() {
     };
 
     const queryString = encodeURIComponent(JSON.stringify(bookingDetails));
-    navigate(`/payment?details=${queryString}`);
-  };
+    if (selectedMovie.title === "Maflam Nights" && form.date === "2025-05-07") {
+      // Go directly to Thank You page for free show
+      localStorage.setItem("latestBooking", JSON.stringify({
+        ...bookingDetails,
+        price: 0,
+      }));
+            navigate("/thankyou");
+    } else {
+      navigate(`/payment?details=${queryString}`);
+    }
+      };
 
   if (!selectedMovie) {
     return (

@@ -43,7 +43,6 @@ app.get("/", (req, res) => {
   res.send("Server is running 🚀");
 });
 
-
 app.post("/api/bookings", async (req, res) => {
   try {
     const { name, email, movie, date, time, seats } = req.body;
@@ -56,10 +55,10 @@ app.post("/api/bookings", async (req, res) => {
     const showtime = movieDoc.showtimes.find((s) => s.date === date && s.time === time);
     if (!showtime) return res.status(404).json({ error: "Showtime not found" });
 
-    // ✅ Step 2: Check taken seats using Booking collection (not reservedSeats)
+    // Step 2: Check taken seats using Booking collection (not reservedSeats)
     const existingBookings = await Booking.find({ movie, date, time });
-    const bookedSeats = existingBookings.flatMap(b => b.seats);
-    const alreadyTaken = seats.filter(seat => bookedSeats.includes(seat));
+    const bookedSeats = existingBookings.flatMap((b) => b.seats);
+    const alreadyTaken = seats.filter((seat) => bookedSeats.includes(seat));
     if (alreadyTaken.length > 0) {
       return res.status(409).json({
         error: "Some seats are already taken",
@@ -67,11 +66,24 @@ app.post("/api/bookings", async (req, res) => {
       });
     }
 
-    // Step 3: Save the booking (without QR for now)
-    const newBooking = new Booking({ name, email, movie, date, time, seats });
+    // ✅ Check if this booking is free
+    const isFreeScreening = movie === "Maflam Nights" && date === "2025-05-07";
+    const ticketPrice = isFreeScreening ? 0 : movieDoc.ticketPrice;
+    const totalPrice = seats.length * ticketPrice;
+
+    // Step 3: Save the booking (with price info if needed)
+    const newBooking = new Booking({
+      name,
+      email,
+      movie,
+      date,
+      time,
+      seats,
+      price: totalPrice,
+    });
     await newBooking.save();
 
-    // Step 4: Generate and save QR
+    // Step 4: Generate and save QR code
     const qrPayload = JSON.stringify({
       _id: newBooking._id,
       name,
@@ -86,11 +98,14 @@ app.post("/api/bookings", async (req, res) => {
     newBooking.qrCodeData = qrCodeData;
     await newBooking.save();
 
-    // Step 5: Respond with booking ID + QR
+    // Step 5: Return result
     res.status(201).json({
-      message: "✅ Booking confirmed!",
+      message: isFreeScreening
+        ? "🎉 Free booking confirmed!"
+        : "✅ Booking confirmed!",
       bookingId: newBooking._id,
       qrCodeData,
+      isFree: isFreeScreening,
     });
 
   } catch (err) {
@@ -98,6 +113,7 @@ app.post("/api/bookings", async (req, res) => {
     res.status(500).json({ error: "Failed to save booking." });
   }
 });
+
 
 
 // ✅ FIXED: Dynamically fetch taken seats from bookings collection
