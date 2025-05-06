@@ -21,34 +21,6 @@ export default function ScanPage() {
   const [showSeatGrid, setShowSeatGrid] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
 
-  if (!authorized) {
-    return (
-      <main className="min-h-screen bg-black text-white flex items-center justify-center font-cinema">
-        <div className="bg-white/10 border border-white/20 p-6 rounded-xl w-full max-w-sm space-y-4">
-          <h1 className="text-xl font-bold text-center">Enter Access Password</h1>
-          <input
-            type="password"
-            placeholder="Password"
-            value={passwordInput}
-            onChange={(e) => setPasswordInput(e.target.value)}
-            className="p-3 text-black rounded w-full"
-          />
-          <button
-            onClick={() => {
-              if (passwordInput === "7871") {
-                setAuthorized(true);
-              } else {
-                alert("Incorrect password.");
-              }
-            }}
-            className="bg-green-600 w-full py-3 rounded-full font-semibold hover:bg-green-700"
-          >
-            Submit
-          </button>
-        </div>
-      </main>
-    );
-  }
 
 
   const seatLabel = (seat) => {
@@ -212,6 +184,35 @@ if (invalid) {
     b.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     b.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (!authorized) {
+    return (
+      <main className="min-h-screen bg-black text-white flex items-center justify-center font-cinema">
+        <div className="bg-white/10 border border-white/20 p-6 rounded-xl w-full max-w-sm space-y-4">
+          <h1 className="text-xl font-bold text-center">Enter Access Password</h1>
+          <input
+            type="password"
+            placeholder="Password"
+            value={passwordInput}
+            onChange={(e) => setPasswordInput(e.target.value)}
+            className="p-3 text-black rounded w-full"
+          />
+          <button
+            onClick={() => {
+              if (passwordInput === "7871") {
+                setAuthorized(true);
+              } else {
+                alert("Incorrect password.");
+              }
+            }}
+            className="bg-green-600 w-full py-3 rounded-full font-semibold hover:bg-green-700"
+          >
+            Submit
+          </button>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-black text-white px-4 py-8 font-cinema">
