@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 
 export default function ScanPage() {
-  const [bookingId, setBookingId] = useState("");
-  
-
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState("");
   const [authorized, setAuthorized] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
+  const [bookingId, setBookingId] = useState("");
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState("");
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
