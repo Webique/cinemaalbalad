@@ -21,6 +21,14 @@ export default function ScanPage() {
   const [showSeatGrid, setShowSeatGrid] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
 
+  useEffect(() => {
+    if (sessionStorage.getItem("authorized") === "true") {
+      setAuthorized(true);
+    }
+  }, []);
+  
+  
+
 
 
   const seatLabel = (seat) => {
@@ -201,7 +209,9 @@ if (invalid) {
             onClick={() => {
               if (passwordInput === "7871") {
                 setAuthorized(true);
-              } else {
+                sessionStorage.setItem("authorized", "true"); // ✅ session-based memory
+              }              
+               else {
                 alert("Incorrect password.");
               }
             }}
@@ -216,6 +226,18 @@ if (invalid) {
 
   return (
     <main className="min-h-screen bg-black text-white px-4 py-8 font-cinema">
+      <div className="flex justify-end mb-6">
+        <button
+          onClick={() => {
+            sessionStorage.removeItem("authorized");
+            setAuthorized(false);
+          }}
+          className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-full"
+        >
+          Logout
+        </button>
+      </div>
+
       <h1 className="text-3xl font-bold mb-6 text-center">Scan Tickets</h1>
 
       <div className="max-w-md mx-auto space-y-4 mb-10">
