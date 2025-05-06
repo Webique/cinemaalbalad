@@ -11,27 +11,13 @@ export default function Events() {
   const events = [
     {
       id: 1,
-      title: t('events.event1.title'),
-      date: t('events.event1.date'),
-      time: t('events.event1.time'),
-      description: t('events.event1.description'),
-      image: "/events/saudi-film-night.jpg",
-    },
-    {
-      id: 2,
-      title: t('events.event2.title'),
-      date: t('events.event2.date'),
-      time: t('events.event2.time'),
-      description: t('events.event2.description'),
-      image: "/events/egyptian-classics.jpg",
-    },
-    {
-      id: 3,
-      title: t('events.event3.title'),
-      date: t('events.event3.date'),
-      time: t('events.event3.time'),
-      description: t('events.event3.description'),
-      image: "/events/documentary-weekend.jpg",
+      title: isArabic ? "ليالي مفلِم" : "Maflam Nights",
+      date: isArabic ? "٧ مايو" : "7 May",
+      time: "8:00 PM",
+      description: isArabic
+        ? "ليلة تجمع صنّاع الأفلام مع المخرج عبدالله سحرتي"
+        : "A night gathering filmmakers with Director Abdullah Saharti",
+      image: "/events/event1.png",
     },
   ];
 
