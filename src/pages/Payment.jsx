@@ -26,7 +26,7 @@ export default function Payment() {
 
   useEffect(() => {
     const confirmBooking = async () => {
-      if (success === "true" && bookingData) {
+      if ((success === "true" || bookingData.price === 0) && bookingData) {
         console.log("🚀 Confirming booking with backend:", bookingData);
         try {
           const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
@@ -61,8 +61,15 @@ export default function Payment() {
       alert(t('payment.missingDetails'));
       return;
     }
-
+  
+    if (bookingData.price === 0) {
+      // ✅ Skip payment and redirect to /payment?success=true directly
+      navigate(`/payment?success=true&details=${encodeURIComponent(JSON.stringify(bookingData))}`);
+      return;
+    }
+  
     setProcessing(true);
+  
 
     const script = document.createElement("script");
     script.src = "https://cdn.moyasar.com/mpf/1.15.0/moyasar.js";
