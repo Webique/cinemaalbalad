@@ -8,17 +8,18 @@ export default function Events() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
 
+  // Event list (commented out due to cancellation)
   const events = [
-    {
-      id: 1,
-      title: isArabic ? "ليالي مفلِم" : "Maflam Nights",
-      date: isArabic ? "٧ مايو" : "7 May",
-      time: "8:00 PM",
-      description: isArabic
-        ? "ليلة تجمع صنّاع الأفلام مع المخرج عبدالله سحرتي"
-        : "A night gathering filmmakers with Director Abdullah Saharti",
-      image: "/events/event1.png",
-    },
+    // {
+    //   id: 1,
+    //   title: isArabic ? "ليالي مفلِم" : "Maflam Nights",
+    //   date: isArabic ? "٧ مايو" : "7 May",
+    //   time: "8:00 PM",
+    //   description: isArabic
+    //     ? "ليلة تجمع صنّاع الأفلام مع المخرج عبدالله سحرتي"
+    //     : "A night gathering filmmakers with Director Abdullah Saharti",
+    //   image: "/events/event1.png",
+    // },
   ];
 
   return (
@@ -70,23 +71,19 @@ export default function Events() {
               >
                 {/* Image */}
                 <div className="w-full md:w-1/2">
-                <div className="w-full inline-block space-y-2">
-  <div className="bg-primary text-white text-sm px-4 py-1 rounded-full shadow-md inline-block">
-    {event.date}
-  </div>
-  <div className="w-full rounded-2xl shadow-2xl bg-black inline-block overflow-hidden">
-    <img
-      src={event.image}
-      alt={event.title}
-      className="w-full h-auto object-contain rounded-2xl shadow-2xl"
-    />
-  </div>
-</div>
-
-
+                  <div className="w-full inline-block space-y-2">
+                    <div className="bg-primary text-white text-sm px-4 py-1 rounded-full shadow-md inline-block">
+                      {event.date}
+                    </div>
+                    <div className="w-full rounded-2xl shadow-2xl bg-black inline-block overflow-hidden">
+                      <img
+                        src={event.image}
+                        alt={event.title}
+                        className="w-full h-auto object-contain rounded-2xl shadow-2xl"
+                      />
+                    </div>
+                  </div>
                 </div>
-
-
 
                 {/* Text */}
                 <div className="w-full md:w-1/2 text-center md:text-left space-y-4">
