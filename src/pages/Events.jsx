@@ -70,18 +70,18 @@ export default function Events() {
               >
                 {/* Image */}
                 <div className="w-full md:w-1/2">
-                  <div className="relative group rounded-2xl overflow-hidden shadow-xl aspect-[2/3] bg-black">
+                  <div className="relative w-full aspect-[2/3] rounded-2xl shadow-2xl bg-black">
                     <img
                       src={event.image}
                       alt={event.title}
-                      className="object-contain w-full h-full transition duration-700 group-hover:scale-105"
+                      className="w-full aspect-[2/3] object-contain rounded-2xl shadow-2xl"
                     />
-                    <div className="absolute top-0 left-0 w-full h-full bg-black/40 group-hover:bg-black/60 transition duration-500" />
-                    <div className="absolute top-6 left-6 bg-primary text-white text-sm px-4 py-1 rounded-full shadow-lg">
+                    <div className="absolute top-2 left-2 bg-primary text-white text-sm px-3 py-1 rounded-full shadow-lg">
                       {event.date}
                     </div>
                   </div>
                 </div>
+
 
 
                 {/* Text */}
