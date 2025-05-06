@@ -23,6 +23,8 @@ export default function BookNow() {
 
 
   const [totalSeats, setTotalSeats] = useState(48); // default value
+  const isFreeShow = selectedMovie?.title === "Maflam Nights" && form.date === "2025-05-07";
+
 
   // Dynamically generate seat numbers based on total
   const seats = Array.from({ length: totalSeats }, (_, i) => i + 1);
@@ -265,6 +267,11 @@ export default function BookNow() {
     {t('booknow.selected')}: {selectedSeats.map(seatLabel).join(", ") || t('booknow.none')}
   </p>
   <p className="text-sm">{t('booknow.totalTickets')}: {selectedSeats.length}</p>
+  {isFreeShow ? (
+  <p className="text-sm text-green-400 font-semibold">
+    🎉 This is a free screening!
+  </p>
+) : (
   <p className="text-sm flex items-center gap-2 text-left sm:justify-center sm:text-center">
     {t('booknow.totalPrice')}: 
     <span className="text-white font-bold flex items-center gap-1">
@@ -276,6 +283,8 @@ export default function BookNow() {
       />
     </span>
   </p>
+)}
+
 
 
 </div>
