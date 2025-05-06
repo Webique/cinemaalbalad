@@ -70,16 +70,19 @@ export default function Events() {
               >
                 {/* Image */}
                 <div className="w-full md:w-1/2">
-                <div className="relative w-full rounded-2xl shadow-2xl bg-black inline-block">
-  <img
-    src={event.image}
-    alt={event.title}
-    className="w-full h-auto object-contain rounded-2xl shadow-2xl"
-  />
-  <div className="absolute top-2 left-2 bg-primary text-white text-sm px-3 py-1 rounded-full shadow-lg">
+                <div className="w-full inline-block space-y-2">
+  <div className="bg-primary text-white text-sm px-4 py-1 rounded-full shadow-md inline-block">
     {event.date}
   </div>
+  <div className="w-full rounded-2xl shadow-2xl bg-black inline-block overflow-hidden">
+    <img
+      src={event.image}
+      alt={event.title}
+      className="w-full h-auto object-contain rounded-2xl shadow-2xl"
+    />
+  </div>
 </div>
+
 
                 </div>
 
