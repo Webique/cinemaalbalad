@@ -129,17 +129,36 @@ export default function BookNow() {
     };
 
     const queryString = encodeURIComponent(JSON.stringify(bookingDetails));
+
     if (selectedMovie.title === "Maflam Nights" && form.date === "2025-05-07") {
-      // Go directly to Thank You page for free show
-      localStorage.setItem("latestBooking", JSON.stringify({
-        ...bookingDetails,
-        price: 0,
-      }));
-            navigate("/thankyou");
+      // Save directly without payment
+      try {
+        const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...bookingDetails, price: 0 }),
+        });
+    
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem("latestBooking", JSON.stringify({
+            ...bookingDetails,
+            _id: data.bookingId,
+            qrCodeData: data.qrCodeData || "",
+          }));
+          navigate("/thankyou");
+        } else {
+          console.error("Booking failed:", data);
+          alert("❌ Failed to book. Please try again.");
+        }
+      } catch (err) {
+        console.error("❌ Free booking error:", err);
+        alert("❌ Booking failed. Check your internet connection.");
+      }
     } else {
       navigate(`/payment?details=${queryString}`);
     }
-      };
+    
 
   if (!selectedMovie) {
     return (
