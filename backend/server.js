@@ -135,7 +135,7 @@ app.post("/api/admin/add-movie-may8", async (req, res) => {
   try {
     const movie = {
       title: "Maflam Nights",
-      runtime: "102 min",
+      runtime: "120 min",
       rating: "PG-13",
       synopsis: "A mysterious tale set under the stars of the Arabian desert.",
       poster: "/posters/maflam.jpg",
@@ -143,7 +143,7 @@ app.post("/api/admin/add-movie-may8", async (req, res) => {
       ticketPrice: 40,
       showtimes: [
         {
-          date: "2025-05-08",
+          date: "2025-05-07",
           time: "8:00 PM",
           reservedSeats: []
         }
@@ -152,7 +152,7 @@ app.post("/api/admin/add-movie-may8", async (req, res) => {
 
     await Movie.insertMany([movie]);
 
-    res.status(201).json({ message: "✅ New movie added for May 8, 2025 at 8:00 PM." });
+    res.status(201).json({ message: "✅ New movie added for May 7, 2025 at 8:00 PM." });
   } catch (err) {
     console.error("❌ Error adding movie:", err);
     res.status(500).json({ error: "Failed to add the movie." });
