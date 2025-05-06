@@ -3,21 +3,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { Globe } from "lucide-react";
-import { useTranslation } from "react-i18next"; // ✅ NEW: import useTranslation
-import i18n from "../i18n"; // ✅ NEW: import i18n
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [language, setLanguage] = useState("EN");
+  const [language, setLanguage] = useState(i18n.language.toUpperCase() || "EN");
   const location = useLocation();
-  const { t } = useTranslation(); // ✅ NEW: call useTranslation
+  const { t, i18n: i18next } = useTranslation();
+  const isArabic = i18next.language === "ar";
+
   const handleClose = () => setIsOpen(false);
 
   const navLinks = [
-    { name: t('navbar.home'), path: "/" }, // ✅ translated
-    { name: t('navbar.movies'), path: "/movies" }, // ✅ translated
-    { name: t('navbar.events'), path: "/events" }, // ✅ translated
-    { name: t('navbar.about'), path: "/about" }, // ✅ translated
+    { name: t("navbar.home"), path: "/" },
+    { name: t("navbar.movies"), path: "/movies" },
+    { name: t("navbar.events"), path: "/events" },
+    { name: t("navbar.about"), path: "/about" },
   ];
 
   const toggleLanguage = () => {
@@ -27,14 +29,21 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-white shadow-md">
-      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 h-32 flex items-center justify-between gap-6">
+    <header
+      className="fixed top-0 w-full z-50 bg-white shadow-md"
+      dir={isArabic ? "rtl" : "ltr"}
+    >
+      <div
+        className={`max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 h-32 flex items-center justify-between gap-6 ${
+          isArabic ? "flex-row-reverse" : ""
+        }`}
+      >
         {/* Logo */}
         <div className="flex items-center gap-6 overflow-hidden">
           <Link to="/">
             <img
               src={logo}
-              alt={t('navbar.logoAlt')} // ✅ translated alt text
+              alt={t("navbar.logoAlt")}
               className="h-28 w-auto object-contain"
               style={{ maxHeight: "112px" }}
             />
@@ -42,7 +51,11 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-10 text-black font-cinema text-lg flex-1 justify-center">
+        <nav
+          className={`hidden md:flex items-center font-cinema text-lg flex-1 justify-center ${
+            isArabic ? "space-x-reverse space-x-10" : "space-x-10"
+          }`}
+        >
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -56,9 +69,8 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Language Switch + Hamburger Container */}
+        {/* Language + Mobile Menu Toggle */}
         <div className="flex items-center gap-4">
-          {/* Language Button */}
           <button
             onClick={toggleLanguage}
             className="flex items-center gap-2 text-black font-cinema text-lg border border-black px-3 py-1 rounded hover:bg-primary hover:text-white transition"
@@ -67,7 +79,7 @@ export default function Navbar() {
             {language}
           </button>
 
-          {/* Mobile Toggle */}
+          {/* Hamburger */}
           <div className="md:hidden pr-4">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -117,7 +129,6 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* Language Button inside Mobile Menu */}
             <button
               onClick={toggleLanguage}
               className="mt-4 flex items-center gap-2 text-black font-cinema text-lg border border-black px-3 py-1 rounded hover:bg-primary hover:text-white transition self-start"
