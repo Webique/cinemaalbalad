@@ -246,20 +246,23 @@ app.post("/api/admin/add-movies-may8to10", async (req, res) => {
       }
     ];
 
-    await Movie.insertMany(movies);
-    res.status(201).json({ message: "✅ Movies added for May 8–10, 2025." });
+    let inserted = 0;
+    for (const movie of movies) {
+      const exists = await Movie.findOne({ title: movie.title });
+      if (!exists) {
+        await Movie.create(movie);
+        inserted++;
+      } else {
+        console.log(`⚠️ Movie already exists: ${movie.title}`);
+      }
+    }
+
+    res.status(201).json({ message: `✅ ${inserted} new movies added. Skipped existing ones.` });
   } catch (err) {
     console.error("❌ Error adding May 8–10 movies:", err);
     res.status(500).json({ error: "Failed to add May 8–10 movies." });
   }
 });
-
-
-
-
-
-
-
 
 
 
