@@ -46,7 +46,10 @@ export default function Movies() {
 
   const filteredMovies = movies.filter((movie) =>
     movie.showtimes?.some((s) => {
-      const dbDate = new Date(s.date).toISOString().split("T")[0];
+      const dbDate =
+        typeof s.date === "string"
+          ? s.date.length > 10 ? s.date.split("T")[0] : s.date
+          : new Date(s.date).toISOString().split("T")[0];
       return dbDate === selectedDate;
     })
   );
