@@ -45,8 +45,12 @@ export default function Movies() {
   }, []);
 
   const filteredMovies = movies.filter((movie) =>
-    movie.showtimes?.some((s) => s.date === selectedDate)
+    movie.showtimes?.some((s) => {
+      const dbDate = new Date(s.date).toISOString().split("T")[0];
+      return dbDate === selectedDate;
+    })
   );
+  
 
   const handleBooking = (movieId) => {
     const selected = booking[movieId];
