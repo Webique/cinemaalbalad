@@ -149,121 +149,34 @@ app.get("/api/movies/:id", async (req, res) => {
 });
 
 
-app.post("/api/admin/add-movies-may6", async (req, res) => {
+app.post("/api/admin/add-movie-may12", async (req, res) => {
   try {
-    const movies = [
-      {
-        title: "The Date Market",
-        runtime: "90 min",
-        rating: "PG",
-        synopsis: "A lighthearted journey through a bustling Saudi date market.",
-        poster: "/posters/date-market.jpg",
-        trailer: "https://www.youtube.com/watch?v=3GwjfUFyY6M",
-        ticketPrice: 25,
-        showtimes: [
-          {
-            date: "2025-05-06",
-            time: "7:30 PM",
-            reservedSeats: []
-          }
-        ],
-      },
-      {
-        title: "Winds of Jeddah",
-        runtime: "90 min",
-        rating: "PG",
-        synopsis: "A touching story about youth, dreams, and friendship in Jeddah.",
-        poster: "/posters/winds-of-jeddah.jpg",
-        trailer: "https://www.youtube.com/watch?v=oHg5SJYRHA0",
-        ticketPrice: 25,
-        showtimes: [
-          {
-            date: "2025-05-06",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ],
-      }
-    ];
-    await Movie.insertMany(movies);
-    res.status(201).json({ message: "✅ Two movies added for May 6, 2025." });
+    const newMovie = {
+      title: "رمضان فوق البركان",
+      runtime: "120 min",
+      rating: "PG",
+      synopsis: "An exciting adventure during the holy month of Ramadan.",
+      poster: "/posters/may12.jpeg",
+      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      ticketPrice: 25,
+      showtimes: [
+        {
+          date: "2025-05-12",
+          time: "9:00 PM",
+          reservedSeats: []
+        }
+      ]
+    };
+
+    await Movie.create(newMovie);
+    res.status(201).json({ message: "✅ Movie 'رمضان فوق البركان' added for May 12, 2025." });
   } catch (err) {
-    console.error("❌ Error adding May 6 movies:", err);
-    res.status(500).json({ error: "Failed to add May 6 movies." });
+    console.error("❌ Error adding the new movie:", err);
+    res.status(500).json({ error: "Failed to add the new movie." });
   }
 });
 
 
-app.post("/api/admin/add-movies-may8to10", async (req, res) => {
-  try {
-    const movies = [
-      {
-        title: "رحلة 404",
-        runtime: "102 min",
-        rating: "18+",
-        synopsis: "خطأ في الرحلة يؤدي إلى قصة غير متوقعة.",
-        poster: "/posters/may8.png",
-        trailer: "",
-        ticketPrice: 35,
-        showtimes: [
-          {
-            date: "2025-05-08",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ],
-      },
-      {
-        title: "بنات ألفة",
-        runtime: "107 min",
-        rating: "PG-13",
-        synopsis: "قصة حقيقية مؤثرة عن أم وابنتيها.",
-        poster: "/posters/may9.png",
-        trailer: "",
-        ticketPrice: 35,
-        showtimes: [
-          {
-            date: "2025-05-09",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ],
-      },
-      {
-        title: "رامبو: البحث عن ملجأ",
-        runtime: "95 min",
-        rating: "PG",
-        synopsis: "رجل وكلبه في رحلة بحث عن الأمان.",
-        poster: "/posters/may10.png",
-        trailer: "",
-        ticketPrice: 35,
-        showtimes: [
-          {
-            date: "2025-05-10",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ],
-      }
-    ];
-
-    let inserted = 0;
-    for (const movie of movies) {
-      const exists = await Movie.findOne({ title: movie.title });
-      if (!exists) {
-        await Movie.create(movie);
-        inserted++;
-      } else {
-        console.log(`⚠️ Movie already exists: ${movie.title}`);
-      }
-    }
-
-    res.status(201).json({ message: `✅ ${inserted} new movies added. Skipped existing ones.` });
-  } catch (err) {
-    console.error("❌ Error adding May 8–10 movies:", err);
-    res.status(500).json({ error: "Failed to add May 8–10 movies." });
-  }
-});
 
 
 
