@@ -185,70 +185,6 @@ app.post("/api/admin/add-movies-may6", async (req, res) => {
         ],
       }
     ];
-
-
-    app.post("/api/admin/add-movies-may8to10", async (req, res) => {
-      try {
-        const movies = [
-          {
-            title: "رحلة 404",
-            runtime: "102 min",
-            rating: "18+",
-            synopsis: "خطأ في الرحلة يؤدي إلى قصة غير متوقعة.",
-            poster: "/posters/may8.png", // updated path
-            trailer: "",
-            ticketPrice: 35,
-            showtimes: [
-              {
-                date: "2025-05-08",
-                time: "21:00",
-                reservedSeats: []
-              }
-            ],
-          },
-          {
-            title: "بنات ألفة",
-            runtime: "107 min",
-            rating: "PG-13",
-            synopsis: "قصة حقيقية مؤثرة عن أم وابنتيها.",
-            poster: "/posters/may9.png",
-            trailer: "",
-            ticketPrice: 35,
-            showtimes: [
-              {
-                date: "2025-05-09",
-                time: "21:00",
-                reservedSeats: []
-              }
-            ],
-          },
-          {
-            title: "رامبو: البحث عن ملجأ",
-            runtime: "95 min",
-            rating: "PG",
-            synopsis: "رجل وكلبه في رحلة بحث عن الأمان.",
-            poster: "/posters/may10.png",
-            trailer: "",
-            ticketPrice: 35,
-            showtimes: [
-              {
-                date: "2025-05-10",
-                time: "21:00",
-                reservedSeats: []
-              }
-            ],
-          },
-        ];
-    
-        await Movie.insertMany(movies);
-        res.status(201).json({ message: "✅ Movies added for May 8–10, 2025." });
-      } catch (err) {
-        console.error("❌ Error adding May 8–10 movies:", err);
-        res.status(500).json({ error: "Failed to add May 8–10 movies." });
-      }
-    });
-    
-
     await Movie.insertMany(movies);
     res.status(201).json({ message: "✅ Two movies added for May 6, 2025." });
   } catch (err) {
@@ -256,6 +192,68 @@ app.post("/api/admin/add-movies-may6", async (req, res) => {
     res.status(500).json({ error: "Failed to add May 6 movies." });
   }
 });
+
+app.post("/api/admin/add-movies-may8to10", async (req, res) => {
+  try {
+    const movies = [
+      {
+        title: "رحلة 404",
+        runtime: "102 min",
+        rating: "18+",
+        synopsis: "خطأ في الرحلة يؤدي إلى قصة غير متوقعة.",
+        poster: "/posters/may8.png",
+        trailer: "",
+        ticketPrice: 35,
+        showtimes: [
+          {
+            date: "2025-05-08",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ],
+      },
+      {
+        title: "بنات ألفة",
+        runtime: "107 min",
+        rating: "PG-13",
+        synopsis: "قصة حقيقية مؤثرة عن أم وابنتيها.",
+        poster: "/posters/may9.png",
+        trailer: "",
+        ticketPrice: 35,
+        showtimes: [
+          {
+            date: "2025-05-09",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ],
+      },
+      {
+        title: "رامبو: البحث عن ملجأ",
+        runtime: "95 min",
+        rating: "PG",
+        synopsis: "رجل وكلبه في رحلة بحث عن الأمان.",
+        poster: "/posters/may10.png",
+        trailer: "",
+        ticketPrice: 35,
+        showtimes: [
+          {
+            date: "2025-05-10",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ],
+      }
+    ];
+
+    await Movie.insertMany(movies);
+    res.status(201).json({ message: "✅ Movies added for May 8–10, 2025." });
+  } catch (err) {
+    console.error("❌ Error adding May 8–10 movies:", err);
+    res.status(500).json({ error: "Failed to add May 8–10 movies." });
+  }
+});
+
 
 
 
