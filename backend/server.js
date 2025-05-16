@@ -176,6 +176,34 @@ app.post("/api/admin/add-movie-may20", async (req, res) => {
   }
 });
 
+// ✅ Add May 18 Free Event Movie
+app.post("/api/admin/add-event-may18", async (req, res) => {
+  try {
+    const newEvent = {
+      title: "How to Read Films",
+      runtime: "60 min",
+      rating: "Open",
+      synopsis: "Led by Ohoud Alharbi – Your guide to interpreting films while watching. Presented as part of the Filmmakers Gathering at Cinema Al Balad.",
+      poster: "/posters/event1.jpeg",
+      trailer: "", // You can add a YouTube link if available
+      ticketPrice: 0, // ✅ Free event
+      showtimes: [
+        {
+          date: "2025-05-18",
+          time: "7:30 PM",
+          reservedSeats: [],
+        }
+      ]
+    };
+
+    await Movie.create(newEvent);
+    res.status(201).json({ message: "✅ Free event 'How to Read Films' added for May 18 at 7:30 PM." });
+  } catch (err) {
+    console.error("❌ Error adding the event:", err);
+    res.status(500).json({ error: "Failed to add event." });
+  }
+});
+
 
 
 
