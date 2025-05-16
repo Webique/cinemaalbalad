@@ -86,7 +86,7 @@ export default function Movies() {
             backgroundPosition: "center",
           }}
         >
-          <div className="backdrop-blur-sm bg-black/60 w-full h-full flex flex-col items-center justify-center space-y-4">
+          <div className="backdrop-blur-sm bg-black/60 w-full h-full flex flex-col items-center justify-center px-6 py-20 space-y-6">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary border-opacity-70"></div>
             <p className="text-lg">{t('movies.loading') || "Loading movies..."}</p>
           </div>
@@ -95,6 +95,7 @@ export default function Movies() {
       </>
     );
   }
+  
 
   return (
     <>
