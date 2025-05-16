@@ -177,15 +177,6 @@ app.post("/api/admin/add-movie-may20", async (req, res) => {
 });
 
 
-    await Movie.insertMany(newMovies);
-    res.status(201).json({ message: "✅ 3 New movies added for May 12 to May 17, 2025." });
-  } catch (err) {
-    console.error("❌ Error adding the new movies:", err);
-    res.status(500).json({ error: "Failed to add the new movies." });
-  }
-});
-
-
 
 
 
