@@ -67,9 +67,10 @@ app.post("/api/bookings", async (req, res) => {
     }
 
     // ✅ Check if this booking is free
-    const isFreeScreening = movie === "Maflam Nights" && date === "2025-05-07";
-    const ticketPrice = isFreeScreening ? 0 : movieDoc.ticketPrice;
+    const isFreeScreening = movieDoc.ticketPrice === 0;
+    const ticketPrice = isFreeScreening ? 0 : movieDoc.ticketPrice || 35;
     const totalPrice = seats.length * ticketPrice;
+    
 
     // Step 3: Save the booking (with price info if needed)
     const newBooking = new Booking({
