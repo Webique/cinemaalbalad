@@ -20,6 +20,17 @@ export default function Events() {
     //     : "A night gathering filmmakers with Director Abdullah Saharti",
     //   image: "/events/event1.png",
     // },
+
+    {
+      id: 2,
+      title: isArabic ? "كيف نقرأ الأفلام" : "How to Read Films",
+      date: isArabic ? "١٨ مايو" : "18 May",
+      time: "7:30 PM",
+      description: isArabic
+        ? "تقدمها عهود الحربي - صانعة أفلام، مهتمة بالنقد الأدبي والسينمائي. دليلك لتحليل الفيلم أثناء مشاهدته ضمن فعالية قعدات فنية."
+        : "Led by Ohoud Alharbi – Filmmaker with a focus on literary and film criticism. Your guide to interpreting films while watching, part of the Filmmakers Gathering at Cinema Al Balad.",
+      image: "/posters/event1.jpeg",
+    }
   ];
 
   return (
