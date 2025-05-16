@@ -4,44 +4,55 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import TrailerModal from "../components/TrailerModal";
-import { useTranslation } from "react-i18next"; // ✅ NEW
+import { useTranslation } from "react-i18next";
 
 export default function Movies() {
-  const { t } = useTranslation(); // ✅ NEW
+  const { t } = useTranslation();
 
   const [selectedTrailer, setSelectedTrailer] = useState(null);
   const [booking, setBooking] = useState({});
   const [movies, setMovies] = useState([]);
   const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [startIndex, setStartIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+
   const isFreeShowtime = (movie, date) =>
     movie.title === "Maflam Nights" &&
     movie.showtimes?.some((s) => s.date === "2025-05-07" && date === "2025-05-07");
-  
 
   const generateAllDates = () => {
     const dates = [];
     const today = new Date();
     const end = new Date();
-    end.setDate(today.getDate() + 6); // only the next 7 days
-  
+    end.setDate(today.getDate() + 6);
+
     while (today <= end) {
       dates.push(new Date(today).toISOString().split("T")[0]);
       today.setDate(today.getDate() + 1);
     }
     return dates;
   };
-  
 
   const allDates = generateAllDates();
   const visibleDates = allDates.slice(startIndex, startIndex + 3);
 
   useEffect(() => {
-    fetch("https://cinemaalbalad.onrender.com/api/movies")
-      .then((res) => res.json())
-      .then((data) => setMovies(data))
-      .catch((err) => console.error("Failed to fetch movies:", err));
+    const loadMovies = async () => {
+      try {
+        const res = await fetch("https://cinemaalbalad.onrender.com/api/movies");
+        const data = await res.json();
+        setMovies(data);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
+      } catch (err) {
+        console.error("Failed to fetch movies:", err);
+        setIsLoading(false);
+      }
+    };
+
+    loadMovies();
   }, []);
 
   const filteredMovies = movies.filter((movie) =>
@@ -53,7 +64,6 @@ export default function Movies() {
       return dbDate === selectedDate;
     })
   );
-  
 
   const handleBooking = (movieId) => {
     const selected = booking[movieId];
@@ -63,6 +73,28 @@ export default function Movies() {
     }
     navigate(`/booknow?movieId=${movieId}&time=${selected.time}&count=${selected.count}`);
   };
+
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <main
+          className="flex items-center justify-center min-h-screen bg-black text-white font-cinema"
+          style={{
+            backgroundImage: "url('/main.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="backdrop-blur-sm bg-black/60 w-full h-full flex flex-col items-center justify-center space-y-4">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary border-opacity-70"></div>
+            <p className="text-lg">{t('movies.loading') || "Loading movies..."}</p>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -141,25 +173,19 @@ export default function Movies() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: index * 0.1 }}
                 >
-<div className="w-full md:w-[55%] inline-block rounded-2xl shadow-2xl bg-black">
-  <img
-    src={movie.poster || "/default-poster.jpg"}
-    alt={movie.title}
-    className="w-full h-auto object-contain rounded-2xl shadow-2xl"
-  />
-</div>
-
-
-
+                  <div className="w-full md:w-[55%] inline-block rounded-2xl shadow-2xl bg-black">
+                    <img
+                      src={movie.poster || "/default-poster.jpg"}
+                      alt={movie.title}
+                      className="w-full h-auto object-contain rounded-2xl shadow-2xl"
+                    />
+                  </div>
 
                   <div className="w-full md:w-1/2 text-center md:text-left space-y-4">
                     <h2 className="text-3xl sm:text-4xl font-bold drop-shadow-md">{movie.title}</h2>
-                      <p className="text-sm text-gray-300">
-                        {movie.runtime || t('movies.defaultRuntime')} • {movie.rating || t('movies.defaultRating')}
-                      </p>
-
-
-
+                    <p className="text-sm text-gray-300">
+                      {movie.runtime || t('movies.defaultRuntime')} • {movie.rating || t('movies.defaultRating')}
+                    </p>
 
                     <div className="pt-6 border-t border-white/10 space-y-4">
                       <p className="text-primary text-lg font-semibold">{t('movies.bookTickets')}</p>
@@ -235,23 +261,20 @@ export default function Movies() {
                       </div>
 
                       {isFreeShowtime(movie, selectedDate) ? (
-  <p className="text-sm text-green-400 font-semibold">🎉 Free Screening!</p>
-) : (
-  <div className="text-sm text-gray-300 flex items-center gap-2">
-    {t('movies.total')}:
-    <span className="text-white font-bold flex items-center gap-1">
-      {(booking[movie._id]?.count || 1) * (movie.ticketPrice || 35)}
-      <img
-        src="/saudi-riyal.png"
-        alt="SAR"
-        className="w-5 h-5 sm:w-6 sm:h-6"
-      />
-    </span>
-  </div>
-)}
-
-
-
+                        <p className="text-sm text-green-400 font-semibold">🎉 Free Screening!</p>
+                      ) : (
+                        <div className="text-sm text-gray-300 flex items-center gap-2">
+                          {t('movies.total')}:
+                          <span className="text-white font-bold flex items-center gap-1">
+                            {(booking[movie._id]?.count || 1) * (movie.ticketPrice || 35)}
+                            <img
+                              src="/saudi-riyal.png"
+                              alt="SAR"
+                              className="w-5 h-5 sm:w-6 sm:h-6"
+                            />
+                          </span>
+                        </div>
+                      )}
 
                       <button
                         onClick={() => handleBooking(movie._id)}
