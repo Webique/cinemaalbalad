@@ -267,7 +267,12 @@ export default function Movies() {
                         <div className="text-sm text-gray-300 flex items-center gap-2">
                           {t('movies.total')}:
                           <span className="text-white font-bold flex items-center gap-1">
-                            {(booking[movie._id]?.count || 1) * (movie.ticketPrice || 35)}
+                          {(() => {
+                            const count = booking[movie._id]?.count || 1;
+                            const price = movie.ticketPrice !== undefined ? movie.ticketPrice : 35;
+                            return count * price;
+                          })()}
+
                             <img
                               src="/saudi-riyal.png"
                               alt="SAR"
