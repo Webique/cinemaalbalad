@@ -148,20 +148,20 @@ app.get("/api/movies/:id", async (req, res) => {
   }
 });
 
-
-app.post("/api/admin/add-movie-may12", async (req, res) => {
+// ✅ Route to add a new movie (May 20, 2025)
+app.post("/api/admin/add-movie-may20", async (req, res) => {
   try {
     const newMovie = {
-      title: "رمضان فوق البركان",
+      title: "حد الطار",
       runtime: "120 min",
-      rating: "PG",
-      synopsis: "An exciting adventure during the holy month of Ramadan.",
-      poster: "/posters/may12.jpeg",
+      rating: "PG-13",
+      synopsis: "An epic tale of courage and retribution.",
+      poster: "/posters/TheTamberOfRetribution.jpeg",
       trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       ticketPrice: 25,
       showtimes: [
         {
-          date: "2025-05-12",
+          date: "2025-05-20",
           time: "9:00 PM",
           reservedSeats: []
         }
@@ -169,12 +169,13 @@ app.post("/api/admin/add-movie-may12", async (req, res) => {
     };
 
     await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ Movie 'رمضان فوق البركان' added for May 12, 2025." });
+    res.status(201).json({ message: "✅ Movie 'حد الطار' added for May 20, 2025." });
   } catch (err) {
     console.error("❌ Error adding the new movie:", err);
     res.status(500).json({ error: "Failed to add the new movie." });
   }
 });
+
 
 
 
