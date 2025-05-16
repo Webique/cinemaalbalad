@@ -148,74 +148,34 @@ app.get("/api/movies/:id", async (req, res) => {
   }
 });
 
-app.post("/api/admin/add-movies-may12-17", async (req, res) => {
+// ✅ Route to add a new movie (May 20, 2025)
+app.post("/api/admin/add-movie-may20", async (req, res) => {
   try {
-    const newMovies = [
-      {
-        title: "رمضان فوق البركان",
-        runtime: "120 min",
-        rating: "PG",
-        synopsis: "An exciting adventure during the holy month of Ramadan.",
-        poster: "/posters/may12.jpeg",
-        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        ticketPrice: 25,
-        showtimes: [
-          {
-            date: "2025-05-12",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ]
-      },
-      {
-        title: "رحلة 404",
-        runtime: "102 min",
-        rating: "18+",
-        synopsis: "A thrilling journey that goes off the map.",
-        poster: "/posters/may15.jpeg",
-        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        ticketPrice: 25,
-        showtimes: [
-          {
-            date: "2025-05-15",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ]
-      },
-      {
-        title: "البحث عن منقذ لخروج السيد رامبو",
-        runtime: "100 min",
-        rating: "18+",
-        synopsis: "A suspenseful search to rescue Mr. Rambo.",
-        poster: "/posters/may16.jpeg",
-        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        ticketPrice: 25,
-        showtimes: [
-          {
-            date: "2025-05-16",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ]
-      },
-      {
-        title: "بنات الفة",
-        runtime: "107 min",
-        rating: "18+",
-        synopsis: "A dramatic tale of friendship and betrayal.",
-        poster: "/posters/may17.jpeg",
-        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        ticketPrice: 25,
-        showtimes: [
-          {
-            date: "2025-05-17",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ]
-      }
-    ];
+    const newMovie = {
+      title: "حد الطار",
+      runtime: "120 min",
+      rating: "PG-13",
+      synopsis: "An epic tale of courage and retribution.",
+      poster: "/posters/TheTamberOfRetribution.jpeg",
+      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      ticketPrice: 25,
+      showtimes: [
+        {
+          date: "2025-05-20",
+          time: "9:00 PM",
+          reservedSeats: []
+        }
+      ]
+    };
+
+    await Movie.create(newMovie);
+    res.status(201).json({ message: "✅ Movie 'حد الطار' added for May 20, 2025." });
+  } catch (err) {
+    console.error("❌ Error adding the new movie:", err);
+    res.status(500).json({ error: "Failed to add the new movie." });
+  }
+});
+
 
     await Movie.insertMany(newMovies);
     res.status(201).json({ message: "✅ 3 New movies added for May 12 to May 17, 2025." });
