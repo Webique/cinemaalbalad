@@ -39,21 +39,27 @@ export default function Movies() {
 
   useEffect(() => {
     const loadMovies = async () => {
+      const fetchStart = performance.now();
+  
       try {
         const res = await fetch("https://cinemaalbalad.onrender.com/api/movies");
         const data = await res.json();
         setMovies(data);
+  
+        const elapsed = performance.now() - fetchStart;
+        const delay = Math.max(0, 2000 - elapsed);
         setTimeout(() => {
           setIsLoading(false);
-        }, 2000);
+        }, delay);
       } catch (err) {
         console.error("Failed to fetch movies:", err);
         setIsLoading(false);
       }
     };
-
+  
     loadMovies();
   }, []);
+  
 
   const filteredMovies = movies.filter((movie) =>
     movie.showtimes?.some((s) => {
