@@ -169,20 +169,20 @@ app.get("/api/movies/:id", async (req, res) => {
   }
 });
 
-// ✅ Route to add a new movie (May 20, 2025)
-app.post("/api/admin/add-movie-may20", async (req, res) => {
+// ✅ Route to add a new movie (May 19, 2025)
+app.post("/api/admin/add-movie-may19", async (req, res) => {
   try {
     const newMovie = {
-      title: "حد الطار",
-      runtime: "120 min",
+      title: "Ice Creamingly Yours",
+      runtime: "110 min",
       rating: "PG-13",
-      synopsis: "An epic tale of courage and retribution.",
-      poster: "/posters/TheTamberOfRetribution.jpeg",
+      synopsis: "A sweet and chilling adventure of love and mystery.",
+      poster: "/posters/icecreaminglym.jpeg",
       trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       ticketPrice: 25,
       showtimes: [
         {
-          date: "2025-05-20",
+          date: "2025-05-19",
           time: "9:00 PM",
           reservedSeats: []
         }
@@ -190,40 +190,13 @@ app.post("/api/admin/add-movie-may20", async (req, res) => {
     };
 
     await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ Movie 'حد الطار' added for May 20, 2025." });
+    res.status(201).json({ message: "✅ Movie 'Ice Creamingly Yours' added for May 19, 2025." });
   } catch (err) {
     console.error("❌ Error adding the new movie:", err);
     res.status(500).json({ error: "Failed to add the new movie." });
   }
 });
 
-// ✅ Add May 18 Free Event Movie
-app.post("/api/admin/add-event-may18", async (req, res) => {
-  try {
-    const newEvent = {
-      title: "How to Read Films",
-      runtime: "60 min",
-      rating: "Open",
-      synopsis: "Led by Ohoud Alharbi – Your guide to interpreting films while watching. Presented as part of the Filmmakers Gathering at Cinema Al Balad.",
-      poster: "/posters/event1.jpeg",
-      trailer: "", // You can add a YouTube link if available
-      ticketPrice: 0, // ✅ Free event
-      showtimes: [
-        {
-          date: "2025-05-18",
-          time: "7:30 PM",
-          reservedSeats: [],
-        }
-      ]
-    };
-
-    await Movie.create(newEvent);
-    res.status(201).json({ message: "✅ Free event 'How to Read Films' added for May 18 at 7:30 PM." });
-  } catch (err) {
-    console.error("❌ Error adding the event:", err);
-    res.status(500).json({ error: "Failed to add event." });
-  }
-});
 
 
 
