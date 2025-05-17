@@ -42,7 +42,6 @@ app.get("/api/movies", async (req, res) => {
 app.get("/", (req, res) => {
   res.send("Server is running 🚀");
 });
-
 app.post("/api/bookings", async (req, res) => {
   try {
     const { name, email, movie, date, time, seats } = req.body;
@@ -50,54 +49,74 @@ app.post("/api/bookings", async (req, res) => {
 
     // Step 1: Find the movie
     const movieDoc = await Movie.findOne({ title: movie });
-    if (!movieDoc) return res.status(404).json({ error: "Movie not found" });
+    if (!movieDoc) {
+      console.error("❌ Movie not found:", movie);
+      return res.status(404).json({ error: "Movie not found" });
+    }
 
     const showtime = movieDoc.showtimes.find((s) => s.date === date && s.time === time);
-    if (!showtime) return res.status(404).json({ error: "Showtime not found" });
+    if (!showtime) {
+      console.error("❌ Showtime not found:", date, time);
+      return res.status(404).json({ error: "Showtime not found" });
+    }
 
-    // Step 2: Check taken seats using Booking collection (not reservedSeats)
+    // Step 2: Check taken seats using Booking collection
     const existingBookings = await Booking.find({ movie, date, time });
     const bookedSeats = existingBookings.flatMap((b) => b.seats);
     const alreadyTaken = seats.filter((seat) => bookedSeats.includes(seat));
     if (alreadyTaken.length > 0) {
+      console.error("❌ Some seats are already taken:", alreadyTaken);
       return res.status(409).json({
         error: "Some seats are already taken",
         takenSeats: alreadyTaken,
       });
     }
 
-    // ✅ Check if this booking is free
+    // ✅ Calculate Ticket Price
     const isFreeScreening = movieDoc.ticketPrice === 0;
     const ticketPrice = isFreeScreening ? 0 : movieDoc.ticketPrice || 35;
     const totalPrice = seats.length * ticketPrice;
-    
+    console.log("✅ Total Price:", totalPrice);
 
     // Step 3: Save the booking (with price info if needed)
-    const newBooking = new Booking({
-      name,
-      email,
-      movie,
-      date,
-      time,
-      seats,
-      price: totalPrice,
-    });
-    await newBooking.save();
+    let newBooking;
+    try {
+      newBooking = await Booking.create({
+        name,
+        email,
+        movie,
+        date,
+        time,
+        seats,
+        price: totalPrice,
+      });
+      console.log("✅ Booking created:", newBooking._id);
+    } catch (err) {
+      console.error("❌ Booking save error (Step 3):", err);
+      return res.status(500).json({ error: "Failed to save booking." });
+    }
 
     // Step 4: Generate and save QR code
-    const qrPayload = JSON.stringify({
-      _id: newBooking._id,
-      name,
-      email,
-      movie,
-      date,
-      time,
-      seats,
-      scanned: false,
-    });
-    const qrCodeData = await QRCode.toDataURL(qrPayload);
-    newBooking.qrCodeData = qrCodeData;
-    await newBooking.save();
+    try {
+      const qrPayload = JSON.stringify({
+        _id: newBooking._id,
+        name,
+        email,
+        movie,
+        date,
+        time,
+        seats,
+        scanned: false,
+      });
+
+      const qrCodeData = await QRCode.toDataURL(qrPayload);
+      newBooking.qrCodeData = qrCodeData;
+      await newBooking.save();
+      console.log("✅ QR Code generated and saved:", newBooking._id);
+    } catch (err) {
+      console.error("❌ QR Code generation error (Step 4):", err);
+      return res.status(500).json({ error: "Failed to generate QR Code." });
+    }
 
     // Step 5: Return result
     res.status(201).json({
@@ -105,15 +124,16 @@ app.post("/api/bookings", async (req, res) => {
         ? "🎉 Free booking confirmed!"
         : "✅ Booking confirmed!",
       bookingId: newBooking._id,
-      qrCodeData,
+      qrCodeData: newBooking.qrCodeData,
       isFree: isFreeScreening,
     });
 
   } catch (err) {
-    console.error("Booking save error:", err);
-    res.status(500).json({ error: "Failed to save booking." });
+    console.error("❌ Critical Booking Error:", err);
+    res.status(500).json({ error: "Critical error in booking process." });
   }
 });
+
 
 
 
