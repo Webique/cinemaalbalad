@@ -61,7 +61,7 @@ app.post("/api/bookings", async (req, res) => {
     const showtime = movieDoc.showtimes.find(s => s.date === date && s.time === time);
     if (!showtime) return res.status(404).json({ error: "Showtime not found" });
 
-    const isFreeScreening = movie === "Maflam Nights" && date === "2025-05-07";
+    const isFreeScreening = price === 0 || movieDoc.ticketPrice === 0;
     const ticketPrice = isFreeScreening ? 0 : movieDoc.ticketPrice || 35;
     const totalPrice = seats.length * ticketPrice;
 
