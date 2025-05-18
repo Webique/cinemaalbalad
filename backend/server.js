@@ -97,12 +97,31 @@ app.post("/api/bookings", async (req, res) => {
       return res.status(409).json({ error: "Seats already taken", conflict });
     }
 
-    // 4. Save booking
-    const newBooking = await Booking.create({
-      name, email, movie, date, time, seats, price: totalPrice,
-    });
+      // 4. Prevent duplicate booking (same user + same seats + same showtime)
+  const existingBooking = await Booking.findOne({
+    email,
+    movie,
+    date,
+    time,
+    seats: { $all: seats, $size: seats.length },
+  });
 
-    // 5. Generate QR code
+  if (existingBooking) {
+    console.log("⚠️ Duplicate booking returned:", existingBooking._id);
+    return res.status(200).json({
+      message: "Booking already exists.",
+      bookingId: existingBooking._id,
+      qrCodeData: existingBooking.qrCodeData,
+    });
+  }
+
+  // 5. Save booking
+  const newBooking = await Booking.create({
+    name, email, movie, date, time, seats, price: totalPrice,
+  });
+
+
+    // 6. Generate QR code
     const payload = JSON.stringify({
       _id: newBooking._id,
       name, email, movie, date, time, seats, scanned: false,
