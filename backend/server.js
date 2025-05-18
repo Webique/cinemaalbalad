@@ -160,6 +160,7 @@ app.post("/api/bookings", async (req, res) => {
       name, email, movie, date, time, seats, scanned: false,
     });
 
+    
     const qrCodeData = await QRCode.toDataURL(payload);
     newBooking.qrCodeData = qrCodeData;
     await newBooking.save();
