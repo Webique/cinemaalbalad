@@ -12,6 +12,39 @@ import axios from "axios";
 
 import QRCode from "qrcode";
 
+import { Resend } from 'resend';
+
+const resend = new Resend('re_bFHudxbM_9KHcF2JiiCNAxucLV3VQyeGD');
+
+const sendTicketEmail = async (booking, qrCodeData) => {
+  try {
+    await resend.emails.send({
+      from: 'Cinema Al Balad <noreply@cinemaalbalad.com>',
+      to: [booking.email],
+      subject: `🎟️ Your Ticket for ${booking.movie}`,
+      html: `
+        <h2>Hello ${booking.name},</h2>
+        <p>Your reservation is confirmed for:</p>
+        <ul>
+          <li><strong>Movie:</strong> ${booking.movie}</li>
+          <li><strong>Date:</strong> ${booking.date}</li>
+          <li><strong>Time:</strong> ${booking.time}</li>
+          <li><strong>Seats:</strong> ${booking.seats.join(', ')}</li>
+        </ul>
+        <p>Show this QR code at the cinema entrance:</p>
+        <img src="${qrCodeData}" alt="QR Code" width="200" style="border:1px solid #ddd;padding:4px;border-radius:4px;" />
+        <br/><br/>
+        <p>Enjoy your movie! 🍿</p>
+        <p>— Cinema Al Balad</p>
+      `,
+    });
+
+    console.log(`📧 Email sent to ${booking.email}`);
+  } catch (err) {
+    console.error("❌ Failed to send email:", err.message || err);
+  }
+};
+
 
 
 // App config
@@ -130,6 +163,8 @@ app.post("/api/bookings", async (req, res) => {
     const qrCodeData = await QRCode.toDataURL(payload);
     newBooking.qrCodeData = qrCodeData;
     await newBooking.save();
+    await sendTicketEmail(newBooking, qrCodeData);
+
 
     console.log("✅ Booking saved:", newBooking._id);
     res.status(201).json({
