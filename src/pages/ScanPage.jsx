@@ -176,10 +176,24 @@ if (invalid) {
   }, []);
 
   useEffect(() => {
-    const movie = movies.find((m) => m.title === selectedMovie);
-    setShowtimes(movie?.showtimes || []);
-    setTotalSeats(movie?.totalSeats || 48);
-  }, [selectedMovie, movies]);
+    if (!selectedDate) {
+      setShowtimes([]);
+      return;
+    }
+  
+    const allMatching = movies
+      .flatMap((movie) =>
+        movie.showtimes.map((s) => ({
+          ...s,
+          movie: movie.title,
+          totalSeats: movie.totalSeats || 48,
+        }))
+      )
+      .filter((s) => s.date === selectedDate);
+  
+    setShowtimes(allMatching);
+  }, [selectedDate, movies]);
+  
 
   useEffect(() => {
     if (selectedMovie && selectedDate && selectedTime) {
