@@ -310,7 +310,7 @@ app.get("/api/verify-payment", async (req, res) => {
   try {
     const response = await axios.get(`https://api.moyasar.com/v1/payments/${id}`, {
       auth: {
-        username: "sk_live_jWYvF8kcqYZhurrkMmxFm9dXbgmnGFUbcVySi1oR", // ✅ Use your real secret key
+        username: "sk_test_oQ87yapoFzbp1wAEoxZkjQrTZJVvbaw5uBBXkYdy", // ✅ Use your real secret key
         password: "",
       },
     });
