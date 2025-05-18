@@ -12,7 +12,7 @@ export default function Payment() {
   const paymentId = searchParams.get("id");
   const rawDetails = searchParams.get("details");
 
-  // 1. Parse booking data
+  // 1. Parse booking details
   useEffect(() => {
     if (rawDetails) {
       try {
@@ -25,9 +25,11 @@ export default function Payment() {
     }
   }, [rawDetails]);
 
-  // 2. If redirected from Moyasar with paymentId, verify it
+  // 2. Decide flow: free or paid
   useEffect(() => {
-    if (paymentId && bookingData) {
+    if (paymentId === "free" && bookingData) {
+      saveFreeBooking();
+    } else if (paymentId && bookingData) {
       verifyAndSaveBooking();
     }
   }, [paymentId, bookingData]);
@@ -73,7 +75,33 @@ export default function Payment() {
     }
   };
 
-  // 3. Trigger Moyasar payment
+  const saveFreeBooking = async () => {
+    try {
+      const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...bookingData, paymentId: "free" }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.bookingId) {
+        localStorage.setItem("latestBooking", JSON.stringify({
+          ...bookingData,
+          _id: data.bookingId,
+          qrCodeData: data.qrCodeData || "",
+        }));
+        navigate("/thankyou");
+      } else {
+        console.error("❌ Free booking save failed:", data);
+        navigate("/booking-failed");
+      }
+    } catch (err) {
+      console.error("❌ Error saving free booking:", err);
+      navigate("/booking-failed");
+    }
+  };
+
   const startMoyasarPayment = () => {
     if (!bookingData) {
       alert(t("payment.missingDetails"));
@@ -105,7 +133,6 @@ export default function Payment() {
     document.body.appendChild(script);
   };
 
-  // 4. Show loading if no data
   if (!bookingData) {
     return (
       <main className="relative min-h-screen flex items-center justify-center text-white font-cinema overflow-hidden">
@@ -124,8 +151,7 @@ export default function Payment() {
     );
   }
 
-  // 5. While verifying
-  if (paymentId) {
+  if (paymentId && paymentId !== "free") {
     return (
       <main className="relative min-h-screen flex items-center justify-center text-white font-cinema overflow-hidden">
         <div className="fixed top-0 left-0 w-full h-full -z-10">
@@ -143,7 +169,6 @@ export default function Payment() {
     );
   }
 
-  // 6. Show payment method selection
   return (
     <main className="relative min-h-screen flex items-center justify-center text-white font-cinema overflow-hidden px-6">
       <div className="fixed top-0 left-0 w-full h-full -z-10">
