@@ -131,17 +131,16 @@ export default function BookNow() {
   
     const queryString = encodeURIComponent(JSON.stringify(bookingDetails));
   
-    if (selectedMovie.title === "Maflam Nights" && form.date === "2025-05-07") {
-      // Save directly without payment
+    if (selectedMovie.ticketPrice === 0) {
       try {
         const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...bookingDetails, price: 0 }),
+          body: JSON.stringify({ ...bookingDetails, price: 0, paymentId: "free" }),
         });
-  
+    
         const data = await res.json();
-        if (res.ok) {
+        if (res.ok && data.bookingId) {
           localStorage.setItem("latestBooking", JSON.stringify({
             ...bookingDetails,
             _id: data.bookingId,
@@ -150,15 +149,16 @@ export default function BookNow() {
           navigate("/thankyou");
         } else {
           console.error("Booking failed:", data);
-          alert("❌ Failed to book. Please try again.");
+          navigate("/booking-failed");
         }
       } catch (err) {
         console.error("❌ Free booking error:", err);
-        alert("❌ Booking failed. Check your internet connection.");
+        navigate("/booking-failed");
       }
     } else {
       navigate(`/payment?details=${queryString}`);
     }
+    
   };
   
 
