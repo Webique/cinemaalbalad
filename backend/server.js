@@ -38,6 +38,7 @@ const sendTicketEmail = async (booking, qrCodeData) => {
         <p>— Cinema Al Balad</p>
       `,
     });
+
     
 
     console.log(`📧 Email sent to ${booking.email}`);
