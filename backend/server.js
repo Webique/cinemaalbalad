@@ -218,34 +218,84 @@ app.get("/api/movies/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch movie" });
   }
 });
-
-// ✅ Route to add a new movie (May 19, 2025)
-app.post("/api/admin/add-movie-may19", async (req, res) => {
+// ✅ Route to add multiple new movies (May 21–24, 2025)
+app.post("/api/admin/add-movies-may21-24", async (req, res) => {
   try {
-    const newMovie = {
-      title: "Ice Creamingly Yours",
-      runtime: "110 min",
-      rating: "PG-13",
-      synopsis: "A sweet and chilling adventure of love and mystery.",
-      poster: "/posters/icecreaminglym.jpeg",
-      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      ticketPrice: 25,
-      showtimes: [
-        {
-          date: "2025-05-19",
-          time: "9:00 PM",
-          reservedSeats: []
-        }
-      ]
-    };
+    const newMovies = [
+      {
+        title: "Maflam, Nights",
+        runtime: "90 min",
+        rating: "PG-13",
+        synopsis: "An exciting story of adventure and courage.",
+        poster: "/posters/may21.jpeg",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        ticketPrice: 0,
+        showtimes: [
+          {
+            date: "2025-05-21",
+            time: "8:00 PM",
+            reservedSeats: []
+          }
+        ]
+      },
+      {
+        title: "فيلم الحارة",
+        runtime: "116 min",
+        rating: "PG-13",
+        synopsis: "A captivating tale of mystery and drama.",
+        poster: "/posters/may22.jpeg",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        ticketPrice: 35,
+        showtimes: [
+          {
+            date: "2025-05-22",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ]
+      },
+      {
+        title: "Goodbye Julia",
+        runtime: "120 min",
+        rating: "PG-13",
+        synopsis: "An epic cinematic experience full of emotions.",
+        poster: "/posters/may23.jpeg",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        ticketPrice: 35,
+        showtimes: [
+          {
+            date: "2025-05-23",
+            time: "7:30 PM",
+            reservedSeats: []
+          }
+        ]
+      },
+      {
+        title: "Behind The Mountains",
+        runtime: "100 min",
+        rating: "PG-13",
+        synopsis: "A thrilling adventure with unexpected twists.",
+        poster: "/posters/may21.jpeg",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        ticketPrice: 35,
+        showtimes: [
+          {
+            date: "2025-05-24",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ]
+      }
+    ];
 
-    await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ Movie 'Ice Creamingly Yours' added for May 19, 2025." });
+    await Movie.insertMany(newMovies);
+    res.status(201).json({ message: "✅ Movies for May 21-24 added successfully." });
   } catch (err) {
-    console.error("❌ Error adding the new movie:", err);
-    res.status(500).json({ error: "Failed to add the new movie." });
+    console.error("❌ Error adding new movies:", err);
+    res.status(500).json({ error: "Failed to add the new movies." });
   }
 });
+
 
 
 
