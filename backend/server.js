@@ -56,27 +56,25 @@ app.post("/api/bookings", async (req, res) => {
   try {
     // 1. Get movie & showtime
     const movieDoc = await Movie.findOne({ title: movie });
-    if (!movieDoc) {
-      return res.status(404).json({ error: "Movie not found" });
-    }
+    if (!movieDoc) return res.status(404).json({ error: "Movie not found" });
 
     const showtime = movieDoc.showtimes.find(s => s.date === date && s.time === time);
-    if (!showtime) {
-      return res.status(404).json({ error: "Showtime not found" });
-    }
+    if (!showtime) return res.status(404).json({ error: "Showtime not found" });
 
-    const isFree = movieDoc.ticketPrice === 0;
+    const isFreeScreening = movie === "Maflam Nights" && date === "2025-05-07";
+    const ticketPrice = isFreeScreening ? 0 : movieDoc.ticketPrice || 35;
+    const totalPrice = seats.length * ticketPrice;
 
-    // 2. If not free, verify payment with Moyasar
-    if (!isFree && price > 0) {
+    // 2. For paid bookings, verify payment via Moyasar
+    if (!isFreeScreening && totalPrice > 0) {
       if (!paymentId) {
-        return res.status(400).json({ error: "Missing payment ID" });
+        return res.status(400).json({ error: "Missing payment ID for paid booking." });
       }
 
       try {
         const verifyRes = await axios.get(`https://api.moyasar.com/v1/payments/${paymentId}`, {
           auth: {
-            username: "sk_live_jWYvF8kcqYZhurrkMmxFm9dXbgmnGFUbcVySi1oR", // ✅ Your real secret key
+            username: "sk_live_jWYvF8kcqYZhurrkMmxFm9dXbgmnGFUbcVySi1oR", // ✅ Your live key
             password: "",
           },
         });
@@ -86,12 +84,12 @@ app.post("/api/bookings", async (req, res) => {
           return res.status(402).json({ error: "Payment not completed" });
         }
       } catch (err) {
-        console.error("❌ Moyasar verify error:", err?.response?.data || err.message);
-        return res.status(500).json({ error: "Payment verification failed" });
+        console.error("❌ Moyasar verification failed:", err?.response?.data || err.message);
+        return res.status(500).json({ error: "Failed to verify payment with Moyasar" });
       }
     }
 
-    // 3. Check for duplicate seat conflict
+    // 3. Prevent duplicate seats
     const takenSeats = await Booking.find({ movie, date, time });
     const alreadyBooked = takenSeats.flatMap(b => b.seats);
     const conflict = seats.filter(seat => alreadyBooked.includes(seat));
@@ -100,7 +98,6 @@ app.post("/api/bookings", async (req, res) => {
     }
 
     // 4. Save booking
-    const totalPrice = isFree ? 0 : price;
     const newBooking = await Booking.create({
       name, email, movie, date, time, seats, price: totalPrice,
     });
@@ -119,12 +116,14 @@ app.post("/api/bookings", async (req, res) => {
     res.status(201).json({
       bookingId: newBooking._id,
       qrCodeData,
-      message: isFree ? "🎉 Free booking successful!" : "✅ Paid booking successful!",
+      message: isFreeScreening
+        ? "🎉 Free booking confirmed!"
+        : "✅ Paid booking confirmed!",
     });
 
   } catch (err) {
     console.error("❌ Critical booking error:", err.message);
-    res.status(500).json({ error: "Failed to save booking" });
+    res.status(500).json({ error: "Internal server error during booking." });
   }
 });
 
