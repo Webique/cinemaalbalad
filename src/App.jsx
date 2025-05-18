@@ -13,6 +13,8 @@ import ScrollToTop from "./components/ScrollToTop"; // ✅ Import it
 import Terms from "./pages/Terms"; // ✅ Import it
 import "./i18n"; // 👈 Import i18n so it initializes
 import ScanPage from "./pages/ScanPage";
+import BookingFailed from "./pages/BookingFailed";
+
 
 
 
@@ -34,6 +36,8 @@ export default function App() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/scan" element={<ScanPage />} />
+        <Route path="/booking-failed" element={<BookingFailed />} />
+
 
       </Routes>
     </div> 

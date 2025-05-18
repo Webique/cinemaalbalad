@@ -42,95 +42,89 @@ app.get("/api/movies", async (req, res) => {
 app.get("/", (req, res) => {
   res.send("Server is running 🚀");
 });
-app.post("/api/bookings", async (req, res) => {
-  try {
-    const { name, email, movie, date, time, seats } = req.body;
-    console.log("📥 Booking request received:", req.body);
 
-    // Step 1: Find the movie
+
+app.post("/api/bookings", async (req, res) => {
+  const { name, email, movie, date, time, seats, price, paymentId } = req.body;
+
+  console.log("📥 Booking request:", req.body);
+
+  if (!name || !email || !movie || !date || !time || !seats?.length) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    // 1. Get movie & showtime
     const movieDoc = await Movie.findOne({ title: movie });
     if (!movieDoc) {
-      console.error("❌ Movie not found:", movie);
       return res.status(404).json({ error: "Movie not found" });
     }
 
-    const showtime = movieDoc.showtimes.find((s) => s.date === date && s.time === time);
+    const showtime = movieDoc.showtimes.find(s => s.date === date && s.time === time);
     if (!showtime) {
-      console.error("❌ Showtime not found:", date, time);
       return res.status(404).json({ error: "Showtime not found" });
     }
 
-    // Step 2: Check taken seats using Booking collection
-    const existingBookings = await Booking.find({ movie, date, time });
-    const bookedSeats = existingBookings.flatMap((b) => b.seats);
-    const alreadyTaken = seats.filter((seat) => bookedSeats.includes(seat));
-    if (alreadyTaken.length > 0) {
-      console.error("❌ Some seats are already taken:", alreadyTaken);
-      return res.status(409).json({
-        error: "Some seats are already taken",
-        takenSeats: alreadyTaken,
-      });
+    const isFree = movieDoc.ticketPrice === 0;
+
+    // 2. If not free, verify payment with Moyasar
+    if (!isFree && price > 0) {
+      if (!paymentId) {
+        return res.status(400).json({ error: "Missing payment ID" });
+      }
+
+      try {
+        const verifyRes = await axios.get(`https://api.moyasar.com/v1/payments/${paymentId}`, {
+          auth: {
+            username: "sk_live_jWYvF8kcqYZhurrkMmxFm9dXbgmnGFUbcVySi1oR", // ✅ Your real secret key
+            password: "",
+          },
+        });
+
+        const payment = verifyRes.data;
+        if (payment.status !== "paid") {
+          return res.status(402).json({ error: "Payment not completed" });
+        }
+      } catch (err) {
+        console.error("❌ Moyasar verify error:", err?.response?.data || err.message);
+        return res.status(500).json({ error: "Payment verification failed" });
+      }
     }
 
-    // ✅ Calculate Ticket Price
-    const isFreeScreening = movieDoc.ticketPrice === 0;
-    const ticketPrice = isFreeScreening ? 0 : movieDoc.ticketPrice || 35;
-    const totalPrice = seats.length * ticketPrice;
-    console.log("✅ Total Price:", totalPrice);
-
-    // Step 3: Save the booking (with price info if needed)
-    let newBooking;
-    try {
-      newBooking = await Booking.create({
-        name,
-        email,
-        movie,
-        date,
-        time,
-        seats,
-        price: totalPrice,
-      });
-      console.log("✅ Booking created:", newBooking._id);
-    } catch (err) {
-      console.error("❌ Booking save error (Step 3):", err);
-      return res.status(500).json({ error: "Failed to save booking." });
+    // 3. Check for duplicate seat conflict
+    const takenSeats = await Booking.find({ movie, date, time });
+    const alreadyBooked = takenSeats.flatMap(b => b.seats);
+    const conflict = seats.filter(seat => alreadyBooked.includes(seat));
+    if (conflict.length) {
+      return res.status(409).json({ error: "Seats already taken", conflict });
     }
 
-    // Step 4: Generate and save QR code
-    try {
-      const qrPayload = JSON.stringify({
-        _id: newBooking._id,
-        name,
-        email,
-        movie,
-        date,
-        time,
-        seats,
-        scanned: false,
-      });
+    // 4. Save booking
+    const totalPrice = isFree ? 0 : price;
+    const newBooking = await Booking.create({
+      name, email, movie, date, time, seats, price: totalPrice,
+    });
 
-      const qrCodeData = await QRCode.toDataURL(qrPayload);
-      newBooking.qrCodeData = qrCodeData;
-      await newBooking.save();
-      console.log("✅ QR Code generated and saved:", newBooking._id);
-    } catch (err) {
-      console.error("❌ QR Code generation error (Step 4):", err);
-      return res.status(500).json({ error: "Failed to generate QR Code." });
-    }
+    // 5. Generate QR code
+    const payload = JSON.stringify({
+      _id: newBooking._id,
+      name, email, movie, date, time, seats, scanned: false,
+    });
 
-    // Step 5: Return result
+    const qrCodeData = await QRCode.toDataURL(payload);
+    newBooking.qrCodeData = qrCodeData;
+    await newBooking.save();
+
+    console.log("✅ Booking saved:", newBooking._id);
     res.status(201).json({
-      message: isFreeScreening
-        ? "🎉 Free booking confirmed!"
-        : "✅ Booking confirmed!",
       bookingId: newBooking._id,
-      qrCodeData: newBooking.qrCodeData,
-      isFree: isFreeScreening,
+      qrCodeData,
+      message: isFree ? "🎉 Free booking successful!" : "✅ Paid booking successful!",
     });
 
   } catch (err) {
-    console.error("❌ Critical Booking Error:", err);
-    res.status(500).json({ error: "Critical error in booking process." });
+    console.error("❌ Critical booking error:", err.message);
+    res.status(500).json({ error: "Failed to save booking" });
   }
 });
 
