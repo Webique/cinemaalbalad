@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
@@ -12,7 +12,10 @@ export default function Movies() {
   const [selectedTrailer, setSelectedTrailer] = useState(null);
   const [booking, setBooking] = useState({});
   const [movies, setMovies] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().split("T")[0]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryDate = searchParams.get("date");
+  const todayISO = new Date().toISOString().split("T")[0];
+  const [selectedDate, setSelectedDate] = useState(queryDate || todayISO);
   const [startIndex, setStartIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -137,7 +140,10 @@ export default function Movies() {
               {visibleDates.map((date) => (
                 <button
                   key={date}
-                  onClick={() => setSelectedDate(date)}
+                  onClick={() => {
+                    setSelectedDate(date);
+                    setSearchParams({ date }); // ✅ updates the URL
+                  }}
                   className={`px-5 py-2 rounded-full border ${
                     selectedDate === date
                       ? "bg-primary text-white"
@@ -151,6 +157,7 @@ export default function Movies() {
                   })}
                 </button>
               ))}
+
 
               <button
                 onClick={() =>
