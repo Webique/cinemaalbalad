@@ -3,22 +3,51 @@ import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom"; // ✅ added for navigation
+import { useNavigate } from "react-router-dom";
 
 export default function Events() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
-  const navigate = useNavigate(); // ✅ initialize navigator
+  const navigate = useNavigate();
 
-  // ✅ Helper to convert "21 May" to "2025-05-21"
+  // ✅ Converts Arabic numerals to English
+  const arabicToEnglishNumber = (str) =>
+    str.replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+
+  // ✅ Translates Arabic month names to English
+  const translateArabicMonth = (month) => {
+    const map = {
+      "يناير": "January",
+      "فبراير": "February",
+      "مارس": "March",
+      "أبريل": "April",
+      "مايو": "May",
+      "يونيو": "June",
+      "يوليو": "July",
+      "أغسطس": "August",
+      "سبتمبر": "September",
+      "أكتوبر": "October",
+      "نوفمبر": "November",
+      "ديسمبر": "December"
+    };
+    return map[month] || month;
+  };
+
+  // ✅ Parses date string to ISO format
   const parseEventDateToISO = (dateStr) => {
-    const [day, monthName] = dateStr.split(" ");
-    const fullDateStr = `${day} ${monthName} 2025`;
+    let [day, month] = dateStr.split(" ");
+
+    if (/[٠-٩]/.test(day)) {
+      day = arabicToEnglishNumber(day);
+    }
+
+    month = translateArabicMonth(month);
+
+    const fullDateStr = `${day} ${month} 2025`;
     const date = new Date(fullDateStr);
     return date.toISOString().split("T")[0];
   };
 
-  // ✅ Redirect to movies page with date query
   const handleBookNow = (event) => {
     const isoDate = parseEventDateToISO(event.date);
     navigate(`/movies?date=${isoDate}`);
@@ -128,7 +157,6 @@ export default function Events() {
                     </div>
                   </div>
 
-                  {/* ✅ Book Now Button */}
                   <div
                     className={`flex ${
                       isArabic ? "justify-end" : "justify-start"
@@ -151,4 +179,3 @@ export default function Events() {
     </>
   );
 }
-
