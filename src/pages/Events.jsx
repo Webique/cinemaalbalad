@@ -1,14 +1,29 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
-import { CalendarDays, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom"; // ✅ added for navigation
 
 export default function Events() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
+  const navigate = useNavigate(); // ✅ initialize navigator
 
-  // Event list (commented out due to cancellation)
+  // ✅ Helper to convert "21 May" to "2025-05-21"
+  const parseEventDateToISO = (dateStr) => {
+    const [day, monthName] = dateStr.split(" ");
+    const fullDateStr = `${day} ${monthName} 2025`;
+    const date = new Date(fullDateStr);
+    return date.toISOString().split("T")[0];
+  };
+
+  // ✅ Redirect to movies page with date query
+  const handleBookNow = (event) => {
+    const isoDate = parseEventDateToISO(event.date);
+    navigate(`/movies?date=${isoDate}`);
+  };
+
   const events = [
     {
       id: 1,
@@ -18,9 +33,8 @@ export default function Events() {
       description: isArabic
         ? "حكاية مخرج من البلد مع المخرج عبدالله سحرتي. رحلة إبداعية من عدسة الإعلان إلى قلب سينما البلد. إدارة الحوار: رهام فراش."
         : "A Filmmaker’s Tale from Al-Balad with Director Abdullah Saharti. A creative journey from the lens of advertising to the heart of Cinema Al Balad. Moderated by Reham Farrash.",
-      image: "/posters/may21.jpeg", // Update the image path here
+      image: "/posters/may21.jpeg",
     },
-
     {
       id: 2,
       title: isArabic ? "كيف نقرأ الأفلام" : "How to Read Films",
@@ -112,6 +126,20 @@ export default function Events() {
                     <div className="flex items-center gap-1">
                       <Clock size={16} /> {event.time}
                     </div>
+                  </div>
+
+                  {/* ✅ Book Now Button */}
+                  <div
+                    className={`flex ${
+                      isArabic ? "justify-end" : "justify-start"
+                    } mt-4`}
+                  >
+                    <button
+                      onClick={() => handleBookNow(event)}
+                      className="px-6 py-2 bg-primary text-white rounded-full hover:scale-105 transition font-cinema"
+                    >
+                      🎟 Book Now
+                    </button>
                   </div>
                 </div>
               </motion.div>
