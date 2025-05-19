@@ -18,7 +18,7 @@ export default function Events() {
       description: isArabic
         ? "حكاية مخرج من البلد مع المخرج عبدالله سحرتي. رحلة إبداعية من عدسة الإعلان إلى قلب سينما البلد. إدارة الحوار: رهام فراش."
         : "A Filmmaker’s Tale from Al-Balad with Director Abdullah Saharti. A creative journey from the lens of advertising to the heart of Cinema Al Balad. Moderated by Reham Farrash.",
-      image: "/posters/21may.jpeg", // Update the image path here
+      image: "/posters/may21.jpeg", // Update the image path here
     },
 
     {
