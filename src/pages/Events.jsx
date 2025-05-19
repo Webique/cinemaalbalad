@@ -10,16 +10,16 @@ export default function Events() {
 
   // Event list (commented out due to cancellation)
   const events = [
-    // {
-    //   id: 1,
-    //   title: isArabic ? "ليالي مفلِم" : "Maflam Nights",
-    //   date: isArabic ? "٧ مايو" : "7 May",
-    //   time: "8:00 PM",
-    //   description: isArabic
-    //     ? "ليلة تجمع صنّاع الأفلام مع المخرج عبدالله سحرتي"
-    //     : "A night gathering filmmakers with Director Abdullah Saharti",
-    //   image: "/events/event1.png",
-    // },
+    {
+      id: 1,
+      title: isArabic ? "ليالي مفلِم" : "Maflam Nights",
+      date: isArabic ? "٢١ مايو" : "21 May",
+      time: "8:00 PM",
+      description: isArabic
+        ? "حكاية مخرج من البلد مع المخرج عبدالله سحرتي. رحلة إبداعية من عدسة الإعلان إلى قلب سينما البلد. إدارة الحوار: رهام فراش."
+        : "A Filmmaker’s Tale from Al-Balad with Director Abdullah Saharti. A creative journey from the lens of advertising to the heart of Cinema Al Balad. Moderated by Reham Farrash.",
+      image: "/posters/21may.jpeg", // Update the image path here
+    },
 
     {
       id: 2,
