@@ -64,6 +64,7 @@ export default function Events() {
         : "A Filmmaker’s Tale from Al-Balad with Director Abdullah Saharti. A creative journey from the lens of advertising to the heart of Cinema Al Balad. Moderated by Reham Farrash.",
       image: "/posters/may21.jpeg",
     },
+    /*
     {
       id: 2,
       title: isArabic ? "كيف نقرأ الأفلام" : "How to Read Films",
@@ -74,8 +75,9 @@ export default function Events() {
         : "Led by Ohoud Alharbi – Filmmaker with a focus on literary and film criticism. Your guide to interpreting films while watching, part of the Filmmakers Gathering at Cinema Al Balad.",
       image: "/posters/event1.jpeg",
     }
+    */
   ];
-
+  
   return (
     <>
       <Navbar />
