@@ -162,12 +162,13 @@ export default function Events() {
                       isArabic ? "justify-end" : "justify-start"
                     } mt-4`}
                   >
-                    <button
-                      onClick={() => handleBookNow(event)}
-                      className="px-6 py-2 bg-primary text-white rounded-full hover:scale-105 transition font-cinema"
-                    >
-                      🎟 Book Now
-                    </button>
+<button
+  onClick={() => handleBookNow(event)}
+  className="px-6 py-2 bg-primary text-white rounded-full hover:scale-105 transition font-cinema"
+>
+  🎟 {isArabic ? "احجز الآن" : "Book Now"}
+</button>
+
                   </div>
                 </div>
               </motion.div>
