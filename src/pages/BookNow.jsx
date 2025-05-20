@@ -189,11 +189,12 @@ export default function BookNow() {
     <>
       <Navbar />
       <main
-        dir={isArabic ? "rtl" : "ltr"}
-        className={`relative min-h-screen text-white font-cinema overflow-hidden pt-36 px-6 sm:px-10 lg:px-20 pb-32 ${
-          isArabic ? "text-right" : "text-left"
-        }`}
-      >
+  dir={isArabic ? "rtl" : "ltr"}
+  className={`relative min-h-screen text-white font-cinema overflow-hidden pt-36 px-6 sm:px-10 lg:px-20 pb-32 ${
+    isArabic ? "text-right" : "text-left"
+  }`}
+>
+
         <div className="fixed top-0 left-0 w-full h-full -z-10">
           <div
             className="w-full h-full bg-cover bg-center"
@@ -236,7 +237,8 @@ export default function BookNow() {
               <h3 className="text-lg mb-4 font-semibold">{t('booknow.selectSeats')}</h3>
               <div className="bg-black/20 rounded-lg py-4 px-2 mb-6">
                 <div className="text-center text-gray-400 font-medium mb-4">{t('booknow.screen')}</div>
-                <div className="grid grid-cols-8 gap-4 justify-center">
+                <div className="grid grid-cols-8 gap-4 justify-center" dir="ltr">
+
                 {seats.map((seat) => (
                     <button
                       key={seat}
