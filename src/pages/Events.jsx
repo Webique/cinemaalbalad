@@ -49,9 +49,9 @@ export default function Events() {
   };
 
   const handleBookNow = (event) => {
-    const isoDate = parseEventDateToISO(event.date);
-    navigate(`/movies?date=${isoDate}`);
+    navigate(`/movies?date=2025-05-21`);
   };
+  
 
   const events = [
     {

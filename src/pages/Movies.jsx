@@ -16,6 +16,14 @@ export default function Movies() {
   const queryDate = searchParams.get("date");
   const todayISO = new Date().toISOString().split("T")[0];
   const [selectedDate, setSelectedDate] = useState(queryDate || todayISO);
+
+  // ✅ Auto-set to May 21 if queryDate is "2025-05-21"
+  useEffect(() => {
+    if (queryDate === "2025-05-21") {
+      setSelectedDate("2025-05-21");
+    }
+  }, [queryDate]);
+  
   const [startIndex, setStartIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -70,9 +78,16 @@ export default function Movies() {
         typeof s.date === "string"
           ? s.date.length > 10 ? s.date.split("T")[0] : s.date
           : new Date(s.date).toISOString().split("T")[0];
+  
+      // ✅ Only show movies on May 21 if queryDate is May 21
+      if (queryDate === "2025-05-21") {
+        return dbDate === "2025-05-21";
+      }
+  
       return dbDate === selectedDate;
     })
   );
+  
 
   const handleBooking = (movieId) => {
     const selected = booking[movieId];
@@ -138,25 +153,26 @@ export default function Movies() {
               </button>
 
               {visibleDates.map((date) => (
-                <button
-                  key={date}
-                  onClick={() => {
-                    setSelectedDate(date);
-                    setSearchParams({ date }); // ✅ updates the URL
-                  }}
-                  className={`px-5 py-2 rounded-full border ${
-                    selectedDate === date
-                      ? "bg-primary text-white"
-                      : "bg-white/10 text-white border-white/20 hover:bg-white hover:text-black"
-                  } transition text-sm`}
-                >
-                  {new Date(date).toLocaleDateString("en-GB", {
-                    weekday: "short",
-                    day: "numeric",
-                    month: "short",
-                  })}
-                </button>
-              ))}
+  <button
+    key={date}
+    onClick={() => {
+      setSelectedDate(date);
+      setSearchParams({ date });
+    }}
+    className={`px-5 py-2 rounded-full border ${
+      selectedDate === date || (queryDate === "2025-05-21" && date === "2025-05-21")
+        ? "bg-primary text-white"
+        : "bg-white/10 text-white border-white/20 hover:bg-white hover:text-black"
+    } transition text-sm`}
+  >
+    {new Date(date).toLocaleDateString("en-GB", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+    })}
+  </button>
+))}
+
 
 
               <button
