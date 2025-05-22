@@ -42,7 +42,6 @@ const sendTicketEmail = async (booking, qrCodeData) => {
           <li><strong>Date:</strong> ${booking.date}</li>
           <li><strong>Time:</strong> ${booking.time}</li>
           <li><strong>Seats:</strong> ${booking.seats.map(n => formatSeat(Number(n))).join(', ')}</li>
-
         </ul>
         <p>Your booking ID is: <strong>${booking._id}</strong></p>
         <br/><br/>
@@ -59,8 +58,6 @@ const sendTicketEmail = async (booking, qrCodeData) => {
 };
 
     
-
-
 
 
 // App config
