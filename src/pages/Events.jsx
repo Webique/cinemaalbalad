@@ -49,7 +49,7 @@ export default function Events() {
   };
 
   const handleBookNow = (event) => {
-    navigate(`/movies?date=2025-05-21`);
+    navigate(`/movies?date=2025-05-25`);
   };
   
 

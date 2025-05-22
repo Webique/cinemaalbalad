@@ -19,8 +19,8 @@ export default function Movies() {
 
   // ✅ Auto-set to May 21 if queryDate is "2025-05-21"
   useEffect(() => {
-    if (queryDate === "2025-05-21") {
-      setSelectedDate("2025-05-21");
+    if (queryDate === "2025-05-25") {
+      setSelectedDate("2025-05-25");
     }
   }, [queryDate]);
   
@@ -80,8 +80,8 @@ export default function Movies() {
           : new Date(s.date).toISOString().split("T")[0];
   
       // ✅ Only show movies on May 21 if queryDate is May 21
-      if (queryDate === "2025-05-21") {
-        return dbDate === "2025-05-21";
+      if (queryDate === "2025-05-25") {
+        return dbDate === "2025-05-25";
       }
   
       return dbDate === selectedDate;
@@ -160,7 +160,7 @@ export default function Movies() {
       setSearchParams({ date });
     }}
     className={`px-5 py-2 rounded-full border ${
-      selectedDate === date || (queryDate === "2025-05-21" && date === "2025-05-21")
+      selectedDate === date || (queryDate === "2025-05-25" && date === "2025-05-25")
         ? "bg-primary text-white"
         : "bg-white/10 text-white border-white/20 hover:bg-white hover:text-black"
     } transition text-sm`}
