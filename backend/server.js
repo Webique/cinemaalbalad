@@ -17,6 +17,15 @@ import { Resend } from 'resend';
 const resend = new Resend('re_fceo4BxL_6La3F1aCF1KDKufSXiVEmXg3');
 
 
+function formatSeat(number) {
+  const rowIndex = Math.floor((number - 1) / 8); // 0 = A, 1 = B, ..., 5 = F
+  const row = String.fromCharCode(65 + rowIndex); // ASCII 65 = 'A'
+  const seatNumber = ((number - 1) % 8) + 1; // 1 to 8
+  return `${row}${seatNumber}`;
+}
+
+
+
 const sendTicketEmail = async (booking, qrCodeData) => {
   try {
     console.log("📤 Attempting to send email to", booking.email); // 🔍 CONFIRM email attempt
@@ -32,10 +41,10 @@ const sendTicketEmail = async (booking, qrCodeData) => {
           <li><strong>Movie:</strong> ${booking.movie}</li>
           <li><strong>Date:</strong> ${booking.date}</li>
           <li><strong>Time:</strong> ${booking.time}</li>
-          <li><strong>Seats:</strong> ${booking.seats.join(', ')}</li>
+          <li><strong>Seats:</strong> ${booking.seats.map(n => formatSeat(Number(n))).join(', ')}</li>
+
         </ul>
-        <p>Show this QR code at the cinema entrance:</p>
-        <img src="${qrCodeData}" alt="QR Code" width="200" style="border:1px solid #ddd;padding:4px;border-radius:4px;" />
+        <p>Your booking ID is: <strong>${booking._id}</strong></p>
         <br/><br/>
         <p>Enjoy your movie! 🍿</p>
         <p>— Cinema Al Balad</p>
