@@ -19,9 +19,10 @@ const resend = new Resend('re_fceo4BxL_6La3F1aCF1KDKufSXiVEmXg3');
 
 const sendTicketEmail = async (booking, qrCodeData) => {
   try {
-    await resend.emails.send({
-      
-      from: 'Cinema Al Balad <hello@onresend.com>',
+    console.log("📤 Attempting to send email to", booking.email); // 🔍 CONFIRM email attempt
+
+    const response = await resend.emails.send({
+      from: 'Cinema Al Balad <hello@onresend.com>', // ✅ SAFE DEFAULT SENDER
       to: [booking.email],
       subject: `🎟️ Your Ticket for ${booking.movie}`,
       html: `
@@ -41,13 +42,15 @@ const sendTicketEmail = async (booking, qrCodeData) => {
       `,
     });
 
-    
-
-    console.log(`📧 Email sent to ${booking.email}`);
+    console.log(`✅ Email sent successfully. Resend message ID:`, response?.id);
   } catch (err) {
-    console.error("❌ Failed to send email:", err.message || err);
+    console.error("❌ Failed to send email:");
+    console.dir(err, { depth: null });
   }
 };
+
+    
+
 
 
 
