@@ -22,7 +22,7 @@ const sendTicketEmail = async (booking, qrCodeData) => {
     console.log("📤 Attempting to send email to", booking.email); // 🔍 CONFIRM email attempt
 
     const response = await resend.emails.send({
-      from: 'Cinema Al Balad <onboarding@resend.dev>', // ✅ SAFE DEFAULT SENDER
+      from: 'Cinema Al Balad <noreply@cinemaalbalad.com>', // ✅ SAFE DEFAULT SENDER
       to: [booking.email],
       subject: `🎟️ Your Ticket for ${booking.movie}`,
       html: `
