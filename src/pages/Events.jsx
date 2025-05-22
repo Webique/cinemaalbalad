@@ -56,27 +56,17 @@ export default function Events() {
   const events = [
     {
       id: 1,
-      title: isArabic ? "ليالي مفلِم" : "Maflam Nights",
-      date: isArabic ? "٢١ مايو" : "21 May",
-      time: "8:00 PM",
+      title: isArabic ? "ليلة تمثيل و جمعة فنانين" : "An Acting Night and Artists’ Circle",
+      date: isArabic ? "٢٥ مايو" : "25 May",
+      time: "8:30 PM",
       description: isArabic
-        ? "حكاية مخرج من البلد مع المخرج عبدالله سحرتي. رحلة إبداعية من عدسة الإعلان إلى قلب سينما البلد. إدارة الحوار: رهام فراش."
-        : "A Filmmaker’s Tale from Al-Balad with Director Abdullah Saharti. A creative journey from the lens of advertising to the heart of Cinema Al Balad. Moderated by Reham Farrash.",
-      image: "/posters/may21.jpeg",
-    },
-    /*
-    {
-      id: 2,
-      title: isArabic ? "كيف نقرأ الأفلام" : "How to Read Films",
-      date: isArabic ? "١٨ مايو" : "18 May",
-      time: "7:30 PM",
-      description: isArabic
-        ? "تقدمها عهود الحربي - صانعة أفلام، مهتمة بالنقد الأدبي والسينمائي. دليلك لتحليل الفيلم أثناء مشاهدته ضمن فعالية قعدات فنية."
-        : "Led by Ohoud Alharbi – Filmmaker with a focus on literary and film criticism. Your guide to interpreting films while watching, part of the Filmmakers Gathering at Cinema Al Balad.",
-      image: "/posters/event1.jpeg",
+        ? "مع خيرية أبو لبن، نادية ملائكة، و علي الشريف"
+        : "With Khairia Abu Laban, Nadia Malaika, and Ali Alsharief",
+      image: "/posters/may25.jpeg", // ✅ Upload image as "may25.jpeg" to /public/posters/
+      navigateToDate: "2025-05-25"
     }
-    */
   ];
+  
   
   return (
     <>
