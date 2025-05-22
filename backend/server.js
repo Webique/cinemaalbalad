@@ -465,3 +465,64 @@ app.post("/api/bookings/unscan", async (req, res) => {
     res.status(500).json({ error: "Failed to unscan booking" });
   }
 });
+
+// ✅ Admin route to manually add booking (no payment required)
+app.post("/api/admin/manual-booking", async (req, res) => {
+  const { name, email, movie, date, time, seats } = req.body;
+
+  if (!name || !email || !movie || !date || !time || !seats?.length) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const movieDoc = await Movie.findOne({ title: movie });
+    if (!movieDoc) return res.status(404).json({ error: "Movie not found" });
+
+    const showtime = movieDoc.showtimes.find(s => s.date === date && s.time === time);
+    if (!showtime) return res.status(404).json({ error: "Showtime not found" });
+
+    // Prevent double booking
+    const existingBookings = await Booking.find({ movie, date, time });
+    const bookedSeats = existingBookings.flatMap(b => b.seats);
+    const conflict = seats.filter(seat => bookedSeats.includes(seat));
+    if (conflict.length > 0) {
+      return res.status(409).json({ error: "Seats already taken", conflict });
+    }
+
+    const newBooking = await Booking.create({
+      name,
+      email,
+      movie,
+      date,
+      time,
+      seats,
+      price: 0, // manually added for free
+    });
+
+    const payload = JSON.stringify({
+      _id: newBooking._id,
+      name,
+      email,
+      movie,
+      date,
+      time,
+      seats,
+      scanned: false,
+    });
+
+    const qrCodeData = await QRCode.toDataURL(payload);
+    newBooking.qrCodeData = qrCodeData;
+    await newBooking.save();
+    await sendTicketEmail(newBooking, qrCodeData);
+
+    res.status(201).json({
+      message: "✅ Manual booking created",
+      bookingId: newBooking._id,
+      qrCodeData,
+    });
+
+  } catch (err) {
+    console.error("❌ Manual booking error:", err.message);
+    res.status(500).json({ error: "Internal error while creating manual booking" });
+  }
+});
