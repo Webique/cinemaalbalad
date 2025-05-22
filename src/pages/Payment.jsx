@@ -41,47 +41,30 @@ export default function Payment() {
           Authorization: `Basic ${btoa("sk_live_jWYvF8kcqYZhurrkMmxFm9dXbgmnGFUbcVySi1oR")}`,
         },
       });
-  
+
       const data = await response.json();
       console.log("💳 Payment Verification Result:", data);
-  
+
       if (data.status === "paid") {
-        let attempt = 0;
-        let saved = null;
-        let success = false;
-  
-        while (attempt < 3 && !success) {
-          try {
-            const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ...bookingData, paymentId }),
-            });
-  
-            saved = await res.json();
-  
-            if (res.ok && saved.bookingId) {
-              success = true;
-              localStorage.setItem("latestBooking", JSON.stringify({
-                ...bookingData,
-                _id: saved.bookingId,
-                qrCodeData: saved.qrCodeData || "",
-              }));
-              navigate("/thankyou");
-              return;
-            } else {
-              console.warn(`⚠️ Booking save attempt ${attempt + 1} failed`, saved);
-            }
-          } catch (err) {
-            console.error(`❌ Booking API error (attempt ${attempt + 1}):`, err);
-          }
-  
-          attempt++;
+        const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...bookingData, paymentId }),
+        });
+
+        const saved = await res.json();
+
+        if (res.ok && saved.bookingId) {
+          localStorage.setItem("latestBooking", JSON.stringify({
+            ...bookingData,
+            _id: saved.bookingId,
+            qrCodeData: saved.qrCodeData || "",
+          }));
+          navigate("/thankyou");
+        } else {
+          console.error("❌ Failed to save booking:", saved);
+          navigate("/booking-failed");
         }
-  
-        // After 3 tries
-        console.error("❌ Booking could not be saved after 3 attempts.");
-        navigate("/booking-failed");
       } else {
         console.error("❌ Payment not completed:", data.status);
         navigate("/booking-failed");
@@ -91,7 +74,7 @@ export default function Payment() {
       navigate("/booking-failed");
     }
   };
-  
+
   const saveFreeBooking = async () => {
     try {
       const res = await fetch("https://cinemaalbalad.onrender.com/api/bookings", {
@@ -143,7 +126,7 @@ export default function Payment() {
         publishable_api_key: "pk_live_7rNCmzYDRdxgfkcjsmZRUqvruqJ7hDQKP8QpZHfR",
         callback_url: `${window.location.origin}/payment?details=${encodeURIComponent(
           JSON.stringify(bookingData)
-        )}&id={payment.id}`,      
+        )}`,
         methods: ["creditcard"],
       });
     };
