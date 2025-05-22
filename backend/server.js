@@ -78,7 +78,6 @@ app.get("/", (req, res) => {
   res.send("Server is running 🚀");
 });
 
-
 app.post("/api/bookings", async (req, res) => {
   const { name, email, movie, date, time, seats, price, paymentId } = req.body;
 
@@ -97,11 +96,12 @@ app.post("/api/bookings", async (req, res) => {
     if (!showtime) return res.status(404).json({ error: "Showtime not found" });
 
     const isFreeScreening = price === 0 || movieDoc.ticketPrice === 0;
+    const isManualPayment = paymentId === "manual-cash";
     const ticketPrice = isFreeScreening ? 0 : movieDoc.ticketPrice || 35;
     const totalPrice = seats.length * ticketPrice;
 
-    // 2. For paid bookings, verify payment via Moyasar
-    if (!isFreeScreening && totalPrice > 0) {
+    // 2. For paid bookings, verify payment via Moyasar unless it's manual-cash
+    if (!isFreeScreening && !isManualPayment && totalPrice > 0) {
       if (!paymentId) {
         return res.status(400).json({ error: "Missing payment ID for paid booking." });
       }
@@ -109,7 +109,7 @@ app.post("/api/bookings", async (req, res) => {
       try {
         const verifyRes = await axios.get(`https://api.moyasar.com/v1/payments/${paymentId}`, {
           auth: {
-            username: "sk_live_jWYvF8kcqYZhurrkMmxFm9dXbgmnGFUbcVySi1oR", // ✅ Your live key
+            username: "sk_live_jWYvF8kcqYZhurrkMmxFm9dXbgmnGFUbcVySi1oR",
             password: "",
           },
         });
@@ -124,57 +124,71 @@ app.post("/api/bookings", async (req, res) => {
       }
     }
 
-    // 3. Prevent duplicate seats
-    const takenSeats = await Booking.find({ movie, date, time });
-    const alreadyBooked = takenSeats.flatMap(b => b.seats);
-    const conflict = seats.filter(seat => alreadyBooked.includes(seat));
-    if (conflict.length) {
-      return res.status(409).json({ error: "Seats already taken", conflict });
+    // 3. Prevent duplicate seat booking
+    const existingBookings = await Booking.find({ movie, date, time });
+    const bookedSeats = existingBookings.flatMap(b => b.seats);
+    const conflict = seats.filter(seat => bookedSeats.includes(seat));
+    if (conflict.length > 0) {
+      return res.status(409).json({
+        error: "Seats already taken",
+        conflict,
+      });
     }
 
-      // 4. Prevent duplicate booking (same user + same seats + same showtime)
-  const existingBooking = await Booking.findOne({
-    email,
-    movie,
-    date,
-    time,
-    seats: { $all: seats, $size: seats.length },
-  });
-
-  if (existingBooking) {
-    console.log("⚠️ Duplicate booking returned:", existingBooking._id);
-    return res.status(200).json({
-      message: "Booking already exists.",
-      bookingId: existingBooking._id,
-      qrCodeData: existingBooking.qrCodeData,
+    // 4. Prevent duplicate booking (same user + same seats + same showtime)
+    const existingBooking = await Booking.findOne({
+      email,
+      movie,
+      date,
+      time,
+      seats: { $all: seats, $size: seats.length },
     });
-  }
 
-  // 5. Save booking
-  const newBooking = await Booking.create({
-    name, email, movie, date, time, seats, price: totalPrice,
-  });
+    if (existingBooking) {
+      console.log("⚠️ Duplicate booking returned:", existingBooking._id);
+      return res.status(200).json({
+        message: "Booking already exists.",
+        bookingId: existingBooking._id,
+        qrCodeData: existingBooking.qrCodeData,
+      });
+    }
 
+    // 5. Save new booking
+    const newBooking = await Booking.create({
+      name,
+      email,
+      movie,
+      date,
+      time,
+      seats,
+      price: totalPrice,
+    });
 
     // 6. Generate QR code
     const payload = JSON.stringify({
       _id: newBooking._id,
-      name, email, movie, date, time, seats, scanned: false,
+      name,
+      email,
+      movie,
+      date,
+      time,
+      seats,
+      scanned: false,
     });
-
 
     const qrCodeData = await QRCode.toDataURL(payload);
     newBooking.qrCodeData = qrCodeData;
     await newBooking.save();
-    await sendTicketEmail(newBooking, qrCodeData);
 
+    // 7. Send email
+    await sendTicketEmail(newBooking, qrCodeData);
 
     console.log("✅ Booking saved:", newBooking._id);
     res.status(201).json({
       bookingId: newBooking._id,
       qrCodeData,
-      message: isFreeScreening
-        ? "🎉 Free booking confirmed!"
+      message: isFreeScreening || isManualPayment
+        ? "🎉 Booking confirmed!"
         : "✅ Paid booking confirmed!",
     });
 
