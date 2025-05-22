@@ -14,12 +14,14 @@ import QRCode from "qrcode";
 
 import { Resend } from 'resend';
 
-const resend = new Resend('re_bFHudxbM_9KHcF2JiiCNAxucLV3VQyeGD');
+const resend = new Resend('re_fceo4BxL_6La3F1aCF1KDKufSXiVEmXg3');
+
 
 const sendTicketEmail = async (booking, qrCodeData) => {
   try {
     await resend.emails.send({
-      from: 'Cinema Al Balad <noreply@cinemaalbalad.com>',
+      
+      from: 'Cinema Al Balad <hello@onresend.com>',
       to: [booking.email],
       subject: `🎟️ Your Ticket for ${booking.movie}`,
       html: `
