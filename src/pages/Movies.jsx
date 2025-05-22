@@ -17,12 +17,13 @@ export default function Movies() {
   const todayISO = new Date().toISOString().split("T")[0];
   const [selectedDate, setSelectedDate] = useState(queryDate || todayISO);
 
-  // ✅ Auto-set to May 21 if queryDate is "2025-05-21"
-  useEffect(() => {
-    if (queryDate === "2025-05-25") {
-      setSelectedDate("2025-05-25");
-    }
-  }, [queryDate]);
+// ✅ Auto-set selectedDate to queryDate if present
+useEffect(() => {
+  if (queryDate) {
+    setSelectedDate(queryDate);
+  }
+}, [queryDate]);
+
   
   const [startIndex, setStartIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,10 +80,7 @@ export default function Movies() {
           ? s.date.length > 10 ? s.date.split("T")[0] : s.date
           : new Date(s.date).toISOString().split("T")[0];
   
-      // ✅ Only show movies on May 21 if queryDate is May 21
-      if (queryDate === "2025-05-25") {
-        return dbDate === "2025-05-25";
-      }
+
   
       return dbDate === selectedDate;
     })

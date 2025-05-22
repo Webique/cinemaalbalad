@@ -49,8 +49,9 @@ export default function Events() {
   };
 
   const handleBookNow = (event) => {
-    navigate(`/movies?date=2025-05-25`);
+    navigate(`/movies?date=${event.navigateToDate}`);
   };
+  
   
 
   const events = [
@@ -62,10 +63,22 @@ export default function Events() {
       description: isArabic
         ? "مع خيرية أبو لبن، نادية ملائكة، و علي الشريف"
         : "With Khairia Abu Laban, Nadia Malaika, and Ali Alsharief",
-      image: "/posters/may25.jpeg", // ✅ Upload image as "may25.jpeg" to /public/posters/
-      navigateToDate: "2025-05-25"
-    }
+      image: "/posters/may25.jpeg",
+      navigateToDate: "2025-05-25",
+    },
+    {
+      id: 2,
+      title: isArabic ? "ليلة تتويج العميد" : "Kora Nights",
+      date: isArabic ? "٢٦ مايو" : "26 May",
+      time: "9:00 PM",
+      description: isArabic
+        ? "الاتحاد بطل دوري روشن 2025. الاتحاد ضد ضمك - احتفال خاص في سينما البلد."
+        : "A Night of Glory for Al-Ittihad – Champions of the Roshn League 2025. Ittihad FC vs Damac – A special screening at Cinema Al Balad.",
+      image: "/posters/may26.jpeg", // Make sure the image is saved with this name
+      navigateToDate: "2025-05-26",
+    },
   ];
+  
   
   
   return (
