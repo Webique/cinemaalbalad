@@ -218,70 +218,55 @@ app.get("/api/movies/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch movie" });
   }
 });
-// ✅ Route to add multiple new movies (May 21–24, 2025)
-app.post("/api/admin/add-movies-may21-24", async (req, res) => {
+
+// ✅ Route to add movies for May 25–27
+app.post("/api/admin/add-movies-may25-27", async (req, res) => {
   try {
     const newMovies = [
       {
-        title: "Maflam, Nights",
+        title: "Maflam Nights",
         runtime: "90 min",
-        rating: "PG-13",
-        synopsis: "An exciting story of adventure and courage.",
-        poster: "/posters/may21.jpeg",
+        rating: "PG",
+        synopsis: "A special free event. No seating required.",
+        poster: "/posters/may25.jpeg",
         trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         ticketPrice: 0,
         showtimes: [
           {
-            date: "2025-05-21",
-            time: "8:00 PM",
-            reservedSeats: []
+            date: "2025-05-25",
+            time: "8:30 PM",
+            reservedSeats: [] // You may want to hide seat selection on frontend
           }
         ]
       },
       {
-        title: "فيلم الحارة",
-        runtime: "116 min",
-        rating: "PG-13",
-        synopsis: "A captivating tale of mystery and drama.",
-        poster: "/posters/may22.jpeg",
-        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        ticketPrice: 35,
-        showtimes: [
-          {
-            date: "2025-05-22",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ]
-      },
-      {
-        title: "Goodbye Julia",
-        runtime: "120 min",
-        rating: "PG-13",
-        synopsis: "An epic cinematic experience full of emotions.",
-        poster: "/posters/may23.jpeg",
-        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        ticketPrice: 35,
-        showtimes: [
-          {
-            date: "2025-05-23",
-            time: "7:30 PM",
-            reservedSeats: []
-          }
-        ]
-      },
-      {
-        title: "Behind The Mountains",
+        title: "Kora Nights",
         runtime: "100 min",
-        rating: "PG-13",
-        synopsis: "A thrilling adventure with unexpected twists.",
-        poster: "/posters/may21.jpeg",
+        rating: "PG",
+        synopsis: "An exciting evening blending football and cinema.",
+        poster: "/posters/may26.jpeg",
         trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        ticketPrice: 35,
+        ticketPrice: 15,
         showtimes: [
           {
-            date: "2025-05-24",
+            date: "2025-05-26",
             time: "9:00 PM",
+            reservedSeats: []
+          }
+        ]
+      },
+      {
+        title: "Saudi Cinema Nights",
+        runtime: "110 min",
+        rating: "PG-13",
+        synopsis: "A showcase of top Saudi films in one night.",
+        poster: "/posters/may27.jpeg",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        ticketPrice: 25,
+        showtimes: [
+          {
+            date: "2025-05-27",
+            time: "7:30 PM",
             reservedSeats: []
           }
         ]
@@ -289,12 +274,13 @@ app.post("/api/admin/add-movies-may21-24", async (req, res) => {
     ];
 
     await Movie.insertMany(newMovies);
-    res.status(201).json({ message: "✅ Movies for May 21-24 added successfully." });
+    res.status(201).json({ message: "✅ Movies for May 25–27 added successfully." });
   } catch (err) {
-    console.error("❌ Error adding new movies:", err);
+    console.error("❌ Error adding movies:", err);
     res.status(500).json({ error: "Failed to add the new movies." });
   }
 });
+
 
 
 
