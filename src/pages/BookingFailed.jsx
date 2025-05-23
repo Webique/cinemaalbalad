@@ -5,15 +5,15 @@ import { useTranslation } from "react-i18next";
 
 export default function BookingFailed() {
   const { t, i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
 
   const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === "ar" ? "en" : "ar");
+    i18n.changeLanguage(isArabic ? "en" : "ar");
   };
-
-  const isArabic = i18n.language === "ar";
 
   return (
     <motion.div
+      dir={isArabic ? "rtl" : "ltr"}
       className="min-h-screen flex flex-col justify-center items-center bg-black text-white text-center p-4 relative"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -33,7 +33,7 @@ export default function BookingFailed() {
           ? "حدث خطأ أثناء معالجة الدفع الخاص بك."
           : "Something went wrong while processing your payment."}
       </p>
-      <p className="text-md mb-6 max-w-xl">
+      <p className="text-md mb-6 max-w-xl text-balance">
         {isArabic ? (
           <>
             إذا كنت تعتقد أن هناك خطأ أو تم سحب المبلغ من حسابك، يرجى إرسال بريد إلكتروني إلى{" "}
