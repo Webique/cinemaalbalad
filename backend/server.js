@@ -292,6 +292,69 @@ app.post("/api/admin/add-movies-may25-27", async (req, res) => {
   }
 });
 
+// ✅ Add 3 new movies for May 22, 30, and 31
+app.post("/api/admin/add-movies-may22-31", async (req, res) => {
+  try {
+    const newMovies = [
+      {
+        title: "Hobal",
+        runtime: "120 min",
+        rating: "PG-13",
+        synopsis: "A mysterious desert tale — experience Hobal, a powerful Saudi film.",
+        poster: "/posters/hobal.jpeg",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // placeholder
+        ticketPrice: 35,
+        showtimes: [
+          {
+            date: "2025-05-22",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ]
+      },
+      {
+        title: "Kora Nights",
+        runtime: "120 min",
+        rating: "PG-13",
+        synopsis: "King’s Cup Final 2025 – Ittihad FC vs Alqadsiah. Football meets cinema.",
+        poster: "/posters/koranights2.jpeg",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // placeholder
+        ticketPrice: 15,
+        showtimes: [
+          {
+            date: "2025-05-30",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ]
+      },
+      {
+        title: "Thank You for Banking With Us",
+        runtime: "92 min",
+        rating: "PG-13",
+        synopsis: "A heartfelt Arabic drama under the Arabian Cinema Nights series.",
+        poster: "/posters/Arabiccinemanights.jpeg",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // placeholder
+        ticketPrice: 35,
+        showtimes: [
+          {
+            date: "2025-05-31",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ]
+      }
+    ];
+
+    await Movie.insertMany(newMovies);
+    res.status(201).json({ message: "✅ Movies for May 22–31 added successfully." });
+  } catch (err) {
+    console.error("❌ Error adding movies:", err);
+    res.status(500).json({ error: "Failed to add the new movies." });
+  }
+});
+
+
 
 
 
