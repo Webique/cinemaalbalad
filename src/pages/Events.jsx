@@ -77,6 +77,18 @@ export default function Events() {
       image: "/posters/may26.jpeg", // Make sure the image is saved with this name
       navigateToDate: "2025-05-26",
     },
+    {
+      id: 3,
+      title: isArabic ? "ليلة كورة #2" : "Kora Nights #2",
+      date: isArabic ? "٣٠ مايو" : "30 May",
+      time: "9:00 PM",
+      description: isArabic
+        ? "نهائي كأس الملك 2025 - الاتحاد ضد القادسية في ليلة كروية سينمائية."
+        : "King’s Cup Final 2025 – Ittihad FC vs Alqadsiah. A cinematic football night.",
+      image: "/posters/koranights2.jpeg",
+      navigateToDate: "2025-05-30",
+    },
+  
   ];
   
   
