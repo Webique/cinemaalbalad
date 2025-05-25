@@ -222,18 +222,24 @@ app.get("/api/bookings/taken-seats", async (req, res) => {
   try {
     const { movie, date, time } = req.query;
 
-    // Find all bookings for the same movie, date, and time
-    const bookings = await Booking.find({ movie, date, time });
+    if (!movie || !date || !time) {
+      return res.status(400).json({ error: "Missing required query parameters" });
+    }
 
-    // Merge all booked seats into one array
+    const bookings = await Booking.find({
+      movie: new RegExp(`^${movie.trim()}$`, "i"), // case-insensitive and trimmed
+      date: date.trim(),
+      time: time.trim()
+    });
+
     const takenSeats = bookings.flatMap((b) => b.seats);
-
     res.json({ takenSeats });
   } catch (err) {
-    console.error("Error getting taken seats:", err);
+    console.error("❌ Error getting taken seats:", err);
     res.status(500).json({ error: "Failed to get taken seats" });
   }
 });
+
 
 
 
