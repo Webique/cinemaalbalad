@@ -345,15 +345,6 @@ app.post("/api/admin/add-writers-nights", async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
-
 // Start server LAST
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

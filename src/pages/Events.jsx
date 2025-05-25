@@ -57,25 +57,25 @@ export default function Events() {
   const events = [
     {
       id: 1,
-      title: isArabic ? "ليلة تمثيل و جمعة فنانين" : "An Acting Night and Artists’ Circle",
-      date: isArabic ? "٢٥ مايو" : "25 May",
-      time: "8:30 PM",
-      description: isArabic
-        ? "مع خيرية أبو لبن، نادية ملائكة، و علي الشريف"
-        : "With Khairia Abu Laban, Nadia Malaika, and Ali Alsharief",
-      image: "/posters/may25.jpeg",
-      navigateToDate: "2025-05-25",
-    },
-    {
-      id: 2,
       title: isArabic ? "ليلة تتويج العميد" : "Kora Nights",
       date: isArabic ? "٢٦ مايو" : "26 May",
       time: "9:00 PM",
       description: isArabic
         ? "الاتحاد بطل دوري روشن 2025. الاتحاد ضد ضمك - احتفال خاص في سينما البلد."
         : "A Night of Glory for Al-Ittihad – Champions of the Roshn League 2025. Ittihad FC vs Damac – A special screening at Cinema Al Balad.",
-      image: "/posters/may26.jpeg", // Make sure the image is saved with this name
+      image: "/posters/may26.jpeg",
       navigateToDate: "2025-05-26",
+    },
+    {
+      id: 2,
+      title: isArabic ? "أمسية الكتاب" : "Writer's Nights",
+      date: isArabic ? "٢٨ مايو" : "28 May",
+      time: "8:00 PM",
+      description: isArabic
+        ? "أمسية أدبية مع أفنان لنقاوي، دانية الطيب، و داليا باغشن. يديرها رهام فراش."
+        : "A literary night with Afnan Linjawi, Dania Altayeb, and Dahlia Baeshen — moderated by Reham Farash.",
+      image: "/posters/maflamnights3.jpeg",
+      navigateToDate: "2025-05-28",
     },
     {
       id: 3,
@@ -88,7 +88,6 @@ export default function Events() {
       image: "/posters/koranights2.jpeg",
       navigateToDate: "2025-05-30",
     },
-  
   ];
   
   
