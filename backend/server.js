@@ -565,7 +565,11 @@ app.post("/api/admin/manual-booking", async (req, res) => {
     const movieDoc = await Movie.findOne({ title: movie });
     if (!movieDoc) return res.status(404).json({ error: "Movie not found" });
 
-    const showtime = movieDoc.showtimes.find(s => s.date === date && s.time === time);
+    const showtime = movieDoc.showtimes.find(s =>
+      String(s.date).trim() === String(date).trim() &&
+      String(s.time).trim().toLowerCase() === String(time).trim().toLowerCase()
+    );
+    
     if (!showtime) return res.status(404).json({ error: "Showtime not found" });
 
     const existingBookings = await Booking.find({ movie, date, time });
