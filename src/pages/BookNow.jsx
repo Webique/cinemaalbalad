@@ -23,8 +23,10 @@ export default function BookNow() {
   const [takenSeats, setTakenSeats] = useState([]);
 
 
-  const [totalSeats, setTotalSeats] = useState(48); // default value
+  const [totalSeats, setTotalSeats] = useState(50); // default value
   const isFreeShow = selectedMovie?.ticketPrice === 0;
+  const isSoldOut = totalSeats - takenSeats.length <= 0;
+
 
 
 
@@ -47,7 +49,7 @@ export default function BookNow() {
         const data = await res.json();
         if (data && data.title) {
           setSelectedMovie(data);
-          setTotalSeats(data.totalSeats || 48); // 👈 dynamically set total seats
+          setTotalSeats(data.totalSeats || 50); // 👈 dynamically set total seats
         } else {
           console.error("Invalid movie data", data);
         }
@@ -247,12 +249,19 @@ export default function BookNow() {
   <p className="text-lg font-semibold">{t('booknow.generalAdmission')}</p>
 
   <div>
-    <p className="text-sm text-gray-300">
-      {t('booknow.ticketsRemaining')}:{" "}
-      <span className="font-bold text-white">
-        {totalSeats - takenSeats.length}
-      </span>
-    </p>
+      {totalSeats - takenSeats.length > 0 ? (
+      <p className="text-sm text-gray-300">
+        {t('booknow.ticketsRemaining')}:{" "}
+        <span className="font-bold text-white">
+          {totalSeats - takenSeats.length}
+        </span>
+      </p>
+    ) : (
+      <p className="text-sm text-red-400 font-semibold">
+        🚫 {t('booknow.soldOut')}
+      </p>
+    )}
+
   </div>
 
   <div>
@@ -270,15 +279,21 @@ export default function BookNow() {
       </span>
       <button
         type="button"
+        disabled={isSoldOut}
         onClick={() =>
           setTicketCount((prev) =>
             Math.min(totalSeats - takenSeats.length, prev + 1)
           )
         }
-        className="px-3 py-2 text-white hover:bg-white/20 transition"
+        className={`px-3 py-2 text-white transition ${
+          isSoldOut
+            ? "bg-white/10 text-gray-500 cursor-not-allowed"
+            : "hover:bg-white/20"
+        }`}
       >
         +
       </button>
+
     </div>
   </div>
 </div>
@@ -315,12 +330,18 @@ export default function BookNow() {
 
 
             <div className="mt-8 text-center">
-              <button
-                type="submit"
-                className="bg-primary hover:bg-primary/80 px-8 py-3 rounded-full text-white text-lg transition duration-300"
-              >
-                🎟 {t('booknow.reserve')}
-              </button>
+            <button
+              type="submit"
+              disabled={isSoldOut}
+              className={`px-8 py-3 rounded-full text-lg transition duration-300 ${
+                isSoldOut
+                  ? "bg-gray-500 cursor-not-allowed text-white"
+                  : "bg-primary hover:bg-primary/80 text-white"
+              }`}
+            >
+              {isSoldOut ? t('booknow.soldOut') : `🎟 ${t('booknow.reserve')}`}
+            </button>
+
             </div>
           </form>
         </motion.section>

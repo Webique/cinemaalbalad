@@ -51,8 +51,9 @@
       "reserve": "Reserve Now",
       "fillFields": "Please fill all fields and choose a movie.",
       "generalAdmission": "General Admission Ticket",
-"ticketsRemaining": "Tickets Remaining",
-"selectTicketCount": "Number of Tickets"
+      "ticketsRemaining": "Tickets Remaining",
+      "selectTicketCount": "Number of Tickets",
+      "soldOut": "Sold Out"
 
     },
     "contact": {

@@ -557,7 +557,7 @@ app.post("/api/admin/manual-booking", async (req, res) => {
     const existingBookings = await Booking.find({ movie, date, time });
     const bookedSeats = existingBookings.flatMap(b => b.seats);
 
-    const totalSeats = movieDoc.totalSeats || 48;
+    const totalSeats = movieDoc.totalSeats || 50;
     const allSeats = Array.from({ length: totalSeats }, (_, i) => i + 1);
     const availableSeats = allSeats.filter(s => !bookedSeats.includes(s));
 

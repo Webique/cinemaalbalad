@@ -51,8 +51,9 @@
     "reserve": "احجز الآن",
     "fillFields": "يرجى تعبئة جميع الحقول واختيار فيلم.",
     "generalAdmission": "تذكرة دخول عامة",
-"remainingTickets": "عدد التذاكر المتبقية",
-"selectedTickets": "عدد التذاكر التي اخترتها"
+    "remainingTickets": "عدد التذاكر المتبقية",
+    "selectedTickets": "عدد التذاكر التي اخترتها",
+     "soldOut": "تم النفاد"
 
     
   },
