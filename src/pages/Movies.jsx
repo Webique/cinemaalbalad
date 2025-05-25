@@ -215,7 +215,8 @@ useEffect(() => {
                       {movie.runtime || t('movies.defaultRuntime')} • {movie.rating || t('movies.defaultRating')}
                     </p>
 
-                    <div className="pt-6 border-t border-white/10 space-y-4">
+                    <div className="pt-6 border-t border-white/10 space-y-4 text-center md:text-left">
+
                       <p className="text-primary text-lg font-semibold">{t('movies.bookTickets')}</p>
                       <div className="flex gap-4 flex-wrap">
                         {movie.showtimes
@@ -246,7 +247,8 @@ useEffect(() => {
                       {isFreeShowtime(movie, selectedDate) ? (
                         <p className="text-sm text-green-400 font-semibold">🎉 Free Screening!</p>
                       ) : (
-                        <div className="text-sm text-gray-300 flex items-center gap-2">
+                        <div className="text-sm text-gray-300 flex items-center justify-center md:justify-start gap-2">
+
                           {t('movies.price')}:
                           <span className="text-white font-bold flex items-center gap-1">
                           {(() => {
