@@ -218,7 +218,9 @@ useEffect(() => {
                     <div className="pt-6 border-t border-white/10 space-y-4 text-center md:text-left">
 
                       <p className="text-primary text-lg font-semibold">{t('movies.bookTickets')}</p>
-                      <div className="flex gap-4 flex-wrap">
+                      <div className="flex gap-4 flex-wrap justify-center md:justify-start">
+
+
                         {movie.showtimes
                           .filter((s) => s.date === selectedDate)
                           .map((s) => (
