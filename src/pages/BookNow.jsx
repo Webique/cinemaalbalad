@@ -98,8 +98,9 @@ export default function BookNow() {
 
       try {
         const res = await fetch(
-          `https://cinemaalbalad.onrender.com/api/bookings/taken-seats?movie=${selectedMovie.title}&date=${form.date}&time=${form.time}`
+          `https://cinemaalbalad.onrender.com/api/bookings/taken-seats?movie=${encodeURIComponent(selectedMovie.title)}&date=${encodeURIComponent(form.date)}&time=${encodeURIComponent(form.time)}`
         );
+        
         const data = await res.json();
         setTakenSeats(data.takenSeats || []);
       } catch (err) {
