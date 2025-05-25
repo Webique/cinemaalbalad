@@ -317,38 +317,33 @@ app.post("/api/admin/add-movies-may25-27", async (req, res) => {
   }
 });
 
-// ✅ Add or Fix "Kora Nights #2" with correct totalSeats
-app.post("/api/admin/add-kora-nights-2", async (req, res) => {
+// ✅ Add Writer's Nights (free event)
+app.post("/api/admin/add-writers-nights", async (req, res) => {
   try {
     const newMovie = {
-      title: "Kora Nights #2",
+      title: "Writer's Nights",
       runtime: "120 min",
-      rating: "PG-12",
-      synopsis: "King’s Cup Final 2025 – Ittihad FC vs Alqadsiah. Football meets cinema…",
-      poster: "/posters/koranights2.jpeg",
-      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      ticketPrice: 15,
-      totalSeats: 50,
+      rating: "PG-13",
+      synopsis: "A literary night with Afnan Linjawi, Dania Altayeb, and Dahlia Baeshen — moderated by Reham Farash.",
+      poster: "/posters/maflamnights3.jpeg",
+      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // optional placeholder
+      ticketPrice: 0,
       showtimes: [
         {
-          date: "2025-05-30",
-          time: "9:00 PM",
-          seats: [],
-          reservedSeats: []
-        }
-      ]
+          date: "2025-05-28",
+          time: "8:00 PM",
+          reservedSeats: [],
+        },
+      ],
     };
 
-    await Movie.deleteOne({ title: "Kora Nights #2" }); // Optional: clean previous
     await Movie.create(newMovie);
-
-    res.status(201).json({ message: "✅ Kora Nights #2 added successfully." });
+    res.status(201).json({ message: "✅ Writer’s Nights added successfully." });
   } catch (err) {
-    console.error("❌ Error adding Kora Nights #2:", err);
-    res.status(500).json({ error: "Failed to add Kora Nights #2." });
+    console.error("❌ Error adding Writer’s Nights:", err);
+    res.status(500).json({ error: "Failed to add the movie." });
   }
 });
-
 
 
 
