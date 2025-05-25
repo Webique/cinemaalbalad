@@ -107,10 +107,10 @@
       "watchTrailer": "Watch Trailer",
       "bookTickets": "Book Tickets",
       "tickets": "Tickets",
-      "total": "Total",
       "confirm": "Confirm Booking",
       "loading": "Loading movies...",
       "price": "Price"
+      
 
     },
     "payment": {
