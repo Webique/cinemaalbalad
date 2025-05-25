@@ -118,7 +118,12 @@ app.post("/api/bookings", async (req, res) => {
     const movieDoc = await Movie.findOne({ title: movie });
     if (!movieDoc) return res.status(404).json({ error: "Movie not found" });
 
-    const showtime = movieDoc.showtimes.find(s => s.date === date && s.time === time);
+    const showtime = movieDoc.showtimes.find(
+      (s) =>
+        s.date.trim() === date.trim() &&
+        s.time.trim().toLowerCase() === time.trim().toLowerCase()
+    );
+    
     if (!showtime) return res.status(404).json({ error: "Showtime not found" });
 
     const isFreeScreening = price === 0 || movieDoc.ticketPrice === 0;
