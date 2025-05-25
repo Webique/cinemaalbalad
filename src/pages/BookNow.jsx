@@ -15,7 +15,8 @@ export default function BookNow() {
 
   const movieId = searchParams.get("movieId");
   const prefilledTime = searchParams.get("time");
-  const prefilledCount = Number(searchParams.get("count"));
+  const [ticketCount, setTicketCount] = useState(1);
+
 
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -115,12 +116,13 @@ export default function BookNow() {
     }
   
     const availableSeats = seats.filter(s => !takenSeats.includes(s));
-    const autoSelected = availableSeats.slice(0, prefilledCount);
+    const autoSelected = availableSeats.slice(0, ticketCount);
     
-    if (autoSelected.length < prefilledCount) {
+    if (autoSelected.length < ticketCount) {
       alert(`Only ${autoSelected.length} tickets remaining. Please reduce your selection.`);
       return;
     }
+    
     
     setSelectedSeats(autoSelected); // optional visual sync
     
@@ -239,22 +241,39 @@ export default function BookNow() {
                 className="px-4 py-3 rounded bg-white/90 text-black border border-gray-300"
               />
             </div>
-
             <div className="mt-8 bg-black/20 rounded-lg py-6 px-4 mb-6 text-center">
-  <p className="text-lg font-semibold">{t('booknow.generalAdmission')}</p>
+  <p className="text-lg font-semibold">General Admission Ticket</p>
   <p className="text-sm text-gray-300 mt-2">
-    {t('booknow.remainingTickets')}:{" "}
+    Tickets Remaining:{" "}
+
+    <div className="mt-6 text-center">
+  <label className="block text-sm text-gray-300 mb-2">Number of Tickets</label>
+  <div className="inline-flex items-center bg-white/10 border border-white/20 rounded overflow-hidden">
+    <button
+      type="button"
+      onClick={() => setTicketCount((prev) => Math.max(1, prev - 1))}
+      className="px-3 py-2 text-white hover:bg-white/20 transition"
+    >
+      -
+    </button>
+    <span className="px-4 py-2 text-white bg-white/5 min-w-[2.5rem] text-center">{ticketCount}</span>
+    <button
+      type="button"
+      onClick={() => setTicketCount((prev) => Math.min(10, prev + 1))}
+      className="px-3 py-2 text-white hover:bg-white/20 transition"
+    >
+      +
+    </button>
+  </div>
+</div>
+
     <span className="font-bold text-white">
       {totalSeats - takenSeats.length}
     </span>
   </p>
-  <p className="text-sm text-gray-300 mt-1">
-    {t('booknow.selectedTickets')}:{" "}
-    <span className="font-bold text-white">
-      {prefilledCount}
-    </span>
-  </p>
+
 </div>
+
 
 
 
@@ -271,7 +290,7 @@ export default function BookNow() {
   <p className="text-sm flex items-center gap-2 text-left sm:justify-center sm:text-center">
     {t('booknow.totalPrice')}: 
     <span className="text-white font-bold flex items-center gap-1">
-    {isFreeShow ? 0 : selectedSeats.length * (selectedMovie.ticketPrice || 35)}
+    {isFreeShow ? 0 : ticketCount * (selectedMovie.ticketPrice || 35)}
 
       <img
         src="/saudi-riyal.png"
