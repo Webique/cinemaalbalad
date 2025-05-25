@@ -247,7 +247,7 @@ useEffect(() => {
                         <p className="text-sm text-green-400 font-semibold">🎉 Free Screening!</p>
                       ) : (
                         <div className="text-sm text-gray-300 flex items-center gap-2">
-                          {t('movies.total')}:
+                          {t('movies.price')}:
                           <span className="text-white font-bold flex items-center gap-1">
                           {(() => {
                             const count = booking[movie._id]?.count || 1;

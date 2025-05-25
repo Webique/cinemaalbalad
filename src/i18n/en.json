@@ -109,7 +109,9 @@
       "tickets": "Tickets",
       "total": "Total",
       "confirm": "Confirm Booking",
-      "loading": "Loading movies..."
+      "loading": "Loading movies...",
+      "price": "Price"
+
     },
     "payment": {
       "loadingDetails": "Loading booking details...",
