@@ -242,11 +242,11 @@ export default function BookNow() {
               />
             </div>
             <div className="mt-8 bg-black/20 rounded-lg py-6 px-4 mb-6 text-center space-y-4">
-  <p className="text-lg font-semibold">General Admission Ticket</p>
+  <p className="text-lg font-semibold">{t('booknow.generalAdmission')}</p>
 
   <div>
     <p className="text-sm text-gray-300">
-      Tickets Remaining:{" "}
+      {t('booknow.ticketsRemaining')}:{" "}
       <span className="font-bold text-white">
         {totalSeats - takenSeats.length}
       </span>
@@ -254,7 +254,7 @@ export default function BookNow() {
   </div>
 
   <div>
-    <label className="block text-sm text-gray-300 mb-2">Number of Tickets</label>
+    <label className="block text-sm text-gray-300 mb-2">{t('booknow.selectTicketCount')}</label>
     <div className="inline-flex items-center bg-white/10 border border-white/20 rounded overflow-hidden">
       <button
         type="button"
@@ -280,6 +280,7 @@ export default function BookNow() {
     </div>
   </div>
 </div>
+
 
 
 
