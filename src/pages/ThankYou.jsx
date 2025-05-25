@@ -156,7 +156,6 @@ export default function ThankYou() {
               {/* ✅ Booking Info */}
               <div className="text-sm text-gray-300 space-y-1">
                 <p>🎟️ <strong>{bookingData.name}</strong> booked <strong>{bookingData.movie}</strong></p>
-                <p>🗓️ {bookingData.date} at {bookingData.time} | Seats: {bookingData.seats.map(seatLabel).join(", ")}</p>
                 <p>🔐 <span className="text-gray-400">Booking Code:</span> <span className="text-green-400 font-mono">{bookingData._id}</span></p>
               </div>
             </motion.div>
