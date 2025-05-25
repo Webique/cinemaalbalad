@@ -241,38 +241,46 @@ export default function BookNow() {
                 className="px-4 py-3 rounded bg-white/90 text-black border border-gray-300"
               />
             </div>
-            <div className="mt-8 bg-black/20 rounded-lg py-6 px-4 mb-6 text-center">
+            <div className="mt-8 bg-black/20 rounded-lg py-6 px-4 mb-6 text-center space-y-4">
   <p className="text-lg font-semibold">General Admission Ticket</p>
-  <p className="text-sm text-gray-300 mt-2">
-    Tickets Remaining:{" "}
 
-    <div className="mt-6 text-center">
-  <label className="block text-sm text-gray-300 mb-2">Number of Tickets</label>
-  <div className="inline-flex items-center bg-white/10 border border-white/20 rounded overflow-hidden">
-    <button
-      type="button"
-      onClick={() => setTicketCount((prev) => Math.max(1, prev - 1))}
-      className="px-3 py-2 text-white hover:bg-white/20 transition"
-    >
-      -
-    </button>
-    <span className="px-4 py-2 text-white bg-white/5 min-w-[2.5rem] text-center">{ticketCount}</span>
-    <button
-      type="button"
-      onClick={() => setTicketCount((prev) => Math.min(10, prev + 1))}
-      className="px-3 py-2 text-white hover:bg-white/20 transition"
-    >
-      +
-    </button>
+  <div>
+    <p className="text-sm text-gray-300">
+      Tickets Remaining:{" "}
+      <span className="font-bold text-white">
+        {totalSeats - takenSeats.length}
+      </span>
+    </p>
+  </div>
+
+  <div>
+    <label className="block text-sm text-gray-300 mb-2">Number of Tickets</label>
+    <div className="inline-flex items-center bg-white/10 border border-white/20 rounded overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setTicketCount((prev) => Math.max(1, prev - 1))}
+        className="px-3 py-2 text-white hover:bg-white/20 transition"
+      >
+        -
+      </button>
+      <span className="px-4 py-2 text-white bg-white/5 min-w-[2.5rem] text-center">
+        {ticketCount}
+      </span>
+      <button
+        type="button"
+        onClick={() =>
+          setTicketCount((prev) =>
+            Math.min(totalSeats - takenSeats.length, prev + 1)
+          )
+        }
+        className="px-3 py-2 text-white hover:bg-white/20 transition"
+      >
+        +
+      </button>
+    </div>
   </div>
 </div>
 
-    <span className="font-bold text-white">
-      {totalSeats - takenSeats.length}
-    </span>
-  </p>
-
-</div>
 
 
 

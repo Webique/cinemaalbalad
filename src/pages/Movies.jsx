@@ -89,11 +89,11 @@ useEffect(() => {
 
   const handleBooking = (movieId) => {
     const selected = booking[movieId];
-    if (!selected || !selected.time || !selected.count) {
+    if (!selected || !selected.time) {
       alert(t('movies.selectShowtime'));
       return;
     }
-    navigate(`/booknow?movieId=${movieId}&time=${selected.time}&count=${selected.count}`);
+    navigate(`/booknow?movieId=${movieId}&time=${selected.time}`);
   };
 
   if (isLoading) {
@@ -241,51 +241,6 @@ useEffect(() => {
                               {s.time}
                             </button>
                           ))}
-                      </div>
-
-                      <div className="flex items-center gap-4">
-                        <label className="text-sm text-gray-300">{t('movies.tickets')}:</label>
-                        <div className="flex items-center bg-white/10 border border-white/10 rounded overflow-hidden">
-                          <button
-                            type="button"
-                            className="px-3 py-2 text-white hover:bg-white/20 transition"
-                            onClick={() =>
-                              setBooking((prev) => {
-                                const current = prev[movie._id]?.count || 1;
-                                return {
-                                  ...prev,
-                                  [movie._id]: {
-                                    ...prev[movie._id],
-                                    count: Math.max(1, current - 1),
-                                  },
-                                };
-                              })
-                            }
-                          >
-                            -
-                          </button>
-                          <span className="px-4 py-2 text-sm text-white bg-white/5 min-w-[2.5rem] text-center">
-                            {booking[movie._id]?.count || 1}
-                          </span>
-                          <button
-                            type="button"
-                            className="px-3 py-2 text-white hover:bg-white/20 transition"
-                            onClick={() =>
-                              setBooking((prev) => {
-                                const current = prev[movie._id]?.count || 1;
-                                return {
-                                  ...prev,
-                                  [movie._id]: {
-                                    ...prev[movie._id],
-                                    count: Math.min(10, current + 1),
-                                  },
-                                };
-                              })
-                            }
-                          >
-                            +
-                          </button>
-                        </div>
                       </div>
 
                       {isFreeShowtime(movie, selectedDate) ? (
