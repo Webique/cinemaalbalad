@@ -539,12 +539,11 @@ app.post("/api/bookings/unscan", async (req, res) => {
     res.status(500).json({ error: "Failed to unscan booking" });
   }
 });
-
 // ✅ Admin route to manually add booking (no payment required)
 app.post("/api/admin/manual-booking", async (req, res) => {
-  const { name, email, movie, date, time, seats } = req.body;
+  const { name, email, movie, date, time, seats = [], count = 0 } = req.body;
 
-  if (!name || !email || !movie || !date || !time || !seats?.length) {
+  if (!name || !email || !movie || !date || !time) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
@@ -555,10 +554,29 @@ app.post("/api/admin/manual-booking", async (req, res) => {
     const showtime = movieDoc.showtimes.find(s => s.date === date && s.time === time);
     if (!showtime) return res.status(404).json({ error: "Showtime not found" });
 
-    // Prevent double booking
     const existingBookings = await Booking.find({ movie, date, time });
     const bookedSeats = existingBookings.flatMap(b => b.seats);
-    const conflict = seats.filter(seat => bookedSeats.includes(seat));
+
+    const totalSeats = movieDoc.totalSeats || 48;
+    const allSeats = Array.from({ length: totalSeats }, (_, i) => i + 1);
+    const availableSeats = allSeats.filter(s => !bookedSeats.includes(s));
+
+    let finalSeats = seats;
+
+    if ((!seats || seats.length === 0) && count > 0) {
+      const shuffled = [...availableSeats].sort(() => Math.random() - 0.5);
+      finalSeats = shuffled.slice(0, count);
+
+      if (finalSeats.length < count) {
+        return res.status(409).json({ error: "Not enough seats available", available: availableSeats.length });
+      }
+    }
+
+    if (!finalSeats || finalSeats.length === 0) {
+      return res.status(400).json({ error: "No seats provided or found" });
+    }
+
+    const conflict = finalSeats.filter(seat => bookedSeats.includes(seat));
     if (conflict.length > 0) {
       return res.status(409).json({ error: "Seats already taken", conflict });
     }
@@ -569,8 +587,8 @@ app.post("/api/admin/manual-booking", async (req, res) => {
       movie,
       date,
       time,
-      seats,
-      price: 0, // manually added for free
+      seats: finalSeats,
+      price: 0,
     });
 
     const payload = JSON.stringify({
@@ -580,7 +598,7 @@ app.post("/api/admin/manual-booking", async (req, res) => {
       movie,
       date,
       time,
-      seats,
+      seats: finalSeats,
       scanned: false,
     });
 
@@ -593,6 +611,7 @@ app.post("/api/admin/manual-booking", async (req, res) => {
       message: "✅ Manual booking created",
       bookingId: newBooking._id,
       qrCodeData,
+      seats: finalSeats,
     });
 
   } catch (err) {
@@ -600,3 +619,4 @@ app.post("/api/admin/manual-booking", async (req, res) => {
     res.status(500).json({ error: "Internal error while creating manual booking" });
   }
 });
+

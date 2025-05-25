@@ -116,7 +116,9 @@ export default function BookNow() {
     }
   
     const availableSeats = seats.filter(s => !takenSeats.includes(s));
-    const autoSelected = availableSeats.slice(0, ticketCount);
+    const shuffled = [...availableSeats].sort(() => Math.random() - 0.5);
+    const autoSelected = shuffled.slice(0, ticketCount);
+    
     
     if (autoSelected.length < ticketCount) {
       alert(`Only ${autoSelected.length} tickets remaining. Please reduce your selection.`);
