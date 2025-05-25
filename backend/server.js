@@ -41,13 +41,14 @@ const sendTicketEmail = async (booking, qrCodeData) => {
           <li><strong>Movie:</strong> ${booking.movie}</li>
           <li><strong>Date:</strong> ${booking.date}</li>
           <li><strong>Time:</strong> ${booking.time}</li>
-
+          <li><strong>Seats Booked:</strong> ${booking.seats.length}</li>
         </ul>
         <p>Your booking ID is: <strong>${booking._id}</strong></p>
         <br/><br/>
         <p>Enjoy your movie! 🍿</p>
         <p>— Cinema Al Balad</p>
       `,
+
     });
 
     console.log(`✅ Email sent successfully. Resend message ID:`, response?.id);
