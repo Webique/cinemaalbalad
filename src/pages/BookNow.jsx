@@ -287,10 +287,7 @@ export default function BookNow() {
 
 
             <div className="mt-6 text-left sm:text-center text-white">
-  <p className="text-sm">
-    {t('booknow.selected')}: {selectedSeats.map(seatLabel).join(", ") || t('booknow.none')}
-  </p>
-  <p className="text-sm">{t('booknow.totalTickets')}: {selectedSeats.length}</p>
+
   {isFreeShow ? (
   <p className="text-sm text-green-400 font-semibold">
     🎉 This is a free screening!

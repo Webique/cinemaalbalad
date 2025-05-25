@@ -49,7 +49,11 @@
       "totalTickets": "Total Tickets",
       "totalPrice": "Total Price",
       "reserve": "Reserve Now",
-      "fillFields": "Please fill all fields and choose a movie."
+      "fillFields": "Please fill all fields and choose a movie.",
+      "generalAdmission": "General Admission Ticket",
+"ticketsRemaining": "Tickets Remaining",
+"selectTicketCount": "Number of Tickets"
+
     },
     "contact": {
       "title": "Get in Touch",
@@ -71,10 +75,7 @@
     "title": "Maflam Nights",
     "date": "7 May",
     "time": "8:00 PM",
-    "description": "A night gathering filmmakers with Director Abdullah Saharti",
-    "generalAdmission": "General Admission Ticket",
-"remainingTickets": "Tickets Remaining",
-"selectedTickets": "Tickets You Selected"
+    "description": "A night gathering filmmakers with Director Abdullah Saharti"
 
   },
   "event2": {
