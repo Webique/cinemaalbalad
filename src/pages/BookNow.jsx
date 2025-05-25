@@ -114,10 +114,16 @@ export default function BookNow() {
       return;
     }
   
-    if (selectedSeats.length < prefilledCount) {
-      alert(`Please select ${prefilledCount} seats before continuing.`);
+    const availableSeats = seats.filter(s => !takenSeats.includes(s));
+    const autoSelected = availableSeats.slice(0, prefilledCount);
+    
+    if (autoSelected.length < prefilledCount) {
+      alert(`Only ${autoSelected.length} tickets remaining. Please reduce your selection.`);
       return;
     }
+    
+    setSelectedSeats(autoSelected); // optional visual sync
+    
   
     const bookingDetails = {
       name: form.name,
@@ -125,9 +131,10 @@ export default function BookNow() {
       movie: selectedMovie.title,
       time: form.time,
       date: form.date,
-      seats: selectedSeats,
-      price: selectedSeats.length * selectedMovie.ticketPrice,
+      seats: autoSelected,
+      price: autoSelected.length * selectedMovie.ticketPrice,
     };
+    
   
     const queryString = encodeURIComponent(JSON.stringify(bookingDetails));
   
@@ -233,37 +240,23 @@ export default function BookNow() {
               />
             </div>
 
-            <div className="mt-8">
-              <h3 className="text-lg mb-4 font-semibold">{t('booknow.selectSeats')}</h3>
-              <div className="bg-black/20 rounded-lg py-4 px-2 mb-6">
-                <div className="text-center text-gray-400 font-medium mb-4">{t('booknow.screen')}</div>
-                <div className="grid grid-cols-8 gap-4 justify-center" dir="ltr">
+            <div className="mt-8 bg-black/20 rounded-lg py-6 px-4 mb-6 text-center">
+  <p className="text-lg font-semibold">{t('booknow.generalAdmission')}</p>
+  <p className="text-sm text-gray-300 mt-2">
+    {t('booknow.remainingTickets')}:{" "}
+    <span className="font-bold text-white">
+      {totalSeats - takenSeats.length}
+    </span>
+  </p>
+  <p className="text-sm text-gray-300 mt-1">
+    {t('booknow.selectedTickets')}:{" "}
+    <span className="font-bold text-white">
+      {prefilledCount}
+    </span>
+  </p>
+</div>
 
-                {seats.map((seat) => (
-                    <button
-                      key={seat}
-                      type="button"
-                      onClick={() => toggleSeat(seat)}
-                      disabled={
-                        takenSeats.includes(seat) ||
-                        (selectedSeats.length >= 10 && !selectedSeats.includes(seat))
-                      }
-                      className={`w-8 h-8 sm:w-10 sm:h-10 m-[2px] sm:m-1.5 rounded-lg text-xs sm:text-sm font-bold
-                        ${
-                          takenSeats.includes(seat)
-                            ? "bg-red-900 text-white"
-                            : selectedSeats.includes(seat)
-                            ? "bg-red-600 text-white"
-                            : "bg-gray-300 text-black hover:bg-red-100"
-                        }`}
-                      
-                    >
-                      {seatLabel(seat)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+
 
             <div className="mt-6 text-left sm:text-center text-white">
   <p className="text-sm">

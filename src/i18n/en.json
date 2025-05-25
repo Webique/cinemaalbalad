@@ -71,7 +71,11 @@
     "title": "Maflam Nights",
     "date": "7 May",
     "time": "8:00 PM",
-    "description": "A night gathering filmmakers with Director Abdullah Saharti"
+    "description": "A night gathering filmmakers with Director Abdullah Saharti",
+    "generalAdmission": "General Admission Ticket",
+"remainingTickets": "Tickets Remaining",
+"selectedTickets": "Tickets You Selected"
+
   },
   "event2": {
         "title": "🎬 Classic Egyptian Cinema",

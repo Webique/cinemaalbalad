@@ -49,7 +49,12 @@
     "totalTickets": "إجمالي التذاكر",
     "totalPrice": "الإجمالي",
     "reserve": "احجز الآن",
-    "fillFields": "يرجى تعبئة جميع الحقول واختيار فيلم."
+    "fillFields": "يرجى تعبئة جميع الحقول واختيار فيلم.",
+    "generalAdmission": "تذكرة دخول عامة",
+"remainingTickets": "عدد التذاكر المتبقية",
+"selectedTickets": "عدد التذاكر التي اخترتها"
+
+    
   },
   "contact": {
     "title": "تواصل معنا",
