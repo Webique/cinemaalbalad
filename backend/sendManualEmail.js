@@ -52,7 +52,7 @@ const sendTicketEmail = async (booking, qrCodeData) => {
 async function main() {
   await mongoose.connect(MONGO_URI);
 
-  const booking = await Booking.findById("6834b399f8ceec2c582f8533");
+  const booking = await Booking.findById("6836256cb4effa96180066e7");
 
   if (!booking) {
     console.error("❌ Booking not found");
