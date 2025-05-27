@@ -9,8 +9,7 @@ export default function BookNow() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
 
-  const [form, setForm] = useState({ name: "", email: "", confirmEmail: "", date: "", time: "", tickets: 0 });
-
+  const [form, setForm] = useState({ name: "", email: "", date: "", time: "", tickets: 0 });
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -114,16 +113,10 @@ export default function BookNow() {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    if (!form.name || !form.email || !form.confirmEmail || !form.date || !form.time || !selectedMovie) {
+    if (!form.name || !form.email || !form.date || !form.time || !selectedMovie) {
       alert(t('booknow.fillFields'));
       return;
     }
-    
-    if (form.email !== form.confirmEmail) {
-      alert("❌ Emails do not match. Please confirm your email correctly.");
-      return;
-    }
-    
   
     const availableSeats = seats.filter(s => !takenSeats.includes(s));
     const shuffled = [...availableSeats].sort(() => Math.random() - 0.5);
@@ -252,16 +245,7 @@ export default function BookNow() {
                 placeholder={t('booknow.email')}
                 className="px-4 py-3 rounded bg-white/90 text-black border border-gray-300"
               />
-              <input
-                type="email"
-                name="confirmEmail"
-                value={form.confirmEmail}
-                onChange={handleChange}
-                placeholder={t('booknow.confirmEmail') || "Confirm Email"}
-                className="px-4 py-3 rounded bg-white/90 text-black border border-gray-300 sm:col-span-2"
-              />
             </div>
-
             <div className="mt-8 bg-black/20 rounded-lg py-6 px-4 mb-6 text-center space-y-4">
   <p className="text-lg font-semibold">{t('booknow.generalAdmission')}</p>
 
