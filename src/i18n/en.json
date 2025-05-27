@@ -53,7 +53,12 @@
       "generalAdmission": "General Admission Ticket",
       "ticketsRemaining": "Tickets Remaining",
       "selectTicketCount": "Number of Tickets",
-      "soldOut": "Sold Out"
+      "soldOut": "Sold Out",
+      "confirmEmail": "Confirm Email"
+
+    
+      
+      
 
     },
     "contact": {

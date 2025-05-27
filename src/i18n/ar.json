@@ -53,7 +53,9 @@
     "generalAdmission": "تذكرة دخول عامة",
     "remainingTickets": "عدد التذاكر المتبقية",
     "selectedTickets": "عدد التذاكر التي اخترتها",
-     "soldOut": "تم النفاد"
+     "soldOut": "تم النفاد",
+     "confirmEmail": "تأكيد البريد الإلكتروني"
+
 
     
   },
