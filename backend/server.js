@@ -317,33 +317,34 @@ app.post("/api/admin/add-movies-may25-27", async (req, res) => {
   }
 });
 
-// ✅ Add Writer's Nights (free event)
-app.post("/api/admin/add-writers-nights", async (req, res) => {
+// ✅ Add Drama Therapy Workshop
+app.post("/api/admin/add-drama-therapy", async (req, res) => {
   try {
     const newMovie = {
-      title: "Writer's Nights",
-      runtime: "120 min",
+      title: "Drama Therapy Workshop",
+      runtime: "90 min",
       rating: "PG-13",
-      synopsis: "A literary night with Afnan Linjawi, Dania Altayeb, and Dahlia Baeshen — moderated by Reham Farash.",
-      poster: "/posters/maflamnights3.jpeg",
+      synopsis: "A powerful workshop blending performance and healing through drama techniques.",
+      poster: "/posters/dramatherapy.jpeg", // Make sure this file exists in public/posters
       trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // optional placeholder
       ticketPrice: 0,
       showtimes: [
         {
-          date: "2025-05-28",
-          time: "8:00 PM",
+          date: "2025-06-01",
+          time: "8:30 PM",
           reservedSeats: [],
         },
       ],
     };
 
     await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ Writer’s Nights added successfully." });
+    res.status(201).json({ message: "✅ Drama Therapy Workshop added successfully." });
   } catch (err) {
-    console.error("❌ Error adding Writer’s Nights:", err);
+    console.error("❌ Error adding Drama Therapy Workshop:", err);
     res.status(500).json({ error: "Failed to add the movie." });
   }
 });
+
 
 // Start server LAST
 const PORT = process.env.PORT || 5000;
