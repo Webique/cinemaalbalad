@@ -57,28 +57,6 @@ export default function Events() {
   const events = [
     {
       id: 1,
-      title: isArabic ? "ليلة تتويج العميد" : "Kora Nights",
-      date: isArabic ? "٢٦ مايو" : "26 May",
-      time: "9:00 PM",
-      description: isArabic
-        ? "الاتحاد بطل دوري روشن 2025. الاتحاد ضد ضمك - احتفال خاص في سينما البلد."
-        : "A Night of Glory for Al-Ittihad – Champions of the Roshn League 2025. Ittihad FC vs Damac – A special screening at Cinema Al Balad.",
-      image: "/posters/may26.jpeg",
-      navigateToDate: "2025-05-26",
-    },
-    {
-      id: 2,
-      title: isArabic ? "أمسية الكتاب" : "Writer's Nights",
-      date: isArabic ? "٢٨ مايو" : "28 May",
-      time: "8:00 PM",
-      description: isArabic
-        ? "أمسية أدبية مع أفنان لنقاوي، دانية الطيب، و داليا باغشن. يديرها رهام فراش."
-        : "A literary night with Afnan Linjawi, Dania Altayeb, and Dahlia Baeshen — moderated by Reham Farash.",
-      image: "/posters/maflamnights3.jpeg",
-      navigateToDate: "2025-05-28",
-    },
-    {
-      id: 3,
       title: isArabic ? "ليلة كورة #2" : "Kora Nights #2",
       date: isArabic ? "٣٠ مايو" : "30 May",
       time: "9:00 PM",
@@ -88,8 +66,18 @@ export default function Events() {
       image: "/posters/koranights2.jpeg",
       navigateToDate: "2025-05-30",
     },
+    {
+      id: 2,
+      title: isArabic ? "ورشة العلاج بالدراما" : "Drama Therapy Workshop",
+      date: isArabic ? "١ يونيو" : "1 June",
+      time: "8:30 PM",
+      description: isArabic
+        ? "ورشة عمل مجانية تستكشف تقنيات العلاج بالدراما والتعبير الذاتي من خلال الأداء المسرحي."
+        : "A free workshop exploring drama therapy and self-expression through performance.",
+      image: "/posters/dramatherapy.jpeg",
+      navigateToDate: "2025-06-01",
+    },
   ];
-  
   
   
   return (
