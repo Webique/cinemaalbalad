@@ -317,29 +317,29 @@ app.post("/api/admin/add-movies-may25-27", async (req, res) => {
   }
 });
 
-app.post("/api/admin/add-kora-nights-3", async (req, res) => {
+app.post("/api/admin/add-saudi-cinema-2", async (req, res) => {
   try {
     const newMovie = {
-      title: "Kora Nights #3",
-      runtime: "120 min",
+      title: "Saudi Cinema Nights #2",
+      runtime: "90 min",
       rating: "PG-12",
-      synopsis: "Champions League Final 2025 — Paris Saint-Germain vs Inter Milan. Live screening from Munich.",
-      poster: "/posters/koranights3.jpeg", // Make sure to upload this to public/posters/
-      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // optional placeholder
+      synopsis: "‘My Vibe’ — A locally acclaimed Saudi film followed by a special discussion with the crew and cast.",
+      poster: "/posters/myvibe.jpeg",
+      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // placeholder
       ticketPrice: 25,
       showtimes: [
         {
-          date: "2025-05-31",
-          time: "9:00 PM",
+          date: "2025-06-02",
+          time: "7:30 PM",
           reservedSeats: [],
         },
       ],
     };
 
     await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ Kora Nights #3 added successfully." });
+    res.status(201).json({ message: "✅ Saudi Cinema Nights #2 added successfully." });
   } catch (err) {
-    console.error("❌ Error adding Kora Nights #3:", err);
+    console.error("❌ Error adding Saudi Cinema Nights #2:", err);
     res.status(500).json({ error: "Failed to add the movie." });
   }
 });
