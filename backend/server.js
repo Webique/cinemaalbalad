@@ -326,7 +326,7 @@ app.post("/api/admin/add-kora-nights-3", async (req, res) => {
       synopsis: "Champions League Final 2025 — Paris Saint-Germain vs Inter Milan. Live screening from Munich.",
       poster: "/posters/koranights3.jpeg", // Make sure to upload this to public/posters/
       trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // optional placeholder
-      ticketPrice: 35,
+      ticketPrice: 25,
       showtimes: [
         {
           date: "2025-05-31",
