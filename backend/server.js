@@ -317,33 +317,34 @@ app.post("/api/admin/add-movies-may25-27", async (req, res) => {
   }
 });
 
-// ✅ Add Drama Therapy Workshop
-app.post("/api/admin/add-drama-therapy", async (req, res) => {
+app.post("/api/admin/add-kora-nights-3", async (req, res) => {
   try {
     const newMovie = {
-      title: "Drama Therapy Workshop",
-      runtime: "90 min",
-      rating: "PG-13",
-      synopsis: "A powerful workshop blending performance and healing through drama techniques.",
-      poster: "/posters/dramatherapy.jpeg", // Make sure this file exists in public/posters
+      title: "Kora Nights #3",
+      runtime: "120 min",
+      rating: "PG-12",
+      synopsis: "Champions League Final 2025 — Paris Saint-Germain vs Inter Milan. Live screening from Munich.",
+      poster: "/posters/koranights3.jpeg", // Make sure to upload this to public/posters/
       trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // optional placeholder
-      ticketPrice: 0,
+      ticketPrice: 35,
       showtimes: [
         {
-          date: "2025-06-01",
-          time: "8:30 PM",
+          date: "2025-05-31",
+          time: "9:00 PM",
           reservedSeats: [],
         },
       ],
     };
 
     await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ Drama Therapy Workshop added successfully." });
+    res.status(201).json({ message: "✅ Kora Nights #3 added successfully." });
   } catch (err) {
-    console.error("❌ Error adding Drama Therapy Workshop:", err);
+    console.error("❌ Error adding Kora Nights #3:", err);
     res.status(500).json({ error: "Failed to add the movie." });
   }
 });
+
+
 
 
 // Start server LAST

@@ -66,8 +66,20 @@ export default function Events() {
       image: "/posters/koranights2.jpeg",
       navigateToDate: "2025-05-30",
     },
+
     {
       id: 2,
+      title: isArabic ? "ليلة كورة #3" : "Kora Nights #3",
+      date: isArabic ? "٣١ مايو" : "31 May",
+      time: "9:00 PM",
+      description: isArabic
+        ? "نهائي دوري أبطال أوروبا 2025 - باريس سان جيرمان ضد إنتر ميلان."
+        : "Champions League Final 2025 — Paris Saint-Germain vs Inter Milan. Live from Munich.",
+      image: "/posters/koranights3.jpeg",
+      navigateToDate: "2025-05-31",
+    },
+    {
+      id: 3,
       title: isArabic ? "ورشة العلاج بالدراما" : "Drama Therapy Workshop",
       date: isArabic ? "١ يونيو" : "1 June",
       time: "8:30 PM",
@@ -77,6 +89,7 @@ export default function Events() {
       image: "/posters/dramatherapy.jpeg",
       navigateToDate: "2025-06-01",
     },
+   
   ];
   
   
