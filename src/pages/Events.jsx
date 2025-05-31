@@ -57,29 +57,6 @@ export default function Events() {
   const events = [
     {
       id: 1,
-      title: isArabic ? "ليلة كورة #2" : "Kora Nights #2",
-      date: isArabic ? "٣٠ مايو" : "30 May",
-      time: "9:00 PM",
-      description: isArabic
-        ? "نهائي كأس الملك 2025 - الاتحاد ضد القادسية في ليلة كروية سينمائية."
-        : "King’s Cup Final 2025 – Ittihad FC vs Alqadsiah. A cinematic football night.",
-      image: "/posters/koranights2.jpeg",
-      navigateToDate: "2025-05-30",
-    },
-
-    {
-      id: 2,
-      title: isArabic ? "ليلة كورة #3" : "Kora Nights #3",
-      date: isArabic ? "٣١ مايو" : "31 May",
-      time: "9:00 PM",
-      description: isArabic
-        ? "نهائي دوري أبطال أوروبا 2025 - باريس سان جيرمان ضد إنتر ميلان."
-        : "Champions League Final 2025 — Paris Saint-Germain vs Inter Milan. Live from Munich.",
-      image: "/posters/koranights3.jpeg",
-      navigateToDate: "2025-05-31",
-    },
-    {
-      id: 3,
       title: isArabic ? "ورشة العلاج بالدراما" : "Drama Therapy Workshop",
       date: isArabic ? "١ يونيو" : "1 June",
       time: "8:30 PM",
@@ -89,8 +66,19 @@ export default function Events() {
       image: "/posters/dramatherapy.jpeg",
       navigateToDate: "2025-06-01",
     },
-   
+    {
+      id: 2,
+      title: isArabic ? "إعادة تخيّل جدة" : "Jeddah Reimagined",
+      date: isArabic ? "٤ يونيو" : "4 June",
+      time: "7:30 PM",
+      description: isArabic
+        ? "كيف تساهم المدينة في التعبيرات الفنية والسردية والأرشيفية؟ حوار مع محمد الإمارة، لما عالم، وأفنان باويان بإدارة سالم باجنيد."
+        : "How does the city contribute to artistic, narrative, and archival expressions? A talk with Mohammad Al Emarah, Lama Alem, and Afnan Bawyan, moderated by Salem Bajnaid.",
+      image: "/posters/june4.jpeg",
+      navigateToDate: "2025-06-04",
+    },
   ];
+  
   
   
   return (

@@ -604,3 +604,30 @@ app.post("/api/admin/manual-booking", async (req, res) => {
   }
 });
 
+
+app.post("/api/admin/add-movie-june4", async (req, res) => {
+  try {
+    const newMovie = {
+      title: "Jeddah Reimagined: Stories, Spaces, and Archives",
+      runtime: "90 min",
+      rating: "PG",
+      synopsis: "How does the city contribute to artistic, narrative, and archival expressions — with Mohammad Al Emarah, Lama Alem, Afnan Bawyan. Moderated by Salem Bajnaid.",
+      poster: "/posters/june4.jpeg",
+      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // Placeholder
+      ticketPrice: 0, // 🎟 Free
+      showtimes: [
+        {
+          date: "2025-06-04",
+          time: "7:30 PM",
+          reservedSeats: []
+        }
+      ]
+    };
+
+    await Movie.create(newMovie);
+    res.status(201).json({ message: "✅ Movie for June 4, 2025 added successfully." });
+  } catch (err) {
+    console.error("❌ Error adding June 4 movie:", err);
+    res.status(500).json({ error: "Failed to add the June 4 movie." });
+  }
+});
