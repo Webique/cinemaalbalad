@@ -605,19 +605,19 @@ app.post("/api/admin/manual-booking", async (req, res) => {
 });
 
 
-app.post("/api/admin/add-movie-june4", async (req, res) => {
+app.post("/api/admin/add-movie-june3", async (req, res) => {
   try {
     const newMovie = {
-      title: "Jeddah Reimagined: Stories, Spaces, and Archives",
-      runtime: "90 min",
-      rating: "PG",
-      synopsis: "How does the city contribute to artistic, narrative, and archival expressions — with Mohammad Al Emarah, Lama Alem, Afnan Bawyan. Moderated by Salem Bajnaid.",
-      poster: "/posters/june4.jpeg",
-      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // Placeholder
-      ticketPrice: 0, // 🎟 Free
+      title: "Hobal - Saudi Cinema Nights",
+      runtime: "100 min",
+      rating: "PG-13",
+      synopsis: "A featured Saudi screening for Cinema Nights.",
+      poster: "/posters/june3.jpeg",
+      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // You can replace this with the actual trailer link
+      ticketPrice: 25,
       showtimes: [
         {
-          date: "2025-06-04",
+          date: "2025-06-03",
           time: "7:30 PM",
           reservedSeats: []
         }
@@ -625,9 +625,10 @@ app.post("/api/admin/add-movie-june4", async (req, res) => {
     };
 
     await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ Movie for June 4, 2025 added successfully." });
+    res.status(201).json({ message: "✅ 'Hobal - Saudi Cinema Nights' added for June 3, 2025." });
   } catch (err) {
-    console.error("❌ Error adding June 4 movie:", err);
-    res.status(500).json({ error: "Failed to add the June 4 movie." });
+    console.error("❌ Error adding movie:", err);
+    res.status(500).json({ error: "Failed to add the new movie." });
   }
 });
+
