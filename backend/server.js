@@ -603,32 +603,65 @@ app.post("/api/admin/manual-booking", async (req, res) => {
     res.status(500).json({ error: "Internal error while creating manual booking" });
   }
 });
-
-// ✅ Route to add a movie for June 11, 2025
-app.post("/api/admin/add-movie-june11", async (req, res) => {
+// ✅ Route to add movies for June 12–14, 2025
+app.post("/api/admin/add-movies-june12-14", async (req, res) => {
   try {
-    const newMovie = {
-      title: "Thank you for banking with us",
-      runtime: "92 min",
-      rating: "PG-13",
-      synopsis: "A darkly comic look at the modern financial world.",
-      poster: "/posters/june11.jpeg",
-      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      ticketPrice: 35,
-      showtimes: [
-        {
-          date: "2025-06-11",
-          time: "9:00 PM",
-          reservedSeats: []
-        }
-      ]
-    };
+    const newMovies = [
+      {
+        title: "The Memoirs of M. A. Draz",
+        runtime: "82 min",
+        rating: "PG-13",
+        synopsis: "A reflective journey into the life and thoughts of M. A. Draz.",
+        poster: "/posters/june12.jpeg",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        ticketPrice: 35,
+        showtimes: [
+          {
+            date: "2025-06-12",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ]
+      },
+      {
+        title: "The Brink of Dreams",
+        runtime: "102 min",
+        rating: "PG-13",
+        synopsis: "A documentary-style dive into the hopes and struggles of a generation.",
+        poster: "/posters/june13.jpeg",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        ticketPrice: 35,
+        showtimes: [
+          {
+            date: "2025-06-13",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ]
+      },
+      {
+        title: "The Burdened",
+        runtime: "91 min",
+        rating: "PG-13",
+        synopsis: "A gripping drama portraying the resilience of a family under pressure.",
+        poster: "/posters/june14.jpeg",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        ticketPrice: 35,
+        showtimes: [
+          {
+            date: "2025-06-14",
+            time: "9:00 PM",
+            reservedSeats: []
+          }
+        ]
+      }
+    ];
 
-    await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ Movie 'Thank you for banking with us' added for June 11, 2025." });
+    await Movie.insertMany(newMovies);
+    res.status(201).json({ message: "✅ Movies for June 12–14 added successfully." });
   } catch (err) {
-    console.error("❌ Error adding the new movie:", err);
-    res.status(500).json({ error: "Failed to add the new movie." });
+    console.error("❌ Error adding movies:", err);
+    res.status(500).json({ error: "Failed to add the movies." });
   }
 });
 

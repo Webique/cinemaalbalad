@@ -37,7 +37,7 @@ useEffect(() => {
     const dates = [];
     const today = new Date();
     const end = new Date();
-    end.setDate(today.getDate() + 8);
+    end.setDate(today.getDate() + 11);
 
     while (today <= end) {
       dates.push(new Date(today).toISOString().split("T")[0]);
