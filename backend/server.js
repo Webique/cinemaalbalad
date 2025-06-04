@@ -605,30 +605,31 @@ app.post("/api/admin/manual-booking", async (req, res) => {
 });
 
 
-app.post("/api/admin/add-movie-june3", async (req, res) => {
+// ✅ Route to add movie "Bilal" (June 7, 2025)
+app.post("/api/admin/add-movie-june7", async (req, res) => {
   try {
     const newMovie = {
-      title: "Hobal - Saudi Cinema Nights",
-      runtime: "100 min",
-      rating: "PG-13",
-      synopsis: "A featured Saudi screening for Cinema Nights.",
-      poster: "/posters/june3.jpeg",
-      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // You can replace this with the actual trailer link
-      ticketPrice: 25,
+      title: "Bilal",
+      runtime: "105 min",
+      rating: "PG",
+      synopsis: "A powerful animated tale of faith and courage inspired by true events.",
+      poster: "/posters/june7.jpeg",
+      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // Replace with real trailer if available
+      ticketPrice: 35,
       showtimes: [
         {
-          date: "2025-06-03",
-          time: "7:30 PM",
+          date: "2025-06-07",
+          time: "9:00 PM",
           reservedSeats: []
         }
       ]
     };
 
     await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ 'Hobal - Saudi Cinema Nights' added for June 3, 2025." });
+    res.status(201).json({ message: "✅ Movie 'Bilal' added for June 7, 2025." });
   } catch (err) {
-    console.error("❌ Error adding movie:", err);
-    res.status(500).json({ error: "Failed to add the new movie." });
+    console.error("❌ Error adding 'Bilal':", err);
+    res.status(500).json({ error: "Failed to add the movie." });
   }
 });
 
