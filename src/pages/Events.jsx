@@ -55,17 +55,7 @@ export default function Events() {
   
 
   const events = [
-    {
-      id: 1,
-      title: isArabic ? "ورشة العلاج بالدراما" : "Drama Therapy Workshop",
-      date: isArabic ? "١ يونيو" : "1 June",
-      time: "8:30 PM",
-      description: isArabic
-        ? "ورشة عمل مجانية تستكشف تقنيات العلاج بالدراما والتعبير الذاتي من خلال الأداء المسرحي."
-        : "A free workshop exploring drama therapy and self-expression through performance.",
-      image: "/posters/dramatherapy.jpeg",
-      navigateToDate: "2025-06-01",
-    },
+
     {
       id: 2,
       title: isArabic ? "إعادة تخيّل جدة" : "Jeddah Reimagined",
