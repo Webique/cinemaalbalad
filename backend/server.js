@@ -604,20 +604,20 @@ app.post("/api/admin/manual-booking", async (req, res) => {
   }
 });
 
-// ✅ Route to add the movie "Hajjan" for June 9, 2025
-app.post("/api/admin/add-movie-june9", async (req, res) => {
+// ✅ Route to add the World Cup Qualification Match on June 10
+app.post("/api/admin/add-movie-june10", async (req, res) => {
   try {
     const newMovie = {
-      title: "Hajjan",
+      title: "2026 FIFA World Cup qualification - Australia X Saudi Arabia",
       runtime: "120 min",
-      rating: "PG-13",
-      synopsis: "A powerful tale of courage and tradition.",
-      poster: "/posters/june9.jpeg",
+      rating: "PG",
+      synopsis: "Watch the exciting qualifier between Australia and Saudi Arabia.",
+      poster: "/posters/june10.jpeg",
       trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       ticketPrice: 35,
       showtimes: [
         {
-          date: "2025-06-09",
+          date: "2025-06-10",
           time: "9:00 PM",
           reservedSeats: []
         }
@@ -625,9 +625,10 @@ app.post("/api/admin/add-movie-june9", async (req, res) => {
     };
 
     await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ Movie 'Hajjan' added for June 9, 2025." });
+    res.status(201).json({ message: "✅ Movie '2026 FIFA World Cup qualification - Australia X Saudi Arabia' added for June 10, 2025." });
   } catch (err) {
-    console.error("❌ Error adding the new movie:", err);
-    res.status(500).json({ error: "Failed to add the new movie." });
+    console.error("❌ Error adding the movie:", err);
+    res.status(500).json({ error: "Failed to add the movie." });
   }
 });
+
