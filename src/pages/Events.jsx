@@ -55,7 +55,6 @@ export default function Events() {
   
 
   const events = [
-
     {
       id: 2,
       title: isArabic ? "إعادة تخيّل جدة" : "Jeddah Reimagined",
@@ -66,6 +65,19 @@ export default function Events() {
         : "How does the city contribute to artistic, narrative, and archival expressions? A talk with Mohammad Al Emarah, Lama Alem, and Afnan Bawyan, moderated by Salem Bajnaid.",
       image: "/posters/june4.jpeg",
       navigateToDate: "2025-06-04",
+    },
+    {
+      id: 3,
+      title: isArabic
+        ? "مباراة العيد - تصفيات كأس العالم ٢٠٢٦"
+        : "Eid Nights Match – 2026 FIFA World Cup Qualification",
+      date: isArabic ? "١٠ يونيو" : "10 June",
+      time: "9:00 PM",
+      description: isArabic
+        ? "تصفيات كأس العالم ٢٠٢٦: السعودية ضد أستراليا. تابعوا المباراة مباشرة في سينما البلد."
+        : "2026 FIFA World Cup Qualification: Saudi Arabia vs Australia. Watch the match live at Cinema Al Balad.",
+      image: "/posters/june10.jpeg", // Make sure this matches your file name
+      navigateToDate: "2025-06-10",
     },
   ];
   

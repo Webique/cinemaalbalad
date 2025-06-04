@@ -604,20 +604,20 @@ app.post("/api/admin/manual-booking", async (req, res) => {
   }
 });
 
-// ✅ Route to add the World Cup Qualification Match on June 10
-app.post("/api/admin/add-movie-june10", async (req, res) => {
+// ✅ Route to add a movie for June 11, 2025
+app.post("/api/admin/add-movie-june11", async (req, res) => {
   try {
     const newMovie = {
-      title: "2026 FIFA World Cup qualification - Australia X Saudi Arabia",
-      runtime: "120 min",
-      rating: "PG",
-      synopsis: "Watch the exciting qualifier between Australia and Saudi Arabia.",
-      poster: "/posters/june10.jpeg",
+      title: "Thank you for banking with us",
+      runtime: "92 min",
+      rating: "PG-13",
+      synopsis: "A darkly comic look at the modern financial world.",
+      poster: "/posters/june11.jpeg",
       trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       ticketPrice: 35,
       showtimes: [
         {
-          date: "2025-06-10",
+          date: "2025-06-11",
           time: "9:00 PM",
           reservedSeats: []
         }
@@ -625,10 +625,12 @@ app.post("/api/admin/add-movie-june10", async (req, res) => {
     };
 
     await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ Movie '2026 FIFA World Cup qualification - Australia X Saudi Arabia' added for June 10, 2025." });
+    res.status(201).json({ message: "✅ Movie 'Thank you for banking with us' added for June 11, 2025." });
   } catch (err) {
-    console.error("❌ Error adding the movie:", err);
-    res.status(500).json({ error: "Failed to add the movie." });
+    console.error("❌ Error adding the new movie:", err);
+    res.status(500).json({ error: "Failed to add the new movie." });
   }
 });
+
+
 
