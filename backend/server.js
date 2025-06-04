@@ -605,20 +605,20 @@ app.post("/api/admin/manual-booking", async (req, res) => {
 });
 
 
-// ✅ Route to add movie "Bilal" (June 7, 2025)
-app.post("/api/admin/add-movie-june7", async (req, res) => {
+// ✅ Route to add "Valley Road" movie for June 8, 2025
+app.post("/api/admin/add-movie-june8", async (req, res) => {
   try {
     const newMovie = {
-      title: "Bilal",
-      runtime: "105 min",
-      rating: "PG",
-      synopsis: "A powerful animated tale of faith and courage inspired by true events.",
-      poster: "/posters/june7.jpeg",
-      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // Replace with real trailer if available
+      title: "Valley Road",
+      runtime: "110 min",
+      rating: "PG-13",
+      synopsis: "An inspiring journey along the Valley Road.",
+      poster: "/posters/june8.jpeg",
+      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       ticketPrice: 35,
       showtimes: [
         {
-          date: "2025-06-07",
+          date: "2025-06-08",
           time: "9:00 PM",
           reservedSeats: []
         }
@@ -626,10 +626,10 @@ app.post("/api/admin/add-movie-june7", async (req, res) => {
     };
 
     await Movie.create(newMovie);
-    res.status(201).json({ message: "✅ Movie 'Bilal' added for June 7, 2025." });
+    res.status(201).json({ message: "✅ Movie 'Valley Road' added for June 8, 2025." });
   } catch (err) {
-    console.error("❌ Error adding 'Bilal':", err);
-    res.status(500).json({ error: "Failed to add the movie." });
+    console.error("❌ Error adding the new movie:", err);
+    res.status(500).json({ error: "Failed to add the new movie." });
   }
 });
 
