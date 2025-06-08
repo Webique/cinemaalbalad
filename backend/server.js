@@ -345,6 +345,16 @@ app.post("/api/admin/add-saudi-cinema-2", async (req, res) => {
 });
 
 
+// Example: server.js or routes file
+router.delete("/api/bookings/delete-before-date", async (req, res) => {
+  const { cutoffDate } = req.body;
+  try {
+    const result = await Booking.deleteMany({ date: { $lt: new Date(cutoffDate) } });
+    res.json({ deletedCount: result.deletedCount });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 
 // Start server LAST
