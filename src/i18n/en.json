@@ -115,7 +115,9 @@
       "tickets": "Tickets",
       "confirm": "Confirm Booking",
       "loading": "Loading movies...",
-      "price": "Price"
+      "price": "Price",
+      "showtimesFor": "Showtimes for"
+
       
 
     },
