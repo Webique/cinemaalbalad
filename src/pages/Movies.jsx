@@ -166,13 +166,14 @@ useEffect(() => {
     .sort(([a], [b]) => new Date(a) - new Date(b))
     .map(([date, moviesForDate]) => (
       <div key={date} className="space-y-12">
-        <h2 className="text-2xl font-bold text-primary text-left">
-          {new Date(date).toLocaleDateString('en-GB', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'short',
-          })}
-        </h2>
+<h2 className="text-2xl font-bold text-primary text-left border-b border-white/10 pb-2">
+  🎬 {t('movies.showtimesFor') || 'Showtimes for'} {new Date(date).toLocaleDateString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  })}
+</h2>
+
 
         {moviesForDate.map((movie, index) => (
           <motion.div
