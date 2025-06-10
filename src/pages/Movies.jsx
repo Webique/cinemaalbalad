@@ -169,9 +169,10 @@ useEffect(() => {
     .map(([date, moviesForDate]) => (
       <div key={date} className="space-y-12">
 <h2
-  className="text-2xl font-bold text-primary text-left border-b border-white/10 pb-2"
+  className="text-2xl font-bold text-primary text-center border-b border-white/10 pb-2"
   dir={i18n.language === "ar" ? "rtl" : "ltr"}
 >
+
   {new Date(date).toLocaleDateString(i18n.language === "ar" ? "ar-EG" : "en-US", {
     weekday: "long",
     day: "numeric",
