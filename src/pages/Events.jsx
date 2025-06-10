@@ -55,17 +55,7 @@ export default function Events() {
   
 
   const events = [
-    {
-      id: 2,
-      title: isArabic ? "إعادة تخيّل جدة" : "Jeddah Reimagined",
-      date: isArabic ? "٤ يونيو" : "4 June",
-      time: "7:30 PM",
-      description: isArabic
-        ? "كيف تساهم المدينة في التعبيرات الفنية والسردية والأرشيفية؟ حوار مع محمد الإمارة، لما عالم، وأفنان باويان بإدارة سالم باجنيد."
-        : "How does the city contribute to artistic, narrative, and archival expressions? A talk with Mohammad Al Emarah, Lama Alem, and Afnan Bawyan, moderated by Salem Bajnaid.",
-      image: "/posters/june4.jpeg",
-      navigateToDate: "2025-06-04",
-    },
+
     {
       id: 3,
       title: isArabic
