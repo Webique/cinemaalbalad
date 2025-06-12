@@ -604,67 +604,37 @@ app.post("/api/admin/manual-booking", async (req, res) => {
     res.status(500).json({ error: "Internal error while creating manual booking" });
   }
 });
-// ✅ Route to add movies for June 12–14, 2025
-app.post("/api/admin/add-movies-june12-14", async (req, res) => {
-  try {
-    const newMovies = [
-      {
-        title: "The Memoirs of M. A. Draz",
-        runtime: "82 min",
-        rating: "PG-13",
-        synopsis: "A reflective journey into the life and thoughts of M. A. Draz.",
-        poster: "/posters/june12.jpeg",
-        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        ticketPrice: 35,
-        showtimes: [
-          {
-            date: "2025-06-12",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ]
-      },
-      {
-        title: "The Brink of Dreams",
-        runtime: "102 min",
-        rating: "PG-13",
-        synopsis: "A documentary-style dive into the hopes and struggles of a generation.",
-        poster: "/posters/june13.jpeg",
-        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        ticketPrice: 35,
-        showtimes: [
-          {
-            date: "2025-06-13",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ]
-      },
-      {
-        title: "The Burdened",
-        runtime: "91 min",
-        rating: "PG-13",
-        synopsis: "A gripping drama portraying the resilience of a family under pressure.",
-        poster: "/posters/june14.jpeg",
-        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        ticketPrice: 35,
-        showtimes: [
-          {
-            date: "2025-06-14",
-            time: "9:00 PM",
-            reservedSeats: []
-          }
-        ]
-      }
-    ];
 
-    await Movie.insertMany(newMovies);
-    res.status(201).json({ message: "✅ Movies for June 12–14 added successfully." });
+
+
+// ✅ Route to add movie for June 15, 2025
+app.post("/api/admin/add-movie-june15", async (req, res) => {
+  try {
+    const newMovie = {
+      title: "Last Night Films: Haffa - Aleies",
+      runtime: "90 min",
+      rating: "PG-13",
+      synopsis: "A poetic visual journey through Haffa – Aleies, capturing the essence of the night.",
+      poster: "/posters/june15.jpeg",
+      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // replace with actual trailer if available
+      ticketPrice: 35,
+      showtimes: [
+        {
+          date: "2025-06-15",
+          time: "7:30 PM",
+          reservedSeats: []
+        }
+      ]
+    };
+
+    await Movie.create(newMovie);
+    res.status(201).json({ message: "✅ Movie 'Last Night Films: Haffa - Aleies' added for June 15, 2025." });
   } catch (err) {
-    console.error("❌ Error adding movies:", err);
-    res.status(500).json({ error: "Failed to add the movies." });
+    console.error("❌ Error adding the new movie:", err);
+    res.status(500).json({ error: "Failed to add the new movie." });
   }
 });
+
 
 
 
